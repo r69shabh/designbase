@@ -30,7 +30,7 @@ Phase 0 is a local MCP server, a hand-written sample playbook and a benchmark. I
 | `check` (lint) | Static lint of `.tsx`/`.jsx`: Tailwind default colours, raw hex, arbitrary values, off-scale spacing/type/radius, shadows, gradients, generic fonts, hand-rolled `<button>`/`<input>`/`<table>`, multiple primary buttons, heading order, missing alt text. Each error comes with a concrete fix (`p-5 → p-4 (16px) or p-6 (24px)`). |
 | `check` (visual) | Renders an `.html` file or a dev-server URL in headless Chromium at 375/768/1280px, measures the computed style of every element against the tokens (colours, fonts, type scale, spacing, radius, shadows, WCAG contrast, horizontal overflow), and returns screenshots for the agent to review against the playbook voice. |
 | Claude Code hook | Runs `check` automatically after every UI file edit and sends violations back to Claude, so the agent can't skip it. |
-| [`bench/`](bench) | 10 tasks × 4 conditions (screenshot / full dump / brief / brief + check loop), a prompt generator and a scorer. |
+| [`bench/`](bench) | Automated multi-model benchmarks: a model leaderboard and a designbase-uplift table. 10 tasks × 4 conditions, every output rendered and scored. |
 
 ## Quick start
 
@@ -100,15 +100,30 @@ DESIGNBASE_PLAYBOOK=/path/to/my-playbook npm run -s brief -- "settings page"
 | `patterns.json` | Page-level compositions: which components, layout skeleton, spacing rhythm, exemplar |
 | `exemplars/*.html` | Approved screens, rendered by the visual check and used as screenshot references |
 
-## Running the benchmark
+## Benchmarks
 
-See [bench/README.md](bench/README.md). In short: run each task in a fresh agent session under each condition, save outputs to `bench/runs/<condition>/<task>.tsx`, rate them 1–5, then:
+Two automated benchmarks share one harness ([bench/README.md](bench/README.md)):
+
+- **DesignBench, a model leaderboard:** every model gets the same 10 UI tasks with screenshots of approved screens or the whole design system pasted in, and is scored the same way.
+- **designbase uplift:** the same models also run with the designbase brief and with the full check → fix loop, which shows how much the tool adds on top of each one.
+
+Each output is linted, actually rendered (esbuild + React + Tailwind in headless Chromium), measured against the tokens, and optionally rated by a vision-model judge. Models are called through OpenRouter, Gemini, Groq or NVIDIA. Put the keys in your environment or a git-ignored `.env`.
 
 ```bash
-npm run bench
+npm run bench:run -- --suite tool --dry-run
 ```
 
-**Phase 0 passes** if the brief + check loop beats the screenshot workflow by ≥ 30 points of mean lint score and ≥ 1 point of mean human rating.
+```bash
+npm run bench:run -- --suite tool
+```
+
+```bash
+npm run bench:report
+```
+
+Results go to `bench/results/leaderboard.md` and `bench/results/uplift.md`.
+
+**Phase 0 passes** if the check loop (D) beats the screenshot workflow (A) by ≥ 30 composite points and ≥ 1 judge point, with the brief (C) beating the full dump (B).
 
 ## Known limits (Phase 0)
 
@@ -124,7 +139,7 @@ npm run bench
 src/        playbook loader, brief builder, linter, visual checker, MCP server, CLI + hook
 playbook/   Almanac sample playbook
 examples/   on- and off-brand samples, Claude Code hook config
-bench/      tasks, prompt generator, screenshot assets, scorer, runs/
+bench/      model client, renderer, scorer, runner, reports, tasks, runs/, results/
 test/       node:test suite (lint, brief, visual, hook)
 docs/       product plan and market research
 ```
