@@ -16,7 +16,9 @@ const TW_PALETTE = /^(slate|gray|grey|zinc|neutral|stone|red|orange|amber|yellow
 const COLOR_PREFIX = /^(bg|text|border(?:-[xytrblse])?|ring|ring-offset|fill|stroke|from|via|to|divide|outline|decoration|placeholder|accent|caret|shadow)-(.+)$/;
 const SPACING = /^-?(p|px|py|pt|pr|pb|pl|ps|pe|m|mx|my|mt|mr|mb|ml|ms|me|gap|gap-x|gap-y|space-x|space-y)-(.+)$/;
 const GENERIC_FONTS = /\b(Inter|Roboto|Arial|Helvetica|Open Sans|Poppins|Montserrat|system-ui|-apple-system|Segoe UI)\b/;
-const RAW_ELEMENTS: Record<string, string> = { button: "Button", input: "Field", table: "DataTable" };
+/** Raw element → component, from each component's `replaces`. */
+const substitutions = (pb: Playbook) =>
+  Object.fromEntries(pb.components.flatMap((c) => (c.replaces ?? []).map((el) => [el, c.name] as const)));
 
 const lineOf = (src: string, index: number) => src.slice(0, index).split("\n").length;
 const lineText = (src: string, line: number) => src.split("\n")[line - 1]?.trim().slice(0, 140) ?? "";
@@ -135,7 +137,7 @@ export function lintSource(pb: Playbook, src: string, opts: LintOptions = {}): V
   }
 
   if (!opts.isComponentSource) {
-    for (const [el, comp] of Object.entries(RAW_ELEMENTS)) {
+    for (const [el, comp] of Object.entries(substitutions(pb))) {
       for (const m of src.matchAll(new RegExp(`<${el}\\b`, "g"))) add("use-components", m.index, `Raw <${el}> — use <${comp}>`);
     }
   }

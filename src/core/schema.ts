@@ -1,0 +1,76 @@
+// Playbook schema v1: what a stored, versioned playbook contains. Tokens are DTCG; everything
+// else is designbase-specific. The engine still works on the on-disk layout (see materialize.ts).
+import { z } from "zod";
+
+export const PropSpec = z.object({
+  name: z.string(),
+  type: z.string().describe("TypeScript type, e.g. \"'primary' | 'secondary'\" or \"(row: T) => ReactNode\""),
+  required: z.boolean().default(false),
+  description: z.string().optional(),
+  default: z.string().optional(),
+});
+
+export const Component = z.object({
+  name: z.string().regex(/^[A-Z][A-Za-z0-9]*$/, "PascalCase"),
+  summary: z.string(),
+  keywords: z.array(z.string()).default([]),
+  /** Prose summary kept for briefs until every component has typed props. */
+  props: z.string().default(""),
+  propSpecs: z.array(PropSpec).default([]),
+  variants: z.record(z.string(), z.array(z.string())).default({}),
+  /** Raw elements this component replaces; drives the use-components lint rule. */
+  replaces: z.array(z.string()).default([]),
+  do: z.array(z.string()).default([]),
+  dont: z.array(z.string()).default([]),
+  example: z.string().optional(),
+  code: z.string(),
+});
+
+export const Pattern = z.object({
+  name: z.string(),
+  keywords: z.array(z.string()).default([]),
+  summary: z.string(),
+  components: z.array(z.string()).default([]),
+  skeleton: z.string().default(""),
+  rhythm: z.string().default(""),
+  exemplar: z.string().nullable().default(null),
+});
+
+export const Rule = z.object({
+  id: z.string(),
+  severity: z.enum(["error", "warn"]),
+  kind: z.string(),
+  title: z.string(),
+  why: z.string(),
+  fix: z.string(),
+  enabled: z.boolean().default(true),
+  /** Overrides for values the engine otherwise derives from tokens/components. */
+  params: z.record(z.string(), z.unknown()).default({}),
+});
+
+export const Exemplar = z.object({
+  name: z.string(),
+  /** File name under exemplars/ (html, css or png). */
+  file: z.string(),
+  content: z.string().describe("utf8 text, or base64 for binary files"),
+  encoding: z.enum(["utf8", "base64"]).default("utf8"),
+});
+
+export const PlaybookContent = z.object({
+  schema: z.literal("designbase/playbook@1"),
+  name: z.string(),
+  description: z.string().default(""),
+  tokens: z.record(z.string(), z.unknown()).describe("DTCG 2025.10 token tree"),
+  voice: z.string().default(""),
+  rules: z.array(Rule),
+  components: z.array(Component),
+  patterns: z.array(Pattern).default([]),
+  exemplars: z.array(Exemplar).default([]),
+});
+
+export type PropSpec = z.infer<typeof PropSpec>;
+export type ComponentSpec = z.infer<typeof Component>;
+export type PatternSpec = z.infer<typeof Pattern>;
+export type RuleSpec = z.infer<typeof Rule>;
+export type ExemplarSpec = z.infer<typeof Exemplar>;
+export type PlaybookContent = z.infer<typeof PlaybookContent>;
