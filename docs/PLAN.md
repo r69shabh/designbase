@@ -1,6 +1,6 @@
 # designbase — product exploration & plan
 
-*Draft, 3 Nov 2026*
+*Draft, 3 Nov 2026. Updated 3 Nov 2026: Phase 0 build done, benchmark not yet run.*
 
 ## 1. The problem, stated precisely
 
@@ -134,9 +134,17 @@ An on-site canvas: "design a billing page in my playbook". It generates *from co
 ## 7. Roadmap
 
 **Phase 0: Prove the thesis (2–3 weeks).** Before building the website, check that enforcement actually improves output.
-- Hand-write one playbook (JSON + exemplars) from one of your Figma designs.
-- Build a tiny local MCP server with `get_brief` + `check` (static lint + Playwright screenshot + vision critique).
-- Benchmark: 10 UI tasks × {screenshot-only, full DESIGN.md dump, designbase brief, brief + check loop}. Score adherence (lint violations, token misuse, human rating). **If the loop doesn't clearly win, rethink before going further.**
+- [x] Hand-write one playbook (JSON + exemplars). *Done with a sample system ("Almanac") so the harness could be built and tested; swap in a playbook from your own Figma designs before running the benchmark.*
+- [x] Build a tiny local MCP server with `get_brief` + `check`. *Done: `get_brief`, `find_component`, `get_component`, `get_tokens`, `check`, `list_rules`. `check` = static lint (13 rules) + Playwright render at 3 breakpoints with computed-style measurement against tokens (colour, font, type scale, spacing, radius, shadow, contrast, overflow) + screenshots returned to the agent.*
+- [x] Make the check impossible to skip. *Done: a Claude Code PostToolUse hook (`designbase hook`) lints every edited `.tsx`/`.jsx` file and sends violations back to the agent.*
+- [ ] Vision critique. *Deferred: for now the calling agent reviews its own screenshots against the voice. Add a dedicated judge only if the benchmark shows lint + self-review leaves a visible quality gap.*
+- [x] Benchmark harness: 10 UI tasks × {A screenshot-only, B full dump, C designbase brief, D brief + check loop}, prompt generator, lint scorer, 1–5 rating merge. See `bench/README.md`.
+- [ ] **Run the benchmark** and record results in `bench/results.md`. Pass bar: D beats A by ≥ 30 mean lint points and ≥ 1 mean rating point; C beats B. **If the loop doesn't clearly win, rethink before going further.**
+
+What Phase 0 already taught us:
+- Visual measurement catches things lint can't: it flagged a real contrast failure in the sample palette itself (`ink-3` on `paper-2` was 4.48:1), which was fixed in the tokens.
+- Measured checks need heuristics to avoid false positives: `margin: 0 auto` centring and text on gradients are now skipped.
+- Every rule needs a concrete fix ("`p-5` → `p-4` (16px) or `p-6` (24px)"), not only a description. Agents act on fixes; they argue with descriptions.
 
 **Phase 1: MVP (6–8 weeks).**
 - Ingest from screenshots and Figma (tokens + components), with the review/merge UI.
