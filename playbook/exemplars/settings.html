@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Almanac — Settings</title>
+<link rel="stylesheet" href="almanac.css">
+</head>
+<body>
+<div class="narrow">
+  <header class="page-header">
+    <div class="titles">
+      <span class="eyebrow">Workspace</span>
+      <h1>Settings</h1>
+      <p class="lede">Your profile, how invoices are sent, and who can see them.</p>
+    </div>
+  </header>
+  <div class="stack">
+    <section class="card">
+      <header><h2>Profile</h2></header>
+      <div class="fields">
+        <div class="field"><label for="n">Full name</label><input id="n" value="Ada Okafor"></div>
+        <div class="field"><label for="e">Email</label><input id="e" value="ada@northwind.co"><span class="hint">Receipts are sent here.</span></div>
+      </div>
+      <footer><button class="btn">Save profile</button></footer>
+    </section>
+    <section class="card">
+      <header><h2>Invoicing</h2><span class="badge positive">Auto-reminders on</span></header>
+      <div class="fields">
+        <div class="field"><label for="p">Payment terms (days)</label><input id="p" value="30"></div>
+        <div class="field"><label for="c">Currency</label><input id="c" value="USD"></div>
+      </div>
+      <footer><button class="btn">Save invoicing</button></footer>
+    </section>
+    <section class="card">
+      <header><h2>Danger zone</h2></header>
+      <p class="danger-copy">Deleting the workspace removes every invoice and customer. This can't be undone.</p>
+      <button class="btn danger">Delete workspace</button>
+    </section>
+  </div>
+</div>
+</body>
+</html>

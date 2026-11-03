@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Dashboard overview",
+    "keywords": ["dashboard", "overview", "home", "analytics", "metrics", "stats", "kpi", "report", "summary", "admin"],
+    "summary": "Page header, a row of 3-4 StatTiles, then one or two Cards (chart / recent activity) above a DataTable.",
+    "components": ["SideNav", "PageHeader", "StatTile", "Card", "DataTable", "Badge", "Button"],
+    "skeleton": "<div class=\"flex min-h-screen bg-paper\">\n  <SideNav/>\n  <main class=\"flex-1 px-6 py-12 md:px-16\">\n    <PageHeader actions={<Button variant=\"primary\"/>}/>\n    <div class=\"grid grid-cols-2 gap-8 md:grid-cols-4\">  {StatTile x4}\n    <div class=\"mt-16 grid gap-8 lg:grid-cols-3\">  <Card class=\"lg:col-span-2\"/> <Card/>\n    <section class=\"mt-16\"> <h2/> <DataTable/>\n  </main>\n</div>",
+    "rhythm": "Page padding 64px desktop / 24px mobile. 32px between tiles. 64px between major sections. Section headings (h2) 16px above their content.",
+    "exemplar": "exemplars/dashboard.html"
+  },
+  {
+    "name": "Settings page",
+    "keywords": ["settings", "preferences", "account", "profile", "configuration", "billing", "team", "form", "edit"],
+    "summary": "Page header, then stacked Cards, one per topic, each with Fields and a right-aligned secondary save. Danger zone last.",
+    "components": ["SideNav", "PageHeader", "Card", "Field", "Button", "Badge"],
+    "skeleton": "<main class=\"mx-auto max-w-3xl px-6 py-12\">\n  <PageHeader/>\n  <div class=\"flex flex-col gap-8\">\n    <Card title=\"Profile\"> <div class=\"grid gap-6 md:grid-cols-2\">Field...</div> <footer class=\"mt-6 flex justify-end\"><Button/></footer></Card>\n    <Card title=\"Danger zone\"> <Button variant=\"danger\"/></Card>\n  </div>\n</main>",
+    "rhythm": "Max width 768px. 32px between cards, 24px between fields, 24px above card footers.",
+    "exemplar": "exemplars/settings.html"
+  },
+  {
+    "name": "Auth form",
+    "keywords": ["login", "signin", "sign", "signup", "register", "auth", "password", "reset", "onboarding", "welcome"],
+    "summary": "Centred single column, product wordmark in Fraunces, 2-3 Fields, one full-width primary Button, one quiet ghost link below.",
+    "components": ["Field", "Button"],
+    "skeleton": "<main class=\"flex min-h-screen items-center justify-center bg-paper px-6\">\n  <div class=\"flex w-full max-w-sm flex-col gap-6\">\n    <h1 class=\"font-display text-xl\"/>\n    <Field/> <Field/>\n    <Button variant=\"primary\" class=\"w-full\"/>\n    <Button variant=\"ghost\" size=\"sm\"/>\n  </div>\n</main>",
+    "rhythm": "Max width 384px. 24px between fields. No card around the form: it sits directly on paper.",
+    "exemplar": null
+  },
+  {
+    "name": "List with empty state",
+    "keywords": ["list", "index", "table", "empty", "projects", "items", "invoices", "customers", "collection", "browse"],
+    "summary": "Page header with primary create action, optional filter row, DataTable; EmptyState instead of the table when there are no rows.",
+    "components": ["PageHeader", "DataTable", "EmptyState", "Button", "Badge", "Field"],
+    "skeleton": "<main class=\"px-6 py-12 md:px-16\">\n  <PageHeader actions={<Button variant=\"primary\">New …</Button>}/>\n  <div class=\"mb-6 flex gap-3\"> <Field label=\"Search\"/> </div>\n  {rows.length ? <DataTable/> : <EmptyState/>}\n</main>",
+    "rhythm": "24px between filter row and table.",
+    "exemplar": null
+  }
+]
