@@ -100,3 +100,8 @@ test("an off-brand draft scores low and gets specific feedback", { timeout: 180_
   for (const want of ["blue-500", "rounded-xl", "shadow-lg", "px-5", "missing in the render: accent"]) assert.ok(text.includes(want), `feedback mentions ${want}`);
   store.close();
 });
+
+test("only real controls can be replaced", async () => {
+  const { cleanReplaces } = await import("../src/designer/components.ts");
+  assert.deepEqual(cleanReplaces(["input[type=text]", "input[type=email]", "div", "span", "section", "Button", "table"]), ["input", "button", "table"]);
+});

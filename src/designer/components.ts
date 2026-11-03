@@ -70,7 +70,7 @@ Rules:
 - Use ONLY these tokens as Tailwind classes. No hex, no arbitrary values like p-[13px], no Tailwind default colours (gray-500, white…), no inline styles.
 ${vocabularyBrief(pb)}
 - One file, \`export function <Name>\` (named export), props typed with an exported interface. Only import from "react".
-- Model colour treatments as a \`variant\` (or \`tone\`) prop; text and repeated content as props/children, not hard-coded.
+- Model colour treatments as a \`variant\` (or \`tone\`) prop named by meaning (primary/secondary/danger, positive/warning/negative), never by colour name; text and repeated content as props/children, not hard-coded.
 - Reproduce the measured layout: same padding keys, gaps, font sizes, fonts, weights, radius and borders as the instances.
 Design voice:
 ${pb.voice}`,
@@ -97,8 +97,15 @@ Write the component.`,
   return { draft: object, usage };
 };
 
+/**
+ * Only real controls can be "replaced": a model that says a card replaces <div> would make the
+ * linter flag every div. Attribute selectors (input[type=email]) collapse to the element.
+ */
+const REPLACEABLE = new Set(["button", "input", "select", "textarea", "table"]);
+export const cleanReplaces = (r: string[]) => [...new Set(r.map((x) => x.toLowerCase().replace(/[^a-z].*$/, "")).filter((x) => REPLACEABLE.has(x)))];
+
 const withComponent = (content: PlaybookContent, d: ComponentDraft): PlaybookContent => {
-  const component = ComponentSchema.parse({ ...d, props: d.propSpecs.map((p) => `${p.name}${p.required ? "" : "?"}: ${p.type}`).join("; ") });
+  const component = ComponentSchema.parse({ ...d, replaces: cleanReplaces(d.replaces), props: d.propSpecs.map((p) => `${p.name}${p.required ? "" : "?"}: ${p.type}`).join("; ") });
   return { ...content, components: [...content.components.filter((x) => x.name !== d.name), component] };
 };
 
@@ -166,7 +173,8 @@ export async function verifyDraft(base: PlaybookContent, d: ComponentDraft, c: C
   if (missing.length) issues.push(`Colours visible in the source but missing in the render: ${missing.join(", ")}.`);
 
   const visual = await check(pb, { path: r.html! });
-  const visualErrors = visual.violations.filter((v) => v.severity === "error");
+  // The example is pinned to the source width, so phone-width overflow says nothing about the component.
+  const visualErrors = visual.violations.filter((v) => v.severity === "error" && v.rule !== "no-horizontal-overflow");
   for (const v of visualErrors.slice(0, 5)) issues.push(`Rendered check: ${v.message}. ${v.fix}`);
 
   const score = Math.max(0, Math.round(100 * (0.3 * hRatio + 0.15 * wRatio + 0.55 * Math.min(1, similarity)) - 5 * visualErrors.length - 10 * issues.filter((i) => i.startsWith("Line ")).length));

@@ -4,6 +4,7 @@ import type { Store, Job } from "../store/db.ts";
 import { closeBrowser } from "../visual.ts";
 import { tokensFromDtcg, tokensToDtcg, type DtcgTree } from "../core/dtcg.ts";
 import { Component as ComponentSchema, PlaybookContent, type RuleSpec } from "../core/schema.ts";
+import { cleanReplaces } from "./components.ts";
 import { applyInterpretation, interpret, type Interpretation } from "./interpret.ts";
 import { measureImage, measureUrl, type ImageMeasurement, type UrlMeasurement } from "./measure.ts";
 import { synthesize, tokensFromProposals, type TokenProposal } from "./synthesize.ts";
@@ -138,7 +139,7 @@ export function applyProposals(store: Store, playbookId: string, message = "Appl
   const components = new Map(base.components.map((c) => [c.name, c]));
   for (const p of accepted.filter((p) => p.kind === "component" && typeof (p.data as { code?: unknown }).code === "string")) {
     const { verification: _v, assets: _a, propSpecs, ...d } = p.data as Record<string, unknown> & { propSpecs: { name: string; type: string; required: boolean }[] };
-    components.set(p.key, ComponentSchema.parse({ ...d, propSpecs, props: propSpecs.map((x) => `${x.name}${x.required ? "" : "?"}: ${x.type}`).join("; ") }));
+    components.set(p.key, ComponentSchema.parse({ ...d, replaces: cleanReplaces((d.replaces as string[]) ?? []), propSpecs, props: propSpecs.map((x) => `${x.name}${x.required ? "" : "?"}: ${x.type}`).join("; ") }));
   }
 
   const voice = accepted.find((p) => p.kind === "voice");
