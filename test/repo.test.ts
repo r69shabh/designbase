@@ -116,3 +116,10 @@ test("discovery reuses the repo's components instead of generating new ones", { 
   assert.equal(reused.input, "Input");
   assert.ok(!built.includes("button") && !built.includes("input"), "never asked the model to build what exists");
 });
+
+test("tsconfig comments are stripped without breaking strings", async () => {
+  const { stripJsonc } = await import("../src/designer/repo.ts");
+  const src = `{\n  // aliases\n  "compilerOptions": { /* note */ "baseUrl": "https://x.dev/a//b", "paths": { "@/*": ["./src/*"], }, },\n}`;
+  assert.deepEqual(JSON.parse(stripJsonc(src)).compilerOptions.paths, { "@/*": ["./src/*"] });
+  assert.equal(JSON.parse(stripJsonc(src)).compilerOptions.baseUrl, "https://x.dev/a//b");
+});

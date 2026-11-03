@@ -65,14 +65,33 @@ function each(node: N, fn: (n: N) => void) {
   for (const c of children(node)) each(c, fn);
 }
 
+/** tsconfig allows comments and trailing commas; strip them without touching strings ("https://…"). */
+export function stripJsonc(src: string): string {
+  let out = "";
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (ch === '"') {
+      const start = i;
+      for (i++; i < src.length && src[i] !== '"'; i++) if (src[i] === "\\") i++;
+      out += src.slice(start, i + 1);
+    } else if (ch === "/" && src[i + 1] === "/") {
+      while (i < src.length && src[i] !== "\n") i++;
+      out += "\n";
+    } else if (ch === "/" && src[i + 1] === "*") {
+      i = src.indexOf("*/", i + 2) + 1;
+      if (i === 0) break;
+    } else out += ch;
+  }
+  return out.replace(/,(\s*[}\]])/g, "$1");
+}
+
 /** tsconfig "paths" → a function from repo file to the import specifier the team would write. */
 function importResolver(root: string): (file: string) => string {
   let paths: Record<string, string[]> = {};
   for (const f of ["tsconfig.json", "jsconfig.json"]) {
     if (!existsSync(join(root, f))) continue;
     try {
-      // tsconfig allows comments and trailing commas.
-      const json = JSON.parse(readFileSync(join(root, f), "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "").replace(/,(\s*[}\]])/g, "$1"));
+      const json = JSON.parse(stripJsonc(readFileSync(join(root, f), "utf8")));
       paths = json.compilerOptions?.paths ?? {};
       break;
     } catch {}
@@ -206,12 +225,14 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
     let renders: string | null = null;
     const tag = rootEl ? text(rootEl.openingElement.name) : "";
     if (/^[a-z]/.test(tag)) renders = tag;
+    // Built on a primitive library (Radix, Headless UI…): record it, e.g. "CheckboxPrimitive.Root".
+    else if (tag.includes(".")) renders = tag;
     else if (tag) {
       const alias = find(fn.body ?? fn, (x) => x.type === "VariableDeclarator" && x.id?.name === tag);
       const lit = alias && find(alias.init, (x) => x.type === "StringLiteral");
       if (lit) renders = lit.value;
     }
-    if (renders) replaces.add(renders);
+    if (renders && /^[a-z]+$/.test(renders)) replaces.add(renders);
     // A wrapper (div > table) still stands in for the inner control if forwardRef says so.
 
     // Variants from cva tables referenced by VariantProps<typeof x> or called in the body.

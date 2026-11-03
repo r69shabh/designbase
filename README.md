@@ -37,6 +37,7 @@ sources ──▶ designer agent ──▶ proposals ──▶ review ──▶ 
 | AI layer | `src/ai/` | One client for OpenRouter, Gemini, Groq and NVIDIA. A model policy with automatic fallback past dead keys and quotas, zod-validated structured output with a repair round, and a response cache. |
 | Designer agent v1 | `src/designer/` | **Measures** live pages (computed styles of every element) and screenshots (exact colours from the pixel histogram), **synthesizes** colour roles, spacing base and scale, type scale, fonts, radii, shadows and rules, then **interprets** with a vision model (semantic names, voice, components seen). Every token is a proposal with confidence and evidence. Values never come from the model. |
 | Designer agent v2: components | `src/designer/discover*.ts`, `components.ts` | **Discovers** components on live pages by clustering DOM subtrees by shape (text and colour ignored). Containers like cards are grouped by their shell; colour treatments of one shape become **variants** (primary, secondary, danger…). Each instance is described in the playbook's own token vocabulary (`button "New invoice" [bg:accent radius:md px:4 text:paper size:base]`). A model **writes** a typed React + Tailwind component from that description, then it's **verified**: linted, rendered at the source width, and compared with the source crop for size, colours and token conformance. Specific feedback goes back for up to 3 rounds. Verified components arrive as proposals with source and render images. |
+| Repo scan: your existing components | `src/designer/repo*.ts`, `scan-job.ts` | Points at your codebase and finds the components you **already have**: name, import path (from your tsconfig aliases), typed props, `cva` variants and defaults, the raw element each one stands in for (`asChild ? Slot : "button"`, `forwardRef<HTMLTableElement>`, `ComponentProps<"input">`), sub-parts (Card → CardHeader, CardTitle…), what it's built on (`CheckboxPrimitive.Root`), and how many files import it. It also reads declared tokens (CSS variables in `:root` and `@theme`, oklch/hsl/hex, `calc()` radii, dark theme) and the Tailwind scales your components use. Static analysis only, nothing executed. Briefs then say `import { Button } from "@/components/ui/button"`, lint flags a raw `<button>` with "use <Button>", and component discovery **reuses** these instead of generating new ones. Tested on shadcn/ui's own registry (~60 components). |
 | API | `src/api/` | Hono REST API with an in-process worker. See below. |
 
 On Almanac's own pages, extraction recovers every colour exactly, the 4px spacing base with its scale, all three font families, and the type sizes the pages use. The vision model named the colours (`background`, `accent`, `text-muted`, `success`, `danger`…) and wrote voice bullets close to the hand-written ones.
@@ -152,6 +153,7 @@ Results go to `bench/results/leaderboard.md` and `bench/results/uplift.md`.
 - The visual check measures the declared font family, not whether the webfont actually loaded.
 - The MCP `check` tool has no vision-model judge yet: the calling agent reviews its own screenshots against the voice. The benchmark harness does have an optional judge.
 - Component discovery needs live pages (URL sources). Screenshot-only sources give exact colours but no spacing, type scale or components yet. Page patterns (layouts) aren't extracted yet.
+- Repo scan reads CSS-variable and `@theme` tokens. A Tailwind v3 `tailwind.config.js` theme isn't parsed yet, and Vue/Svelte files aren't scanned. Dark-theme colours are captured but stored aside until playbooks support modes. Repo components aren't rendered for visual checks, because that needs your app's own dependencies; check your running dev server by URL instead.
 - The MCP server still reads a playbook directory. Moving it onto the API is a later phase.
 
 ## Running the API
@@ -171,6 +173,7 @@ It listens on `http://localhost:4141`. Local mode needs no key; set `DESIGNBASE_
 | `GET /v1/playbooks/:id/proposals?status=open` | What the agent proposes, with confidence and evidence |
 | `POST /v1/proposals/:pid/review` | `{ "decision": "accept" \| "reject", "edited"?: …, "note"?: … }` |
 | `POST /v1/playbooks/:id/proposals/accept` | Accept everything above `{ "minConfidence": 0.8 }` |
+| `POST /v1/playbooks/:id/sources` `{ "repo": "/path" }` then `POST /v1/playbooks/:id/scan` | Scan your codebase for existing components and declared tokens (local mode) |
 | `POST /v1/playbooks/:id/discover` | Discover and build components (needs applied foundations); returns a job |
 | `GET /v1/assets/:hash` | Source crops and renders attached to component proposals |
 | `POST /v1/playbooks/:id/apply` | Commit accepted proposals as a new version |
