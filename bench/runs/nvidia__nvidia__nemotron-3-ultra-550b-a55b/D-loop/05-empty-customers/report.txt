@@ -1,0 +1,6 @@
+✗ source: 0 error(s), 1 warning(s). Score 99/100.
+  warn  L23 [one-primary-action] 2 primary buttons in one view
+        <Button variant="primary" size="md">
+        fix: Demote the others to variant="secondary" or "ghost".
+
+✓ rendered page (1280px): no playbook violations.

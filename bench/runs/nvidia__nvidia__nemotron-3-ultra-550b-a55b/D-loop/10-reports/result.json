@@ -1,0 +1,54 @@
+{
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "condition": "D-loop",
+  "task": "10-reports",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": false,
+      "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/10-reports/work3/render/index.html",
+      "error": "runtime: Minified React error #31; visit https://react.dev/errors/31?args[]=object%20with%20keys%20%7Bname%2C%20email%2C%20revenue%2C%20invoices%2C%20avgDaysToPay%7D for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 50,
+    "passed": false
+  },
+  "inputTokens": 24454,
+  "outputTokens": 12481,
+  "cost": 0,
+  "latencyMs": 178675,
+  "finishedAt": "2026-11-03T17:24:26.360Z"
+}

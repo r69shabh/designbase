@@ -1,0 +1,3 @@
+✓ source: no playbook violations.
+
+✗ The file does not render: runtime: Minified React error #31; visit https://react.dev/errors/31?args[]=object%20with%20keys%20%7Bname%2C%20email%2C%20revenue%2C%20invoices%2C%20avgDaysToPay%7D for the full message or use the non-minified dev environment for full errors and additional helpful warnings.

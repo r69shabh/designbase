@@ -1,0 +1,8 @@
+✗ source: 1 error(s), 0 warning(s). Score 97/100.
+  error L44 [no-arbitrary-values] Arbitrary value `h-[140px]`
+        <div className="flex items-end gap-4 h-[140px] pb-4">
+        fix: Pick the nearest token from the scale.
+
+✗ rendered page (1280px): 1 error(s), 0 warning(s). Score 97/100.
+  error [no-horizontal-overflow] Page is 180px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.

@@ -1,0 +1,46 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "B-dump",
+  "task": "01-dashboard",
+  "rounds": [
+    {
+      "composite": 89,
+      "lint": 96,
+      "visual": 82,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 96,
+      "errors": 1,
+      "warnings": 1,
+      "byRule": {
+        "heading-order": 1,
+        "spacing-scale": 1
+      }
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/01-dashboard/final/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 88,
+      "errorGroups": 2,
+      "byRule": {
+        "no-horizontal-overflow": 1,
+        "spacing-scale": 1
+      }
+    },
+    "judge": null,
+    "composite": 92,
+    "passed": false,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/01-dashboard/final/shots/1793726124516-desktop.png"
+  },
+  "inputTokens": 5998,
+  "outputTokens": 1757,
+  "cost": 0,
+  "latencyMs": 4973,
+  "finishedAt": "2026-11-03T17:10:53.977Z"
+}

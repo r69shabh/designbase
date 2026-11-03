@@ -1,0 +1,40 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "C-brief",
+  "task": "07-new-customer-form",
+  "rounds": [
+    {
+      "composite": 100,
+      "lint": 100,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/C-brief/07-new-customer-form/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/C-brief/07-new-customer-form/work0/shots/1793734913283-desktop.png"
+  },
+  "inputTokens": 3187,
+  "outputTokens": 5695,
+  "cost": 0,
+  "latencyMs": 268533,
+  "finishedAt": "2026-11-03T19:41:56.323Z"
+}

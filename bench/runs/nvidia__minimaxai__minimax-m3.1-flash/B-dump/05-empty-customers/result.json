@@ -1,0 +1,44 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "B-dump",
+  "task": "05-empty-customers",
+  "rounds": [
+    {
+      "composite": 96.5,
+      "lint": 99,
+      "visual": 94,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 99,
+      "errors": 0,
+      "warnings": 1,
+      "byRule": {
+        "heading-order": 1
+      }
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/05-empty-customers/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 94,
+      "errorGroups": 1,
+      "byRule": {
+        "no-horizontal-overflow": 1
+      }
+    },
+    "judge": null,
+    "composite": 96.5,
+    "passed": false,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/05-empty-customers/work0/shots/1793731402055-desktop.png"
+  },
+  "inputTokens": 6143,
+  "outputTokens": 5716,
+  "cost": 0,
+  "latencyMs": 295076,
+  "finishedAt": "2026-11-03T18:43:25.477Z"
+}

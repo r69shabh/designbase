@@ -1,0 +1,6 @@
+✗ source: 1 error(s), 0 warning(s). Score 97/100.
+  error L145 [use-components] Raw <input> — use <Field>
+        <input
+        fix: Import Button, Field, DataTable, etc. from the components folder.
+
+✗ The file does not render: runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.

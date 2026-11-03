@@ -1,0 +1,18 @@
+✗ source: 2 error(s), 1 warning(s). Score 93/100.
+  warn  L182 [heading-order] h3 after h1 skips a level
+        <h3 className="font-display text-lg font-medium text-ink">{plan.name}</h3>
+        fix: h1 → h2 → h3 in order.
+  error L186 [type-scale] Font size `text-4xl` is outside the type scale
+        <span className="font-display text-4xl font-medium text-ink tabular-nums">
+        fix: Use text-xs, text-sm, text-base, text-lg, text-xl, text-2xl or text-3xl.
+  error L220 [use-components] Raw <table> — use <DataTable>
+        <table className="w-full border-collapse font-body text-sm">
+        fix: Import Button, Field, DataTable, etc. from the components folder.
+
+✗ rendered page (1280px): 2 error(s), 0 warning(s). Score 88/100.
+  error [type-scale] Font size 36px is off the type scale ×3
+        e.g. span.font-display.text-4xl
+        fix: Use text-xs, text-sm, text-base, text-lg, text-xl, text-2xl or text-3xl.
+  error [contrast] Text #B8401A on #EAE5D9 is 4.41:1
+        e.g. th.px-3.py-3
+        fix: Use ink / ink-2 / ink-3 on paper surfaces, accent-ink on accent.

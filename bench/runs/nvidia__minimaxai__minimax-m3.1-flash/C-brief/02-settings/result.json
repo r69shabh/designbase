@@ -1,0 +1,35 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "C-brief",
+  "task": "02-settings",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": false,
+      "error": "build: Build failed with 1 error: bench/runs/nvidia__minimaxai__minimax-m3.1-flash/C-brief/02-settings/output.tsx:1:0: ERROR: Unexpected \"]\"",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 50,
+    "passed": false
+  },
+  "inputTokens": 3247,
+  "outputTokens": 249,
+  "cost": 0,
+  "latencyMs": 13507,
+  "finishedAt": "2026-11-03T19:21:04.141Z"
+}

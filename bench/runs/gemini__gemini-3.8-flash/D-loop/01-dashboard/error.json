@@ -1,0 +1,13 @@
+{
+  "model": "gemini:gemini-3.8-flash",
+  "condition": "D-loop",
+  "task": "01-dashboard",
+  "rounds": [],
+  "score": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "cost": 0,
+  "latencyMs": 0,
+  "finishedAt": "2026-11-03T17:09:37.470Z",
+  "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+}

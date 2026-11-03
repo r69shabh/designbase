@@ -31,6 +31,8 @@ export const Component = z.object({
   exportName: z.string().optional(),
   /** Sub-components that compose with it (CardHeader, CardTitle…). */
   parts: z.array(z.string()).default([]),
+  /** Approved states from the team's Storybook: story name and its JSX. */
+  stories: z.array(z.object({ name: z.string(), example: z.string() })).default([]),
 });
 
 export const Pattern = z.object({

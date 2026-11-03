@@ -1,0 +1,12 @@
+✗ source: 2 error(s), 1 warning(s). Score 93/100.
+  warn  L159 [heading-order] h3 after h1 skips a level
+        <h3 className="font-display text-lg font-medium text-ink">{plan.name}</h3>
+        fix: h1 → h2 → h3 in order.
+  error L172 [spacing-scale] Spacing `mt-0.5` (2px) is off-scale → mt-0 (0px) or mt-1 (4px)
+        <svg className="mt-0.5 flex-shrink-0 size-5 text-moss" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L239 [use-components] Raw <button> — use <Button>
+        <button
+        fix: Import Button, Field, DataTable, etc. from the components folder.
+
+✓ rendered page (1280px): no playbook violations.

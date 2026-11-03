@@ -1,0 +1,13 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "C-brief",
+  "task": "06-invoice-detail",
+  "rounds": [],
+  "score": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "cost": 0,
+  "latencyMs": 0,
+  "finishedAt": "2026-11-03T19:57:36.458Z",
+  "error": "nvidia:minimaxai/minimax-m3.1-flash: gave up after retries: fetch failed"
+}

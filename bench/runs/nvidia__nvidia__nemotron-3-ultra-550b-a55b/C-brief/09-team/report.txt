@@ -1,0 +1,6 @@
+✗ source: 0 error(s), 1 warning(s). Score 99/100.
+  warn  L135 [one-primary-action] 3 primary buttons in one view
+        <Button type="submit" variant="primary">Send invitation</Button>
+        fix: Demote the others to variant="secondary" or "ghost".
+
+✓ rendered page (1280px): no playbook violations.

@@ -1,0 +1,6 @@
+✗ source: 1 error(s), 0 warning(s). Score 97/100.
+  error L66 [use-components] Raw <input> — use <Field>
+        <input
+        fix: Import Button, Field, DataTable, etc. from the components folder.
+
+✓ rendered page (1280px): no playbook violations.

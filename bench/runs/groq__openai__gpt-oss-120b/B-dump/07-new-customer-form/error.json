@@ -1,0 +1,13 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "B-dump",
+  "task": "07-new-customer-form",
+  "rounds": [],
+  "score": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "cost": 0,
+  "latencyMs": 0,
+  "finishedAt": "2026-11-03T17:16:53.432Z",
+  "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8255, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+}

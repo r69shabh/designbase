@@ -1,0 +1,4 @@
+{
+  // Older Next.js projects use ~ for src
+  "compilerOptions": { "baseUrl": ".", "paths": { "~/*": ["./src/*"] } }
+}

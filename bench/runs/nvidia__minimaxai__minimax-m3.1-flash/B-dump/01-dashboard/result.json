@@ -1,0 +1,42 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "B-dump",
+  "task": "01-dashboard",
+  "rounds": [
+    {
+      "composite": 97,
+      "lint": 100,
+      "visual": 94,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/01-dashboard/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 94,
+      "errorGroups": 1,
+      "byRule": {
+        "no-horizontal-overflow": 1
+      }
+    },
+    "judge": null,
+    "composite": 97,
+    "passed": false,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/01-dashboard/work0/shots/1793731409884-desktop.png"
+  },
+  "inputTokens": 6158,
+  "outputTokens": 5863,
+  "cost": 0,
+  "latencyMs": 285075,
+  "finishedAt": "2026-11-03T18:43:33.065Z"
+}

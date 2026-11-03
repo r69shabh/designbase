@@ -1,0 +1,40 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "B-dump",
+  "task": "04-invoice-list",
+  "rounds": [
+    {
+      "composite": 100,
+      "lint": 100,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/04-invoice-list/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/04-invoice-list/work0/shots/1793726175052-desktop.png"
+  },
+  "inputTokens": 6000,
+  "outputTokens": 1477,
+  "cost": 0,
+  "latencyMs": 3892,
+  "finishedAt": "2026-11-03T17:16:17.750Z"
+}

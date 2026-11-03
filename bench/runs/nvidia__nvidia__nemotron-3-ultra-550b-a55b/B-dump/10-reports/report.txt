@@ -1,0 +1,6 @@
+✗ source: 1 error(s), 0 warning(s). Score 97/100.
+  error L108 [no-inline-styles] Inline style with hard-coded values
+        <div className="h-full bg-moss rounded-full" style={{ width: "72%" }} />
+        fix: Use token classes.
+
+✗ The file does not render: build: Build failed with 1 error: bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/10-reports/output.tsx:122:74: ERROR: The character ">" is not valid inside a JSX element

@@ -1,0 +1,11 @@
+✗ source: 1 error(s), 1 warning(s). Score 96/100.
+  warn  L163 [one-primary-action] 3 primary buttons in one view
+        <Button variant="primary" onClick={() => setShowInvite(true)} size="sm">
+        fix: Demote the others to variant="secondary" or "ghost".
+  error L177 [use-components] Raw <button> — use <Button>
+        <button onClick={() => setShowInvite(false)} className="text-ink-3 hover:text-ink" aria-label="Close">×</button>
+        fix: Import Button, Field, DataTable, etc. from the components folder.
+
+✗ rendered page (1280px): 1 error(s), 0 warning(s). Score 97/100.
+  error [no-horizontal-overflow] Page is 233px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.

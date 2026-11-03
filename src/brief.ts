@@ -112,6 +112,11 @@ export function buildBrief(pb: Playbook, task: string, opts: BriefOptions = {}):
   components.forEach((c, i) => {
     out.push(`### ${c.name}`, "", c.summary, "", `\`${importLine(c)}\``, `Props: \`${c.props}\``);
     if (c.example) out.push(`Example: \`${c.example}\``);
+    if (c.stories?.length) {
+      const names = c.stories.map((s) => s.name);
+      out.push(`Approved states (Storybook): ${names.slice(0, 10).join(", ")}${names.length > 10 ? `, +${names.length - 10} more` : ""}`);
+      for (const s of c.stories.slice(1, 4)) out.push(`- ${s.name}: \`${s.example}\``);
+    }
     if (c.do.length) out.push(`Do: ${c.do.join("; ")}`);
     if (c.dont.length) out.push(`Don't: ${c.dont.join("; ")}`);
     out.push("");

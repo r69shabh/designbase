@@ -12,6 +12,7 @@ import { Store } from "../src/store/db.ts";
 import { closeBrowser } from "../src/visual.ts";
 
 const REPO = resolve("test/fixtures/repo");
+const REPO_V3 = resolve("test/fixtures/repo-v3");
 after(closeBrowser);
 
 test("finds the team's components with props, variants and what they stand in for", () => {
@@ -49,6 +50,54 @@ test("reads declared tokens exactly, including oklch and calc()", () => {
   assert.equal(get("spacing", "4"), 16, "p-4 × --spacing 0.25rem");
   assert.equal(get("fontSize", "sm"), 14);
   assert.equal(darkColors.background, "#0A0A0A");
+});
+
+test("Tailwind v3: reads tailwind.config.js statically and resolves hsl(var(--x)) against the CSS", () => {
+  const scan = scanRepo(REPO_V3);
+  assert.equal(scan.tailwind.length, 1);
+  assert.ok(scan.tailwind[0].unresolved.includes("slate: colors.slate"), "Tailwind's own palette needs running code; reported, not guessed");
+  assert.deepEqual(scan.fontVars, { "--font-inter": "Inter" }, "next/font variable");
+  const { tokens, darkColors } = tokensFromCode(scan.cssFiles, scan.components.flatMap((c) => c.classes), REPO_V3, { tailwind: scan.tailwind, fontVars: scan.fontVars });
+  const get = (cat: string, name: string) => tokens.find((t) => t.category === cat && t.name === name)?.value;
+  assert.equal(get("color", "primary"), "#0F172A", "DEFAULT + <alpha-value>");
+  assert.equal(get("color", "primary-foreground"), "#F8FAFC");
+  assert.equal(get("color", "danger"), "#DC2626", "rgb channels");
+  assert.equal(get("color", "brand-500"), "#6366F1", "const palette object");
+  assert.equal(get("color", "danger-rgb"), undefined, "variables the config maps aren't proposed twice");
+  assert.equal(get("radius", "md"), 6);
+  assert.equal(get("font", "sans"), "Inter");
+  assert.equal(get("font", "display"), "Fraunces");
+  assert.equal(get("fontSize", "display"), 48);
+  assert.equal(get("spacing", "18"), 72);
+  assert.ok(get("shadow", "card"));
+  assert.equal(darkColors.background, "#020817");
+});
+
+test("tailwind-variants tv() tables are read like cva", () => {
+  const chip = scanRepo(REPO_V3).components.find((c) => c.name === "Chip")!;
+  assert.deepEqual(chip.variants, { tone: ["neutral", "brand"], size: ["sm", "md"] });
+  assert.deepEqual(chip.defaultVariants, { tone: "neutral", size: "sm" });
+  assert.ok(chip.classes.includes("bg-brand-50"), "array-valued classes");
+});
+
+test("Storybook: stories attach to their components as approved states", () => {
+  const { components, storyFiles } = scanRepo(REPO_V3);
+  assert.equal(storyFiles, 2);
+  const by = Object.fromEntries(components.map((c) => [c.name, c]));
+  assert.deepEqual(Object.keys(by).sort(), ["Button", "Chip", "Tabs", "TextField"]);
+  assert.equal(by.Tabs.renders, "TabsPrimitive.Root", "re-exported primitive leads its parts");
+  assert.deepEqual(by.Tabs.parts, ["TabsList", "TabsTrigger"]);
+  const b = by.Button;
+  assert.equal(b.importPath, "~/components/Button", "jsconfig alias");
+  assert.deepEqual(b.variants.intent, ["primary", "secondary", "danger"], "argTypes options fill variants the types don't spell out");
+  assert.match(b.summary, /single main action/, "docs description");
+  assert.deepEqual(b.stories.map((s) => s.name), ["Primary", "Secondary", "Danger", "Loading", "In A Form"]);
+  assert.equal(b.stories[1].example, `<Button intent="secondary">Save changes</Button>`, "meta args + spread of Primary.args; fn() handlers dropped");
+  assert.equal(b.stories[4].example, `<form className="space-y-4"> <Button>Save changes</Button> </form>`, "custom render keeps the composition");
+  const t = by.TextField;
+  assert.equal(t.exportName, "default");
+  assert.deepEqual(t.stories.map((s) => s.name), ["Default", "With error"], "CSF2 Template.bind + storyName");
+  assert.equal(t.stories[1].example, `<TextField label="Email" placeholder="you@example.com" error="That email is already taken" />`);
 });
 
 const store = new Store(mkdtempSync(join(tmpdir(), "designbase-repo-")));
@@ -115,6 +164,28 @@ test("discovery reuses the repo's components instead of generating new ones", { 
   assert.equal(reused.button, "Button");
   assert.equal(reused.input, "Input");
   assert.ok(!built.includes("button") && !built.includes("input"), "never asked the model to build what exists");
+});
+
+test("v3 repo end to end: briefs show Storybook states and the no-shadows rule is dropped", { timeout: 120_000 }, async () => {
+  const pb = (await call("POST", "/v1/playbooks", { name: "Legacy" })).body;
+  await call("POST", `/v1/playbooks/${pb.id}/sources`, { repo: REPO_V3 });
+  const done = await waitFor((await call("POST", `/v1/playbooks/${pb.id}/scan`)).body.id);
+  assert.equal(done.status, "done", done.error);
+  assert.deepEqual(done.result.tailwindConfigs, ["tailwind.config.js"]);
+  assert.equal(done.result.stories, 7);
+  const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
+  assert.ok(!open.some((p: { key: string }) => p.key === "no-shadows"), "config declares shadows");
+  await call("POST", `/v1/playbooks/${pb.id}/proposals/accept`, { minConfidence: 0.8 });
+  for (const p of open.filter((p: { kind: string }) => p.kind === "component")) await call("POST", `/v1/proposals/${p.id}/review`, { decision: "accept" });
+  assert.equal((await call("POST", `/v1/playbooks/${pb.id}/apply`, { message: "From repo" })).status, 201);
+  const head = (await call("GET", `/v1/playbooks/${pb.id}/versions/head`)).body.content;
+  const button = head.components.find((c: { name: string }) => c.name === "Button");
+  assert.equal(button.stories.length, 5);
+  assert.equal(button.example, `<Button intent="primary">Save changes</Button>`);
+  const brief = (await call("POST", `/v1/playbooks/${pb.id}/brief`, { task: "form with a save button" })).body;
+  assert.match(brief, /Approved states \(Storybook\): Primary, Secondary, Danger, Loading, In A Form/);
+  assert.match(brief, /- Danger: `<Button intent="danger">Delete project<\/Button>`/);
+  assert.match(brief, /import \{ Button \} from "~\/components\/Button"/);
 });
 
 test("tsconfig comments are stripped without breaking strings", async () => {

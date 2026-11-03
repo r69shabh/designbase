@@ -2,8 +2,10 @@
 // generating new ones. Static analysis only (Babel AST); nothing in the repo is executed.
 import { parse } from "@babel/parser";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { basename, extname, join, relative } from "node:path";
+import { basename, dirname, extname, join, relative } from "node:path";
 import { cleanReplaces } from "./components.ts";
+import { readStoryFile, type Story } from "./stories.ts";
+import { readTailwindConfig, type TailwindTheme } from "./tailwind-config.ts";
 
 export interface RepoPropSpec { name: string; type: string; required: boolean; description: string }
 export interface RepoComponent {
@@ -21,6 +23,9 @@ export interface RepoComponent {
   classes: string[];
   code: string;
   usedBy: number;
+  /** Storybook stories for it: the team's approved states. */
+  stories: Story[];
+  storyTitle: string | null;
 }
 
 const IGNORE_DIRS = new Set(["node_modules", ".git", ".next", "dist", "build", "out", "coverage", ".turbo", ".vercel", "storybook-static", ".designbase"]);
@@ -85,8 +90,8 @@ export function stripJsonc(src: string): string {
   return out.replace(/,(\s*[}\]])/g, "$1");
 }
 
-/** tsconfig "paths" → a function from repo file to the import specifier the team would write. */
-function importResolver(root: string): (file: string) => string {
+/** tsconfig "paths" → the import specifier the team would write for a file, and back. */
+function importResolver(root: string): { toImport: (file: string) => string; toFile: (spec: string, from: string) => string | null } {
   let paths: Record<string, string[]> = {};
   for (const f of ["tsconfig.json", "jsconfig.json"]) {
     if (!existsSync(join(root, f))) continue;
@@ -99,11 +104,34 @@ function importResolver(root: string): (file: string) => string {
   const aliases = Object.entries(paths)
     .filter(([k, v]) => k.endsWith("/*") && v[0]?.endsWith("/*"))
     .map(([k, v]) => ({ alias: k.slice(0, -1), target: join(root, v[0].slice(0, -1)) }));
-  return (file) => {
-    const noExt = file.replace(/\.(tsx|jsx|ts|js)$/, "").replace(/\/index$/, "");
-    for (const a of aliases) if (noExt.startsWith(a.target)) return a.alias + relative(a.target, noExt);
-    return "./" + relative(root, noExt);
+  return {
+    toImport: (file) => {
+      const noExt = file.replace(/\.(tsx|jsx|ts|js)$/, "").replace(/\/index$/, "");
+      for (const a of aliases) if (noExt.startsWith(a.target)) return a.alias + relative(a.target, noExt);
+      return "./" + relative(root, noExt);
+    },
+    // Extension-less absolute path, comparable with a component file minus its extension.
+    toFile: (spec, from) => {
+      if (spec.startsWith(".")) return join(dirname(from), spec).replace(/\/index$/, "");
+      const a = aliases.find((a) => spec.startsWith(a.alias));
+      return a ? join(a.target, spec.slice(a.alias.length)).replace(/\/index$/, "") : null;
+    },
   };
+}
+
+/** next/font fills a CSS variable at runtime: const inter = Inter({ variable: "--font-inter" }). */
+function nextFontVars(sources: string[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const src of sources) {
+    const imp = src.match(/import\s*\{([^}]+)\}\s*from\s*["']next\/font\/google["']/);
+    if (!imp) continue;
+    for (const fam of imp[1].split(",").map((s) => s.trim().split(/\s+as\s+/).pop()!).filter(Boolean)) {
+      const call = src.match(new RegExp(`\\b${fam}\\(\\s*\\{[\\s\\S]*?variable:\\s*["'](--[\\w-]+)["']`));
+      const original = imp[1].split(",").map((s) => s.trim()).find((s) => s === fam || s.endsWith(` as ${fam}`))!.split(/\s+as\s+/)[0];
+      if (call) out[call[1]] = original.replace(/_/g, " ");
+    }
+  }
+  return out;
 }
 
 interface Decl { name: string; node: N; init: N | null; leading: string }
@@ -149,12 +177,15 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
       for (const d of stmt.declarations) {
         if (d.id?.type !== "Identifier") continue;
         decls.set(d.id.name, { name: d.id.name, node: d, init: d.init, leading: lead });
-        if (d.init?.type === "CallExpression" && /(^|\.)cva$/.test(text(d.init.callee))) {
-          const [base, cfg] = d.init.arguments;
+        // cva(base, { variants }) and tailwind-variants' tv({ base, variants }), whose classes may be string arrays.
+        const variantFn = d.init?.type === "CallExpression" ? text(d.init.callee).match(/(^|\.)(cva|tv)$/)?.[2] : undefined;
+        if (variantFn) {
+          const strOf = (n: N): string => (n?.type === "StringLiteral" ? n.value : n?.type === "TemplateLiteral" ? n.quasis.map((q: N) => q.value.cooked).join(" ") : n?.type === "ArrayExpression" ? n.elements.map(strOf).join(" ") : "");
+          const keyOf = (p: N) => p.key?.name ?? p.key?.value;
+          const cfg = variantFn === "tv" ? d.init.arguments[0] : d.init.arguments[1];
+          const base = variantFn === "tv" ? cfg?.properties?.find((p: N) => keyOf(p) === "base")?.value : d.init.arguments[0];
           const variants: Record<string, Record<string, string>> = {};
           const defaults: Record<string, string> = {};
-          const strOf = (n: N) => (n?.type === "StringLiteral" ? n.value : n?.type === "TemplateLiteral" ? n.quasis.map((q: N) => q.value.cooked).join(" ") : "");
-          const keyOf = (p: N) => p.key?.name ?? p.key?.value;
           for (const p of cfg?.properties ?? []) {
             if (keyOf(p) === "variants") for (const group of p.value.properties ?? []) variants[keyOf(group)] = Object.fromEntries((group.value.properties ?? []).map((o: N) => [String(keyOf(o)), strOf(o.value)]));
             if (keyOf(p) === "defaultVariants") for (const o of p.value.properties ?? []) defaults[keyOf(o)] = strOf(o.value) || text(o.value);
@@ -180,6 +211,11 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
   for (const [local, exportName] of exported) {
     const d = decls.get(local);
     if (!d || !isPascal(local)) continue;
+    // Re-exported primitives (const Accordion = AccordionPrimitive.Root) are components too, with no props of their own.
+    if (d.init?.type === "MemberExpression" && /^[A-Z]/.test(text(d.init))) {
+      components.push({ name: exportName === "default" ? local : exportName, file: relative(root, file), importPath: toImport(file), exportName, summary: d.leading, propSpecs: [], variants: {}, defaultVariants: {}, replaces: [], renders: text(d.init), parts: [], classes: [], code, usedBy: 0, stories: [], storyTitle: null });
+      continue;
+    }
     const { fn, typeArgs } = unwrap(d.init);
     if (!fn || !returnsJsx(fn)) continue;
 
@@ -275,6 +311,8 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
       classes: classes.filter((c) => /^[a-z!-][\w:/.[\]%-]*$/.test(c)),
       code,
       usedBy: 0,
+      stories: [],
+      storyTitle: null,
     });
   }
 
@@ -292,10 +330,41 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
 
 const isRoute = (rel: string) => /(^|\/)(app|pages)\/(.*\/)?(page|layout|loading|error|not-found|template|route)\.(tsx|jsx)$/.test(rel) || /(^|\/)pages\//.test(rel);
 
-export function scanRepo(root: string): { components: RepoComponent[]; cssFiles: string[]; files: number } {
-  const toImport = importResolver(root);
+export interface RepoScan {
+  components: RepoComponent[];
+  cssFiles: string[];
+  files: number;
+  /** Tailwind v3 configs, statically evaluated. */
+  tailwind: TailwindTheme[];
+  fontVars: Record<string, string>;
+  storyFiles: number;
+}
+
+export function scanRepo(root: string): RepoScan {
+  const { toImport, toFile } = importResolver(root);
   const files = walk(root, (f) => /\.(tsx|jsx)$/.test(f) && !/\.(test|spec|stories)\.(tsx|jsx)$/.test(f));
   const components = files.filter((f) => !isRoute(relative(root, f))).flatMap((f) => analyseFile(f, root, toImport));
+
+  // Stories attach to the component their meta names (by resolved import, else by name).
+  const storyFiles = walk(root, (f) => /\.stories\.(tsx|jsx|ts|js|mjs)$/.test(f));
+  for (const sf of storyFiles) {
+    const s = readStoryFile(sf);
+    if (!s?.component || !s.stories.length) continue;
+    const target = toFile(s.component.source, sf);
+    const exportName = s.component.imported;
+    const c =
+      components.find((c) => target && join(root, c.file).replace(/\.(tsx|jsx)$/, "").replace(/\/index$/, "") === target && (c.exportName === exportName || c.name === exportName || c.parts.includes(exportName))) ??
+      components.find((c) => c.name === (exportName === "default" ? s.component!.local : exportName));
+    if (!c) continue;
+    c.stories.push(...s.stories);
+    c.storyTitle ??= s.title;
+    if (!c.summary && s.description) c.summary = s.description;
+    for (const [k, t] of Object.entries(s.argTypes)) {
+      if (t.options?.length && !c.variants[k]) c.variants[k] = t.options;
+      const p = c.propSpecs.find((p) => p.name === k);
+      if (p && !p.description && t.description) p.description = t.description;
+    }
+  }
 
   // How often each component is imported across the repo: well-used components are the real system.
   const sources = files.map((f) => readFileSync(f, "utf8"));
@@ -309,11 +378,20 @@ export function scanRepo(root: string): { components: RepoComponent[]; cssFiles:
     } else if (c.parts.length) c.summary += ` Compose with ${c.parts.join(", ")}.`;
   }
   const cssFiles = walk(root, (f) => f.endsWith(".css") && !f.endsWith(".min.css"));
-  return { components: components.sort((a, b) => b.usedBy - a.usedBy || a.name.localeCompare(b.name)), cssFiles, files: files.length };
+  const tailwind = walk(root, (f) => /(^|\/)tailwind\.config\.(js|cjs|mjs|ts|cts|mts)$/.test(f)).map((f) => readTailwindConfig(f, root)).filter((c): c is TailwindTheme => !!c);
+  return {
+    components: components.sort((a, b) => b.usedBy - a.usedBy || a.name.localeCompare(b.name)),
+    cssFiles,
+    files: files.length,
+    tailwind,
+    fontVars: nextFontVars(sources),
+    storyFiles: storyFiles.length,
+  };
 }
 
 /** A minimal, valid usage line for briefs and render checks. */
 export function exampleFor(c: RepoComponent): string {
+  if (c.stories.length) return c.stories[0].example;
   const v = Object.entries(c.defaultVariants).map(([k, val]) => ` ${k}="${val}"`).join("");
   if (c.replaces.includes("input")) return `<${c.name}${v} placeholder="Email" />`;
   if (c.replaces.includes("table")) return `<${c.name}${v}><tbody><tr><td>Row</td></tr></tbody></${c.name}>`;

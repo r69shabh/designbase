@@ -1,0 +1,42 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "C-brief",
+  "task": "09-team",
+  "rounds": [
+    {
+      "composite": 99.5,
+      "lint": 99,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 99,
+      "errors": 0,
+      "warnings": 1,
+      "byRule": {
+        "one-primary-action": 1
+      }
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/09-team/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 99.5,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/09-team/work0/shots/1793726497832-desktop.png"
+  },
+  "inputTokens": 3152,
+  "outputTokens": 1784,
+  "cost": 0,
+  "latencyMs": 4256,
+  "finishedAt": "2026-11-03T17:21:40.561Z"
+}

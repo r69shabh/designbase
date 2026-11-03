@@ -1,0 +1,8 @@
+✓ source: no playbook violations.
+
+✗ rendered page (1280px): 2 error(s), 0 warning(s). Score 94/100.
+  error [no-horizontal-overflow] Page is 279px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.
+  error [spacing-scale] Spacing 590px is off the scale → 96px
+        e.g. div.mt-4.flex
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.

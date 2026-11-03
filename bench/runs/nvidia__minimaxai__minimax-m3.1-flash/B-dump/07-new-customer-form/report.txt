@@ -1,0 +1,6 @@
+✗ source: 0 error(s), 1 warning(s). Score 99/100.
+  warn  L74 [heading-order] h3 after h1 skips a level
+        <h3 className="font-display text-lg font-medium text-ink">Company</h3>
+        fix: h1 → h2 → h3 in order.
+
+✓ rendered page (1280px): no playbook violations.

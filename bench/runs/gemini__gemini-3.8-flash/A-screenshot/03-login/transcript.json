@@ -1,0 +1,17 @@
+[
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "Build the sign-in screen with email and password, a forgot-password link, and a link to create an account.\n\nWrite it as a single React component file in TypeScript using Tailwind CSS classes, with a default export. Use realistic sample data inline. Output only the code, in one ```tsx block.\n\nThese two screenshots are approved screens from our product. Match their visual design language exactly."
+      },
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      }
+    ]
+  }
+]

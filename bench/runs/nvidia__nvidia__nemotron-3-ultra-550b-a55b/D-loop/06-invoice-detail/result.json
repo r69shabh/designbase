@@ -1,0 +1,46 @@
+{
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "condition": "D-loop",
+  "task": "06-invoice-detail",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 100,
+      "lint": 100,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/06-invoice-detail/work1/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/06-invoice-detail/work1/shots/1793726555365-desktop.png"
+  },
+  "inputTokens": 9131,
+  "outputTokens": 8131,
+  "cost": 0,
+  "latencyMs": 169667,
+  "finishedAt": "2026-11-03T17:22:38.234Z"
+}

@@ -1,0 +1,3 @@
+✓ source: no playbook violations.
+
+✗ The file does not render: build: Build failed with 1 error: bench/runs/nvidia__minimaxai__minimax-m3.1-flash/C-brief/02-settings/output.tsx:1:0: ERROR: Unexpected "]"

@@ -1,0 +1,37 @@
+{
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "condition": "B-dump",
+  "task": "10-reports",
+  "rounds": [
+    {
+      "composite": 48.5,
+      "lint": 97,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 97,
+      "errors": 1,
+      "warnings": 0,
+      "byRule": {
+        "no-inline-styles": 1
+      }
+    },
+    "render": {
+      "ok": false,
+      "error": "build: Build failed with 1 error: bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/10-reports/output.tsx:122:74: ERROR: The character \">\" is not valid inside a JSX element",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 48.5,
+    "passed": false
+  },
+  "inputTokens": 6153,
+  "outputTokens": 2314,
+  "cost": 0,
+  "latencyMs": 24961,
+  "finishedAt": "2026-11-03T17:17:16.675Z"
+}

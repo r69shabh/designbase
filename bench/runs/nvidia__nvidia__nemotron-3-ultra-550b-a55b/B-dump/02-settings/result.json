@@ -1,0 +1,38 @@
+{
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "condition": "B-dump",
+  "task": "02-settings",
+  "rounds": [
+    {
+      "composite": 48.5,
+      "lint": 97,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 97,
+      "errors": 1,
+      "warnings": 0,
+      "byRule": {
+        "use-components": 1
+      }
+    },
+    "render": {
+      "ok": false,
+      "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/02-settings/work0/render/index.html",
+      "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 48.5,
+    "passed": false
+  },
+  "inputTokens": 6159,
+  "outputTokens": 1849,
+  "cost": 0,
+  "latencyMs": 21150,
+  "finishedAt": "2026-11-03T17:16:29.926Z"
+}

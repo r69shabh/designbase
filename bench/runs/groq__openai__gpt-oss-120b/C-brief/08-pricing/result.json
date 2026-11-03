@@ -1,0 +1,36 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "C-brief",
+  "task": "08-pricing",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": false,
+      "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/08-pricing/work0/render/index.html",
+      "error": "runtime: Cannot read properties of undefined (reading 'map')",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 50,
+    "passed": false
+  },
+  "inputTokens": 3128,
+  "outputTokens": 2243,
+  "cost": 0,
+  "latencyMs": 5322,
+  "finishedAt": "2026-11-03T17:20:57.726Z"
+}

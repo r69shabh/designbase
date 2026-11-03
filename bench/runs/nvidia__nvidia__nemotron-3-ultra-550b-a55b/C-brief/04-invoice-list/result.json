@@ -1,0 +1,36 @@
+{
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "condition": "C-brief",
+  "task": "04-invoice-list",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": false,
+      "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/04-invoice-list/work0/render/index.html",
+      "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 50,
+    "passed": false
+  },
+  "inputTokens": 3433,
+  "outputTokens": 1359,
+  "cost": 0,
+  "latencyMs": 16216,
+  "finishedAt": "2026-11-03T17:17:36.375Z"
+}

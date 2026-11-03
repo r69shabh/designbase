@@ -1,0 +1,13 @@
+{
+  "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+  "condition": "C-brief",
+  "task": "01-dashboard",
+  "rounds": [],
+  "score": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "cost": 0,
+  "latencyMs": 0,
+  "finishedAt": "2026-11-03T18:00:09.200Z",
+  "error": "nvidia:mistralai/mistral-large-4-1t-a52b: gave up after retries: fetch failed"
+}

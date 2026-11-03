@@ -1,0 +1,3371 @@
+{
+  "generated": "2026-11-03",
+  "results": [
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 89,
+          "lint": 96,
+          "visual": 82,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 96,
+          "errors": 1,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1,
+            "spacing-scale": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/01-dashboard/final/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 88,
+          "errorGroups": 2,
+          "byRule": {
+            "no-horizontal-overflow": 1,
+            "spacing-scale": 1
+          }
+        },
+        "judge": null,
+        "composite": 92,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/01-dashboard/final/shots/1793726124516-desktop.png"
+      },
+      "inputTokens": 5998,
+      "outputTokens": 1757,
+      "cost": 0,
+      "latencyMs": 4973,
+      "finishedAt": "2026-11-03T17:10:53.977Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/03-login/final/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/03-login/final/shots/1793726128416-desktop.png"
+      },
+      "inputTokens": 5982,
+      "outputTokens": 746,
+      "cost": 0,
+      "latencyMs": 2435,
+      "finishedAt": "2026-11-03T17:11:47.746Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/04-invoice-list/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/04-invoice-list/work0/shots/1793726175052-desktop.png"
+      },
+      "inputTokens": 6000,
+      "outputTokens": 1477,
+      "cost": 0,
+      "latencyMs": 3892,
+      "finishedAt": "2026-11-03T17:16:17.750Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/08-pricing/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/08-pricing/work0/shots/1793726229501-desktop.png"
+      },
+      "inputTokens": 5986,
+      "outputTokens": 2147,
+      "cost": 0,
+      "latencyMs": 6890,
+      "finishedAt": "2026-11-03T17:17:12.411Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/B-dump/10-reports/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/B-dump/10-reports/work0/shots/1793726243089-desktop.png"
+      },
+      "inputTokens": 5986,
+      "outputTokens": 1267,
+      "cost": 0,
+      "latencyMs": 3468,
+      "finishedAt": "2026-11-03T17:17:26.376Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/01-dashboard/final/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/01-dashboard/final/shots/1793726131635-desktop.png"
+      },
+      "inputTokens": 3419,
+      "outputTokens": 3137,
+      "cost": 0,
+      "latencyMs": 8257,
+      "finishedAt": "2026-11-03T17:12:27.644Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/02-settings/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/02-settings/work0/shots/1793726276469-desktop.png"
+      },
+      "inputTokens": 3140,
+      "outputTokens": 1470,
+      "cost": 0,
+      "latencyMs": 4116,
+      "finishedAt": "2026-11-03T17:17:59.842Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/03-login/final/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/03-login/final/shots/1793726134823-desktop.png"
+      },
+      "inputTokens": 3174,
+      "outputTokens": 926,
+      "cost": 0,
+      "latencyMs": 2618,
+      "finishedAt": "2026-11-03T17:13:26.667Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/04-invoice-list/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/04-invoice-list/work0/shots/1793726314009-desktop.png"
+      },
+      "inputTokens": 3358,
+      "outputTokens": 1847,
+      "cost": 0,
+      "latencyMs": 4681,
+      "finishedAt": "2026-11-03T17:18:36.916Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/05-empty-customers/work0/shots/1793726354015-desktop.png"
+      },
+      "inputTokens": 3293,
+      "outputTokens": 632,
+      "cost": 0,
+      "latencyMs": 2069,
+      "finishedAt": "2026-11-03T17:19:16.802Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/06-invoice-detail/work0/render/index.html",
+          "error": "runtime: v.toFixed is not a function",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 3152,
+      "outputTokens": 2179,
+      "cost": 0,
+      "latencyMs": 5554,
+      "finishedAt": "2026-11-03T17:19:46.034Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/07-new-customer-form/work0/shots/1793726424360-desktop.png"
+      },
+      "inputTokens": 3080,
+      "outputTokens": 1186,
+      "cost": 0,
+      "latencyMs": 3459,
+      "finishedAt": "2026-11-03T17:20:26.870Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/08-pricing/work0/render/index.html",
+          "error": "runtime: Cannot read properties of undefined (reading 'map')",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 3128,
+      "outputTokens": 2243,
+      "cost": 0,
+      "latencyMs": 5322,
+      "finishedAt": "2026-11-03T17:20:57.726Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/09-team/work0/shots/1793726497832-desktop.png"
+      },
+      "inputTokens": 3152,
+      "outputTokens": 1784,
+      "cost": 0,
+      "latencyMs": 4256,
+      "finishedAt": "2026-11-03T17:21:40.561Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "C-brief",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/10-reports/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/10-reports/work0/shots/1793726534785-desktop.png"
+      },
+      "inputTokens": 3120,
+      "outputTokens": 1525,
+      "cost": 0,
+      "latencyMs": 3703,
+      "finishedAt": "2026-11-03T17:22:17.941Z"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "D-loop",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/groq__openai__gpt-oss-120b/D-loop/03-login/final/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/D-loop/03-login/final/shots/1793726138141-desktop.png"
+      },
+      "inputTokens": 3174,
+      "outputTokens": 946,
+      "cost": 0,
+      "latencyMs": 2737,
+      "finishedAt": "2026-11-03T17:14:35.103Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/01-dashboard/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 97,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/01-dashboard/work0/shots/1793731409884-desktop.png"
+      },
+      "inputTokens": 6158,
+      "outputTokens": 5863,
+      "cost": 0,
+      "latencyMs": 285075,
+      "finishedAt": "2026-11-03T18:43:33.065Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 95.5,
+          "lint": 97,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/02-settings/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 95.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/02-settings/work0/shots/1793731239323-desktop.png"
+      },
+      "inputTokens": 6152,
+      "outputTokens": 5461,
+      "cost": 0,
+      "latencyMs": 238927,
+      "finishedAt": "2026-11-03T18:40:42.037Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/03-login/work0/shots/1793730953276-desktop.png"
+      },
+      "inputTokens": 6142,
+      "outputTokens": 1838,
+      "cost": 0,
+      "latencyMs": 112412,
+      "finishedAt": "2026-11-03T18:35:56.126Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/04-invoice-list/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/04-invoice-list/work0/shots/1793731100749-desktop.png"
+      },
+      "inputTokens": 6160,
+      "outputTokens": 3286,
+      "cost": 0,
+      "latencyMs": 141263,
+      "finishedAt": "2026-11-03T18:38:23.916Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 96.5,
+          "lint": 99,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 96.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/05-empty-customers/work0/shots/1793731402055-desktop.png"
+      },
+      "inputTokens": 6143,
+      "outputTokens": 5716,
+      "cost": 0,
+      "latencyMs": 295076,
+      "finishedAt": "2026-11-03T18:43:25.477Z"
+    },
+    {
+      "model": "nvidia:minimaxai/minimax-m3.1-flash",
+      "condition": "B-dump",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/B-dump/07-new-customer-form/work0/shots/1793731633236-desktop.png"
+      },
+      "inputTokens": 6148,
+      "outputTokens": 3852,
+      "cost": 0,
+      "latencyMs": 220616,
+      "finishedAt": "2026-11-03T18:47:15.962Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/01-dashboard/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 97,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/01-dashboard/work0/shots/1793726693903-desktop.png"
+      },
+      "inputTokens": 5992,
+      "outputTokens": 8874,
+      "cost": 0,
+      "latencyMs": 176418,
+      "finishedAt": "2026-11-03T17:24:57.111Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/02-settings/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/02-settings/work0/shots/1793726662412-desktop.png"
+      },
+      "inputTokens": 5986,
+      "outputTokens": 5891,
+      "cost": 0,
+      "latencyMs": 113046,
+      "finishedAt": "2026-11-03T17:24:25.465Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/03-login/work0/shots/1793726631322-desktop.png"
+      },
+      "inputTokens": 5976,
+      "outputTokens": 3616,
+      "cost": 0,
+      "latencyMs": 71194,
+      "finishedAt": "2026-11-03T17:23:54.244Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/04-invoice-list/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/04-invoice-list/work0/shots/1793726860929-desktop.png"
+      },
+      "inputTokens": 5994,
+      "outputTokens": 11210,
+      "cost": 0,
+      "latencyMs": 224190,
+      "finishedAt": "2026-11-03T17:27:44.159Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 97,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/05-empty-customers/work0/shots/1793726698319-desktop.png"
+      },
+      "inputTokens": 5977,
+      "outputTokens": 1765,
+      "cost": 0,
+      "latencyMs": 32022,
+      "finishedAt": "2026-11-03T17:25:01.189Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 94,
+          "lint": 100,
+          "visual": 88,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/06-invoice-detail/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 88,
+          "errorGroups": 2,
+          "byRule": {
+            "no-horizontal-overflow": 1,
+            "spacing-scale": 1
+          }
+        },
+        "judge": null,
+        "composite": 94,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/06-invoice-detail/work0/shots/1793726870730-desktop.png"
+      },
+      "inputTokens": 5996,
+      "outputTokens": 9449,
+      "cost": 0,
+      "latencyMs": 202088,
+      "finishedAt": "2026-11-03T17:27:54.765Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/07-new-customer-form/work0/shots/1793726742301-desktop.png"
+      },
+      "inputTokens": 5982,
+      "outputTokens": 2414,
+      "cost": 0,
+      "latencyMs": 43446,
+      "finishedAt": "2026-11-03T17:25:44.999Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/08-pricing/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/08-pricing/work0/shots/1793726970637-desktop.png"
+      },
+      "inputTokens": 5980,
+      "outputTokens": 11417,
+      "cost": 0,
+      "latencyMs": 268283,
+      "finishedAt": "2026-11-03T17:29:33.691Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 88,
+          "lint": 82,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 82,
+          "errors": 6,
+          "warnings": 0,
+          "byRule": {
+            "spacing-scale": 6
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 88,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/09-team/work0/shots/1793727153338-desktop.png"
+      },
+      "inputTokens": 5982,
+      "outputTokens": 2462,
+      "cost": 0,
+      "latencyMs": 104310,
+      "finishedAt": "2026-11-03T17:32:36.082Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "B-dump",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/10-reports/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 97,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/B-dump/10-reports/work0/shots/1793726989943-desktop.png"
+      },
+      "inputTokens": 5980,
+      "outputTokens": 5129,
+      "cost": 0,
+      "latencyMs": 123860,
+      "finishedAt": "2026-11-03T17:29:52.881Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/02-settings/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 98.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/02-settings/work0/shots/1793727234022-desktop.png"
+      },
+      "inputTokens": 3111,
+      "outputTokens": 7604,
+      "cost": 0,
+      "latencyMs": 259035,
+      "finishedAt": "2026-11-03T17:33:56.965Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/03-login/work0/shots/1793727173117-desktop.png"
+      },
+      "inputTokens": 3141,
+      "outputTokens": 6129,
+      "cost": 0,
+      "latencyMs": 178789,
+      "finishedAt": "2026-11-03T17:32:55.782Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/05-empty-customers/work0/shots/1793728268963-desktop.png"
+      },
+      "inputTokens": 3270,
+      "outputTokens": 5134,
+      "cost": 0,
+      "latencyMs": 173599,
+      "finishedAt": "2026-11-03T17:51:11.684Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/06-invoice-detail/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/06-invoice-detail/work0/shots/1793728125190-desktop.png"
+      },
+      "inputTokens": 3124,
+      "outputTokens": 8390,
+      "cost": 0,
+      "latencyMs": 276984,
+      "finishedAt": "2026-11-03T17:48:47.895Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/07-new-customer-form/work0/shots/1793728416428-desktop.png"
+      },
+      "inputTokens": 3047,
+      "outputTokens": 12809,
+      "cost": 0,
+      "latencyMs": 287555,
+      "finishedAt": "2026-11-03T17:53:39.358Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 91,
+          "lint": 82,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 82,
+          "errors": 6,
+          "warnings": 0,
+          "byRule": {
+            "spacing-scale": 6
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 91,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/09-team/work0/shots/1793729620156-desktop.png"
+      },
+      "inputTokens": 3122,
+      "outputTokens": 9648,
+      "cost": 0,
+      "latencyMs": 281427,
+      "finishedAt": "2026-11-03T18:13:42.872Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/10-reports/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/C-brief/10-reports/work0/shots/1793729317999-desktop.png"
+      },
+      "inputTokens": 3086,
+      "outputTokens": 6767,
+      "cost": 0,
+      "latencyMs": 203476,
+      "finishedAt": "2026-11-03T18:08:41.054Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        },
+        {
+          "composite": 97,
+          "lint": 94,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/01-dashboard/work2/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/01-dashboard/work2/shots/1793730105276-desktop.png"
+      },
+      "inputTokens": 17922,
+      "outputTokens": 17283,
+      "cost": 0,
+      "latencyMs": 396316,
+      "finishedAt": "2026-11-03T18:21:48.039Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/02-settings/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/02-settings/work1/shots/1793730510662-desktop.png"
+      },
+      "inputTokens": 7292,
+      "outputTokens": 11596,
+      "cost": 0,
+      "latencyMs": 266348,
+      "finishedAt": "2026-11-03T18:28:33.826Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/03-login/work0/shots/1793729754928-desktop.png"
+      },
+      "inputTokens": 3141,
+      "outputTokens": 3945,
+      "cost": 0,
+      "latencyMs": 130659,
+      "finishedAt": "2026-11-03T18:15:57.673Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/04-invoice-list/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/04-invoice-list/work0/shots/1793730013409-desktop.png"
+      },
+      "inputTokens": 3330,
+      "outputTokens": 12225,
+      "cost": 0,
+      "latencyMs": 254153,
+      "finishedAt": "2026-11-03T18:20:16.065Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/05-empty-customers/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/05-empty-customers/work1/shots/1793730144170-desktop.png"
+      },
+      "inputTokens": 7252,
+      "outputTokens": 6730,
+      "cost": 0,
+      "latencyMs": 122949,
+      "finishedAt": "2026-11-03T18:22:26.845Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 97,
+          "lint": 100,
+          "visual": 94,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/06-invoice-detail/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/06-invoice-detail/work1/shots/1793730425641-desktop.png"
+      },
+      "inputTokens": 8215,
+      "outputTokens": 14246,
+      "cost": 0,
+      "latencyMs": 312310,
+      "finishedAt": "2026-11-03T18:27:08.412Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/07-new-customer-form/work0/shots/1793730232686-desktop.png"
+      },
+      "inputTokens": 3047,
+      "outputTokens": 4042,
+      "cost": 0,
+      "latencyMs": 84748,
+      "finishedAt": "2026-11-03T18:23:55.283Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/09-team/work0/shots/1793730836848-desktop.png"
+      },
+      "inputTokens": 3122,
+      "outputTokens": 11619,
+      "cost": 0,
+      "latencyMs": 296645,
+      "finishedAt": "2026-11-03T18:33:59.509Z"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "D-loop",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/10-reports/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/10-reports/work0/shots/1793730691172-desktop.png"
+      },
+      "inputTokens": 3086,
+      "outputTokens": 11347,
+      "cost": 0,
+      "latencyMs": 260871,
+      "finishedAt": "2026-11-03T18:31:35.259Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 91,
+          "lint": 94,
+          "visual": 88,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 94,
+          "errors": 2,
+          "warnings": 0,
+          "byRule": {
+            "no-arbitrary-values": 1,
+            "spacing-scale": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/01-dashboard/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 88,
+          "errorGroups": 2,
+          "byRule": {
+            "no-horizontal-overflow": 1,
+            "spacing-scale": 10
+          }
+        },
+        "judge": null,
+        "composite": 91,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/01-dashboard/work0/shots/1793726208422-desktop.png"
+      },
+      "inputTokens": 6166,
+      "outputTokens": 2973,
+      "cost": 0,
+      "latencyMs": 39356,
+      "finishedAt": "2026-11-03T17:16:51.498Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 48.5,
+          "lint": 97,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/02-settings/work0/render/index.html",
+          "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 48.5,
+        "passed": false
+      },
+      "inputTokens": 6159,
+      "outputTokens": 1849,
+      "cost": 0,
+      "latencyMs": 21150,
+      "finishedAt": "2026-11-03T17:16:29.926Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/03-login/work0/shots/1793726176988-desktop.png"
+      },
+      "inputTokens": 6149,
+      "outputTokens": 565,
+      "cost": 0,
+      "latencyMs": 7781,
+      "finishedAt": "2026-11-03T17:16:19.900Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/04-invoice-list/work0/render/index.html",
+          "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 6169,
+      "outputTokens": 1796,
+      "cost": 0,
+      "latencyMs": 20850,
+      "finishedAt": "2026-11-03T17:16:29.680Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/05-empty-customers/work0/shots/1793726187469-desktop.png"
+      },
+      "inputTokens": 6150,
+      "outputTokens": 348,
+      "cost": 0,
+      "latencyMs": 6689,
+      "finishedAt": "2026-11-03T17:16:30.222Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 96.5,
+          "lint": 99,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/06-invoice-detail/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 96.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/06-invoice-detail/work0/shots/1793726229588-desktop.png"
+      },
+      "inputTokens": 6169,
+      "outputTokens": 2986,
+      "cost": 0,
+      "latencyMs": 38409,
+      "finishedAt": "2026-11-03T17:17:12.519Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/07-new-customer-form/work0/shots/1793726208248-desktop.png"
+      },
+      "inputTokens": 6155,
+      "outputTokens": 934,
+      "cost": 0,
+      "latencyMs": 16015,
+      "finishedAt": "2026-11-03T17:16:51.676Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 90.5,
+          "lint": 93,
+          "visual": 88,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 93,
+          "errors": 2,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1,
+            "type-scale": 1,
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/08-pricing/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 88,
+          "errorGroups": 2,
+          "byRule": {
+            "type-scale": 3,
+            "contrast": 1
+          }
+        },
+        "judge": null,
+        "composite": 90.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/08-pricing/work0/shots/1793726229602-desktop.png"
+      },
+      "inputTokens": 6154,
+      "outputTokens": 3039,
+      "cost": 0,
+      "latencyMs": 37613,
+      "finishedAt": "2026-11-03T17:17:13.047Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 95,
+          "lint": 96,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 96,
+          "errors": 1,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1,
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 95,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/09-team/work0/shots/1793726236409-desktop.png"
+      },
+      "inputTokens": 6155,
+      "outputTokens": 2495,
+      "cost": 0,
+      "latencyMs": 24314,
+      "finishedAt": "2026-11-03T17:17:19.371Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "B-dump",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 48.5,
+          "lint": 97,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "no-inline-styles": 1
+          }
+        },
+        "render": {
+          "ok": false,
+          "error": "build: Build failed with 1 error: bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/B-dump/10-reports/output.tsx:122:74: ERROR: The character \">\" is not valid inside a JSX element",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 48.5,
+        "passed": false
+      },
+      "inputTokens": 6153,
+      "outputTokens": 2314,
+      "cost": 0,
+      "latencyMs": 24961,
+      "finishedAt": "2026-11-03T17:17:16.675Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 95.5,
+          "lint": 97,
+          "visual": 94,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "no-arbitrary-values": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/01-dashboard/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 94,
+          "errorGroups": 1,
+          "byRule": {
+            "no-horizontal-overflow": 1
+          }
+        },
+        "judge": null,
+        "composite": 95.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/01-dashboard/work0/shots/1793726282617-desktop.png"
+      },
+      "inputTokens": 3483,
+      "outputTokens": 2390,
+      "cost": 0,
+      "latencyMs": 49515,
+      "finishedAt": "2026-11-03T17:18:05.411Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 42.5,
+          "lint": 85,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 85,
+          "errors": 5,
+          "warnings": 0,
+          "byRule": {
+            "use-components": 5
+          }
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/02-settings/work0/render/index.html",
+          "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 42.5,
+        "passed": false
+      },
+      "inputTokens": 3203,
+      "outputTokens": 1946,
+      "cost": 0,
+      "latencyMs": 36758,
+      "finishedAt": "2026-11-03T17:17:50.264Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 97,
+          "errors": 1,
+          "warnings": 0,
+          "byRule": {
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/03-login/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 98.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/03-login/work0/shots/1793726249294-desktop.png"
+      },
+      "inputTokens": 3237,
+      "outputTokens": 778,
+      "cost": 0,
+      "latencyMs": 11017,
+      "finishedAt": "2026-11-03T17:17:32.064Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/04-invoice-list/work0/render/index.html",
+          "error": "runtime: Minified React error #137; visit https://react.dev/errors/137?args[]=input for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 3433,
+      "outputTokens": 1359,
+      "cost": 0,
+      "latencyMs": 16216,
+      "finishedAt": "2026-11-03T17:17:36.375Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/05-empty-customers/work0/shots/1793726261888-desktop.png"
+      },
+      "inputTokens": 3358,
+      "outputTokens": 539,
+      "cost": 0,
+      "latencyMs": 9245,
+      "finishedAt": "2026-11-03T17:17:44.811Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/06-invoice-detail/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/06-invoice-detail/work0/shots/1793726318591-desktop.png"
+      },
+      "inputTokens": 3211,
+      "outputTokens": 2645,
+      "cost": 0,
+      "latencyMs": 61154,
+      "finishedAt": "2026-11-03T17:18:41.660Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/07-new-customer-form/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/07-new-customer-form/work0/shots/1793726321085-desktop.png"
+      },
+      "inputTokens": 3145,
+      "outputTokens": 1936,
+      "cost": 0,
+      "latencyMs": 55534,
+      "finishedAt": "2026-11-03T17:18:43.840Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 96.5,
+          "lint": 93,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 93,
+          "errors": 2,
+          "warnings": 1,
+          "byRule": {
+            "heading-order": 1,
+            "spacing-scale": 1,
+            "use-components": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/08-pricing/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 96.5,
+        "passed": false,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/08-pricing/work0/shots/1793726314886-desktop.png"
+      },
+      "inputTokens": 3193,
+      "outputTokens": 3548,
+      "cost": 0,
+      "latencyMs": 44173,
+      "finishedAt": "2026-11-03T17:18:38.163Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/09-team/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/09-team/work0/shots/1793726318639-desktop.png"
+      },
+      "inputTokens": 3206,
+      "outputTokens": 2279,
+      "cost": 0,
+      "latencyMs": 32744,
+      "finishedAt": "2026-11-03T17:18:41.421Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "C-brief",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/C-brief/10-reports/work0/render/index.html",
+          "error": "runtime: Minified React error #31; visit https://react.dev/errors/31?args[]=object%20with%20keys%20%7Bmonth%2C%20revenue%2C%20invoices%2C%20paid%2C%20overdue%7D for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 3171,
+      "outputTokens": 2141,
+      "cost": 0,
+      "latencyMs": 22288,
+      "finishedAt": "2026-11-03T17:19:02.139Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "01-dashboard",
+      "rounds": [
+        {
+          "composite": 88,
+          "lint": 88,
+          "visual": 88,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/01-dashboard/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/01-dashboard/work1/shots/1793726403060-desktop.png"
+      },
+      "inputTokens": 9781,
+      "outputTokens": 5468,
+      "cost": 0,
+      "latencyMs": 73504,
+      "finishedAt": "2026-11-03T17:20:06.078Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "02-settings",
+      "rounds": [
+        {
+          "composite": 91,
+          "lint": 82,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/02-settings/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/02-settings/work1/shots/1793726470815-desktop.png"
+      },
+      "inputTokens": 8804,
+      "outputTokens": 7426,
+      "cost": 0,
+      "latencyMs": 144193,
+      "finishedAt": "2026-11-03T17:21:13.732Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "03-login",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/03-login/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/03-login/work1/shots/1793726368068-desktop.png"
+      },
+      "inputTokens": 7079,
+      "outputTokens": 1878,
+      "cost": 0,
+      "latencyMs": 38972,
+      "finishedAt": "2026-11-03T17:19:31.032Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "04-invoice-list",
+      "rounds": [
+        {
+          "composite": 49.5,
+          "lint": 99,
+          "visual": null,
+          "rendered": false
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/04-invoice-list/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/04-invoice-list/work1/shots/1793726394297-desktop.png"
+      },
+      "inputTokens": 8567,
+      "outputTokens": 3464,
+      "cost": 0,
+      "latencyMs": 50333,
+      "finishedAt": "2026-11-03T17:19:57.168Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "05-empty-customers",
+      "rounds": [
+        {
+          "composite": 99.5,
+          "lint": 99,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 99,
+          "errors": 0,
+          "warnings": 1,
+          "byRule": {
+            "one-primary-action": 1
+          }
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/05-empty-customers/work0/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 99.5,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/05-empty-customers/work0/shots/1793726381031-desktop.png"
+      },
+      "inputTokens": 3358,
+      "outputTokens": 450,
+      "cost": 0,
+      "latencyMs": 8553,
+      "finishedAt": "2026-11-03T17:19:44.152Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "06-invoice-detail",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/06-invoice-detail/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/06-invoice-detail/work1/shots/1793726555365-desktop.png"
+      },
+      "inputTokens": 9131,
+      "outputTokens": 8131,
+      "cost": 0,
+      "latencyMs": 169667,
+      "finishedAt": "2026-11-03T17:22:38.234Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "07-new-customer-form",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/07-new-customer-form/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/07-new-customer-form/work1/shots/1793726479115-desktop.png"
+      },
+      "inputTokens": 7710,
+      "outputTokens": 4759,
+      "cost": 0,
+      "latencyMs": 76941,
+      "finishedAt": "2026-11-03T17:21:21.982Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "08-pricing",
+      "rounds": [
+        {
+          "composite": 96.5,
+          "lint": 93,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/08-pricing/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/08-pricing/work1/shots/1793726512745-desktop.png"
+      },
+      "inputTokens": 11025,
+      "outputTokens": 8078,
+      "cost": 0,
+      "latencyMs": 102312,
+      "finishedAt": "2026-11-03T17:21:55.503Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "09-team",
+      "rounds": [
+        {
+          "composite": 98.5,
+          "lint": 97,
+          "visual": 100,
+          "rendered": true
+        },
+        {
+          "composite": 100,
+          "lint": 100,
+          "visual": 100,
+          "rendered": true
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": true,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/09-team/work1/render/index.html",
+          "stubbed": []
+        },
+        "visual": {
+          "score": 100,
+          "errorGroups": 0,
+          "byRule": {}
+        },
+        "judge": null,
+        "composite": 100,
+        "passed": true,
+        "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/09-team/work1/shots/1793726545314-desktop.png"
+      },
+      "inputTokens": 8592,
+      "outputTokens": 4369,
+      "cost": 0,
+      "latencyMs": 66348,
+      "finishedAt": "2026-11-03T17:22:28.262Z"
+    },
+    {
+      "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+      "condition": "D-loop",
+      "task": "10-reports",
+      "rounds": [
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        },
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        },
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        },
+        {
+          "composite": 50,
+          "lint": 100,
+          "visual": null,
+          "rendered": false
+        }
+      ],
+      "score": {
+        "lint": {
+          "score": 100,
+          "errors": 0,
+          "warnings": 0,
+          "byRule": {}
+        },
+        "render": {
+          "ok": false,
+          "html": "bench/runs/nvidia__nvidia__nemotron-3-ultra-550b-a55b/D-loop/10-reports/work3/render/index.html",
+          "error": "runtime: Minified React error #31; visit https://react.dev/errors/31?args[]=object%20with%20keys%20%7Bname%2C%20email%2C%20revenue%2C%20invoices%2C%20avgDaysToPay%7D for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "stubbed": []
+        },
+        "visual": null,
+        "judge": null,
+        "composite": 50,
+        "passed": false
+      },
+      "inputTokens": 24454,
+      "outputTokens": 12481,
+      "cost": 0,
+      "latencyMs": 178675,
+      "finishedAt": "2026-11-03T17:24:26.360Z"
+    }
+  ],
+  "errors": [
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "A-screenshot",
+      "task": "01-dashboard",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 503 This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "A-screenshot",
+      "task": "03-login",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 503 This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "B-dump",
+      "task": "01-dashboard",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "B-dump",
+      "task": "03-login",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 503 This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "C-brief",
+      "task": "01-dashboard",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "C-brief",
+      "task": "03-login",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "D-loop",
+      "task": "01-dashboard",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+    },
+    {
+      "model": "gemini:gemini-3.8-flash",
+      "condition": "D-loop",
+      "task": "03-login",
+      "error": "gemini:gemini-3.8-flash: gave up after retries: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "02-settings",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 9129, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "05-empty-customers",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8250, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "06-invoice-detail",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8269, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "07-new-customer-form",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8255, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "B-dump",
+      "task": "09-team",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8254, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "groq:openai/gpt-oss-120b",
+      "condition": "D-loop",
+      "task": "01-dashboard",
+      "error": "413 Request too large for model `openai/gpt-oss-120b` in organization `org_01hqw8eb9rfmh899x5rq8v3aht` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8091, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.c"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "01-dashboard",
+      "error": "nvidia:mistralai/mistral-large-4-1t-a52b: gave up after retries: fetch failed"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "04-invoice-list",
+      "error": "nvidia:mistralai/mistral-large-4-1t-a52b: gave up after retries: fetch failed"
+    },
+    {
+      "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+      "condition": "C-brief",
+      "task": "08-pricing",
+      "error": "nvidia:mistralai/mistral-large-4-1t-a52b: gave up after retries: fetch failed"
+    }
+  ]
+}

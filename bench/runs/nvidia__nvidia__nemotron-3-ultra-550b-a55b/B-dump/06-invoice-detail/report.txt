@@ -1,0 +1,8 @@
+✗ source: 0 error(s), 1 warning(s). Score 99/100.
+  warn  L125 [heading-order] h3 after h1 skips a level
+        <h3 className="font-body text-xs uppercase tracking-widest text-ink-3 mb-3">Bill from</h3>
+        fix: h1 → h2 → h3 in order.
+
+✗ rendered page (1280px): 1 error(s), 0 warning(s). Score 97/100.
+  error [no-horizontal-overflow] Page is 169px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.

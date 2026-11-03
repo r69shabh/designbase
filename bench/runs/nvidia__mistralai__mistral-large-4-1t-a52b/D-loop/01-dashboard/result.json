@@ -1,0 +1,52 @@
+{
+  "model": "nvidia:mistralai/mistral-large-4-1t-a52b",
+  "condition": "D-loop",
+  "task": "01-dashboard",
+  "rounds": [
+    {
+      "composite": 97,
+      "lint": 100,
+      "visual": 94,
+      "rendered": true
+    },
+    {
+      "composite": 97,
+      "lint": 94,
+      "visual": 100,
+      "rendered": true
+    },
+    {
+      "composite": 100,
+      "lint": 100,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/01-dashboard/work2/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__mistralai__mistral-large-4-1t-a52b/D-loop/01-dashboard/work2/shots/1793730105276-desktop.png"
+  },
+  "inputTokens": 17922,
+  "outputTokens": 17283,
+  "cost": 0,
+  "latencyMs": 396316,
+  "finishedAt": "2026-11-03T18:21:48.039Z"
+}

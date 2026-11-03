@@ -1,0 +1,40 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "D-loop",
+  "task": "03-login",
+  "rounds": [
+    {
+      "composite": 100,
+      "lint": 100,
+      "visual": 100,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/nvidia__minimaxai__minimax-m3.1-flash/D-loop/03-login/work0/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/nvidia__minimaxai__minimax-m3.1-flash/D-loop/03-login/work0/shots/1793736812886-desktop.png"
+  },
+  "inputTokens": 3281,
+  "outputTokens": 2960,
+  "cost": 0,
+  "latencyMs": 257596,
+  "finishedAt": "2026-11-03T20:13:36.054Z"
+}

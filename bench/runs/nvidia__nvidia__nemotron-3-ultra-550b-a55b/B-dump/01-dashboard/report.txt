@@ -1,0 +1,14 @@
+✗ source: 2 error(s), 0 warning(s). Score 94/100.
+  error L196 [no-arbitrary-values] Arbitrary value `h-[180px]`
+        <div className="relative h-[180px] w-full">
+        fix: Pick the nearest token from the scale.
+  error L246 [spacing-scale] Spacing `gap-0.5` (2px) is off-scale → gap-0 (0px) or gap-1 (4px)
+        <div className="flex flex-col gap-0.5">
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+
+✗ rendered page (1280px): 2 error(s), 0 warning(s). Score 67/100.
+  error [no-horizontal-overflow] Page is 254px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.
+  error [spacing-scale] Spacing 2px is off the scale → 0px or 4px ×10
+        e.g. div.flex.flex-col
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.

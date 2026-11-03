@@ -1,0 +1,14 @@
+✗ source: 1 error(s), 1 warning(s). Score 96/100.
+  warn  L155 [heading-order] h3 after h1 skips a level
+        <h3 className="font-display text-lg font-medium text-ink mb-4">
+        fix: h1 → h2 → h3 in order.
+  error L166 [spacing-scale] Spacing `pl-5` (20px) is off-scale → pl-4 (16px) or pl-6 (24px)
+        <ul className="list-disc pl-5 space-y-2 text-ink-2 font-body text-sm">
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+
+✗ rendered page (1280px): 2 error(s), 0 warning(s). Score 94/100.
+  error [no-horizontal-overflow] Page is 252px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.
+  error [spacing-scale] Spacing 20px is off the scale → 16px or 24px
+        e.g. ul.list-disc.pl-5
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.

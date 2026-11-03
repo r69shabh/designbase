@@ -1,0 +1,23 @@
+✗ source: 6 error(s), 0 warning(s). Score 82/100.
+  error L28 [spacing-scale] Spacing `m-01` (4px) is off-scale → m-0 (0px) or m-2 (8px)
+        { id: "m-01", name: "Ada Okafor", email: "ada@almanac.press", role: "Owner", lastActive: "2026-02-14 09:41", status: "Active" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L29 [spacing-scale] Spacing `m-02` (8px) is off-scale → m-1 (4px) or m-3 (12px)
+        { id: "m-02", name: "Jonas Lindqvist", email: "jonas@almanac.press", role: "Admin", lastActive: "2026-02-14 08:12", status: "Active" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L30 [spacing-scale] Spacing `m-03` (12px) is off-scale → m-2 (8px) or m-4 (16px)
+        { id: "m-03", name: "Priya Raman", email: "priya@almanac.press", role: "Admin", lastActive: "2026-02-13 17:58", status: "Active" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L31 [spacing-scale] Spacing `m-04` (16px) is off-scale → m-3 (12px) or m-6 (24px)
+        { id: "m-04", name: "Tomás Herrera", email: "tomas@almanac.press", role: "Member", lastActive: "2026-02-13 15:03", status: "Active" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L32 [spacing-scale] Spacing `m-05` (20px) is off-scale → m-4 (16px) or m-6 (24px)
+        { id: "m-05", name: "Marta Kowalska", email: "marta@almanac.press", role: "Member", lastActive: "2026-02-11 11:26", status: "Away" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+  error L33 [spacing-scale] Spacing `m-06` (24px) is off-scale → m-4 (16px) or m-8 (32px)
+        { id: "m-06", name: "Devon Carter", email: "devon@almanac.press", role: "Member", lastActive: "2026-02-10 16:44", status: "Away" },
+        fix: p-5 (20px) → p-4 or p-6. gap-10 (40px) → gap-8 or gap-12.
+
+✗ rendered page (1280px): 1 error(s), 0 warning(s). Score 97/100.
+  error [no-horizontal-overflow] Page is 300px wider than a 375px viewport
+        fix: Stack columns below md:, let tables scroll inside their own container.

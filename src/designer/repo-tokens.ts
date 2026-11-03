@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { relative } from "node:path";
 import type { TokenProposal } from "./synthesize.ts";
+import type { TailwindTheme } from "./tailwind-config.ts";
 
 // ---------- colour parsing (hex, rgb, hsl incl. bare "h s% l%", oklch) ----------
 
@@ -97,18 +98,58 @@ const resolveVars = (value: string, vars: Map<string, string>, depth = 0): strin
 const TW_TEXT: Record<string, number> = { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, "2xl": 24, "3xl": 30, "4xl": 36, "5xl": 48, "6xl": 60, "7xl": 72 };
 const TW_RADIUS: Record<string, number> = { xs: 2, sm: 4, md: 6, lg: 8, xl: 12, "2xl": 16, "3xl": 24 };
 
-export function tokensFromCode(cssFiles: string[], classes: string[], root: string): { tokens: TokenProposal[]; darkColors: Record<string, string> } {
+export interface CodeTokenInputs {
+  /** Tailwind v3 configs (tailwind.config.*), statically evaluated. */
+  tailwind?: TailwindTheme[];
+  /** CSS variables that next/font fills at runtime: "--font-inter" → "Inter". */
+  fontVars?: Record<string, string>;
+}
+
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+export function tokensFromCode(cssFiles: string[], classes: string[], root: string, extra: CodeTokenInputs = {}): { tokens: TokenProposal[]; darkColors: Record<string, string> } {
   const vars = cssFiles.flatMap((f) => readCssVars(f, root));
-  const light = new Map<string, string>();
+  const light = new Map<string, string>(Object.entries(extra.fontVars ?? {}));
   for (const v of vars.filter((v) => v.scope !== "dark")) light.set(v.name, v.value);
   const tokens: TokenProposal[] = [];
   const add = (category: TokenProposal["category"], name: string, value: string | number, role: string, detail: string, confidence = 0.95) => {
     if (tokens.some((t) => t.category === category && t.name === name)) return;
     tokens.push({ category, name, value, role, confidence, evidence: [{ source: "code", detail }] });
   };
+  const tw = extra.tailwind ?? [];
+  const twScale = (section: "spacing" | "fontSize" | "borderRadius") => Object.assign({}, ...tw.map((c) => c[section])) as Record<string, string>;
+  const px = (v: string) => parseLength(resolveVars(v, light));
+
+  // Tailwind v3 config first: its keys are the names the classes use (bg-primary, rounded-lg).
+  const referenced = new Set<string>();
+  for (const c of tw) {
+    for (const [name, raw] of Object.entries(c.colors)) {
+      for (const m of raw.matchAll(/var\((--[\w-]+)/g)) referenced.add(m[1]);
+      const hex = parseCssColor(resolveVars(raw.replace(/\s*\/\s*<alpha-value>/, ""), light));
+      if (hex) add("color", name, hex, `Declared in ${c.file}`, `${c.file}: colors.${name}: ${raw}`);
+    }
+    for (const [k, fams] of Object.entries(c.fontFamily)) {
+      const family = fams.map((f) => resolveVars(f, light).split(",")[0].replace(/["']/g, "").trim()).find((f) => f && !f.startsWith("var("));
+      if (family) add("font", k, family, `Declared in ${c.file}`, `${c.file}: fontFamily.${k}: ${fams.join(", ")}`);
+    }
+    for (const [k, v] of Object.entries(c.borderRadius)) {
+      const n = px(v);
+      if (n !== null) add("radius", k === "DEFAULT" ? "base" : k, n > 999 ? 9999 : Math.round(n * 10) / 10, `Declared in ${c.file}`, `${c.file}: borderRadius.${k}: ${v}`);
+    }
+    for (const [k, v] of Object.entries(c.fontSize)) {
+      const n = px(v);
+      if (n !== null) add("fontSize", k, n, `Declared in ${c.file}`, `${c.file}: fontSize.${k}: ${v}`);
+    }
+    for (const [k, v] of Object.entries(c.spacing)) {
+      const n = px(v);
+      if (n !== null && n > 0) add("spacing", k, n, `Declared in ${c.file}`, `${c.file}: spacing.${k}: ${v}`);
+    }
+    for (const [k, v] of Object.entries(c.boxShadow)) if (v !== "none") add("shadow", k === "DEFAULT" ? "base" : k, resolveVars(v, light), `Declared in ${c.file}`, `${c.file}: boxShadow.${k}`);
+  }
 
   // Colours: --color-x in @theme, or bare --x in :root whose value is a colour.
-  for (const v of vars.filter((v) => v.scope !== "dark")) {
+  // Variables a Tailwind config already maps to a class name aren't proposed twice.
+  for (const v of vars.filter((v) => v.scope !== "dark" && !referenced.has(v.name))) {
     const name = v.name.replace(/^--(color-)?/, "");
     if (/^(radius|spacing|font|text|shadow|breakpoint|container|leading|tracking)/.test(name)) continue;
     const hex = parseCssColor(resolveVars(v.value, light));
@@ -132,8 +173,12 @@ export function tokensFromCode(cssFiles: string[], classes: string[], root: stri
     if (px !== null && px > 0) add("radius", v.name === "--radius" ? "base" : v.name.replace("--radius-", ""), Math.round(px * 10) / 10, `Declared as ${v.name}`, `${v.file}: ${v.name}: ${v.value}`);
   }
 
-  // Scales the components use: spacing (× the declared --spacing base) and type.
+  // Scales the components use: spacing (× the declared --spacing base, or the config's own keys) and type.
   const base = parseLength(resolveVars(light.get("--spacing") ?? "0.25rem", light)) ?? 4;
+  const spacingCfg = twScale("spacing"), textCfg = twScale("fontSize"), radiusCfg = twScale("borderRadius");
+  const keys = (o: Record<string, string>) => Object.keys(o).map(esc).join("|");
+  const textRe = new RegExp(`^text-(xs|sm|base|lg|xl|[2-7]xl${Object.keys(textCfg).length ? "|" + keys(textCfg) : ""})$`);
+  const radiusRe = new RegExp(`^rounded-(xs|sm|md|lg|xl|2xl|3xl|full${Object.keys(radiusCfg).length ? "|" + keys(radiusCfg) : ""})$`);
   const counts = new Map<string, number>();
   for (const c of classes) counts.set(c, (counts.get(c) ?? 0) + 1);
   const spacing = new Map<number, number>();
@@ -141,20 +186,20 @@ export function tokensFromCode(cssFiles: string[], classes: string[], root: stri
   const radius = new Map<string, number>();
   for (const [raw, n] of counts) {
     const c = raw.split(":").pop()!;
-    const sp = c.match(/^-?(?:p|px|py|pt|pr|pb|pl|m|mx|my|mt|mr|mb|ml|gap|gap-x|gap-y|space-x|space-y)-([\d.]+)$/);
-    if (sp) spacing.set(Number(sp[1]) * base, (spacing.get(Number(sp[1]) * base) ?? 0) + n);
-    const tx = c.match(/^text-(xs|sm|base|lg|xl|[2-7]xl)$/);
+    const sp = c.match(/^-?(?:p|px|py|pt|pr|pb|pl|m|mx|my|mt|mr|mb|ml|gap|gap-x|gap-y|space-x|space-y)-([\w.]+)$/);
+    if (sp && !(sp[1] in spacingCfg) && /^[\d.]+$/.test(sp[1])) spacing.set(Number(sp[1]) * base, (spacing.get(Number(sp[1]) * base) ?? 0) + n);
+    const tx = c.match(textRe);
     if (tx) text.set(tx[1], (text.get(tx[1]) ?? 0) + n);
-    const rd = c.match(/^rounded-(xs|sm|md|lg|xl|2xl|3xl|full)$/);
+    const rd = c.match(radiusRe);
     if (rd) radius.set(rd[1], (radius.get(rd[1]) ?? 0) + n);
   }
-  for (const [px, n] of [...spacing].sort((a, b) => a[0] - b[0])) {
-    if (px > 0) add("spacing", String(px / base), px, `${n} use(s) in components`, `p-/m-/gap- classes × --spacing ${base}px`, 0.85);
+  for (const [v, n] of [...spacing].sort((a, b) => a[0] - b[0])) {
+    if (v > 0 && !tokens.some((t) => t.category === "spacing" && t.value === v)) add("spacing", String(v / base), v, `${n} use(s) in components`, `p-/m-/gap- classes × --spacing ${base}px`, 0.85);
   }
-  for (const [k, n] of text) add("fontSize", k, TW_TEXT[k], `${n} use(s) in components`, `text-${k} (Tailwind scale)`, 0.85);
+  for (const [k, n] of text) if (TW_TEXT[k]) add("fontSize", k, TW_TEXT[k], `${n} use(s) in components`, `text-${k} (Tailwind scale)`, 0.85);
   for (const [k, n] of radius) {
     if (k === "full") add("radius", "full", 9999, `${n} use(s)`, "rounded-full");
-    else if (!tokens.some((t) => t.category === "radius" && t.name === k)) add("radius", k, TW_RADIUS[k], `${n} use(s) in components`, `rounded-${k} (Tailwind default)`, 0.8);
+    else if (TW_RADIUS[k] && !tokens.some((t) => t.category === "radius" && t.name === k)) add("radius", k, TW_RADIUS[k], `${n} use(s) in components`, `rounded-${k} (Tailwind default)`, 0.8);
   }
   return { tokens, darkColors };
 }

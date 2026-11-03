@@ -1,0 +1,40 @@
+{
+  "model": "groq:openai/gpt-oss-120b",
+  "condition": "C-brief",
+  "task": "03-login",
+  "rounds": [
+    {
+      "composite": 97,
+      "lint": 100,
+      "visual": 94,
+      "rendered": true
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": true,
+      "html": "bench/runs/groq__openai__gpt-oss-120b/C-brief/03-login/final/render/index.html",
+      "stubbed": []
+    },
+    "visual": {
+      "score": 100,
+      "errorGroups": 0,
+      "byRule": {}
+    },
+    "judge": null,
+    "composite": 100,
+    "passed": true,
+    "screenshot": "/Users/rishabh/pgming/design chef/bench/runs/groq__openai__gpt-oss-120b/C-brief/03-login/final/shots/1793726134823-desktop.png"
+  },
+  "inputTokens": 3174,
+  "outputTokens": 926,
+  "cost": 0,
+  "latencyMs": 2618,
+  "finishedAt": "2026-11-03T17:13:26.667Z"
+}

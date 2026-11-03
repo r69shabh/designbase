@@ -1,0 +1,53 @@
+{
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "condition": "D-loop",
+  "task": "02-settings",
+  "rounds": [
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    },
+    {
+      "composite": 50,
+      "lint": 100,
+      "visual": null,
+      "rendered": false
+    }
+  ],
+  "score": {
+    "lint": {
+      "score": 100,
+      "errors": 0,
+      "warnings": 0,
+      "byRule": {}
+    },
+    "render": {
+      "ok": false,
+      "error": "build: Build failed with 1 error: bench/runs/nvidia__minimaxai__minimax-m3.1-flash/D-loop/02-settings/output.round3.tsx:1:0: ERROR: Unexpected \"]\"",
+      "stubbed": []
+    },
+    "visual": null,
+    "judge": null,
+    "composite": 50,
+    "passed": false
+  },
+  "inputTokens": 13882,
+  "outputTokens": 2553,
+  "cost": 0,
+  "latencyMs": 168887,
+  "finishedAt": "2026-11-03T20:57:18.226Z"
+}
