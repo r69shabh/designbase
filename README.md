@@ -19,9 +19,28 @@ Most tools in this space (Figma's MCP server, Supernova, Knapsack) work on #1. d
 - Indie developers and early-stage founders building with coding agents who have no designer
 - Designers and design-led teams who want agents to produce on-brand UI without reviewing every screen by hand
 
-## Status: Phase 0 (proving the thesis)
+## Status
 
-Phase 0 is a local MCP server, a hand-written sample playbook and a benchmark. It exists to answer one question before anything else gets built: **does a focused brief plus a check loop make agents follow a playbook measurably better than pasting a screenshot?**
+Phase 0 (thesis harness and benchmarks) is done. The core system is being built, following [docs/ROADMAP.md](docs/ROADMAP.md): playbook format, store, AI layer, backend API and the **designer agent**, which learns a playbook from your shipped product. The MCP server v2, connectors (Figma, GitHub) and the web app come after.
+
+### Core system (new)
+
+```
+sources ──▶ designer agent ──▶ proposals ──▶ review ──▶ playbook versions ──▶ engine (brief · lint · render · check)
+            measure → synthesize → interpret                 DTCG tokens + components + rules + voice
+```
+
+| Piece | Where | What it does |
+|---|---|---|
+| Playbook format v1 | `src/core/` | Zod schema. Tokens are stored as **DTCG 2025.10**, plus components (with typed props and the raw elements they replace), patterns, rules, voice and exemplars. Content-hashed immutable versions with semantic diffs (`token color.accent: #B8401A → #C2410C`). |
+| Store | `src/store/` | `node:sqlite`, with no native deps: workspaces, hashed API keys, playbooks, versions, content-addressed assets, sources, a durable job queue (leases survive restarts), observations, proposals and reviews. |
+| AI layer | `src/ai/` | One client for OpenRouter, Gemini, Groq and NVIDIA. A model policy with automatic fallback past dead keys and quotas, zod-validated structured output with a repair round, and a response cache. |
+| Designer agent v1 | `src/designer/` | **Measures** live pages (computed styles of every element) and screenshots (exact colours from the pixel histogram), **synthesizes** colour roles, spacing base and scale, type scale, fonts, radii, shadows and rules, then **interprets** with a vision model (semantic names, voice, components seen). Every token is a proposal with confidence and evidence. Values never come from the model. |
+| API | `src/api/` | Hono REST API with an in-process worker. See below. |
+
+On Almanac's own pages, extraction recovers every colour exactly, the 4px spacing base with its scale, all three font families, and the type sizes the pages use. The vision model named the colours (`background`, `accent`, `text-muted`, `success`, `danger`…) and wrote voice bullets close to the hand-written ones.
+
+### Phase 0 pieces
 
 | Piece | What it does |
 |---|---|
@@ -125,21 +144,61 @@ Results go to `bench/results/leaderboard.md` and `bench/results/uplift.md`.
 
 **Phase 0 passes** if the check loop (D) beats the screenshot workflow (A) by ≥ 30 composite points and ≥ 1 judge point, with the brief (C) beating the full dump (B).
 
-## Known limits (Phase 0)
+## Known limits
 
 - React + Tailwind only for lint. The visual check works on any rendered page but needs an `.html` file or a running dev server, since it doesn't build TSX itself.
 - `get_brief` uses keyword matching with a synonym list, not embeddings.
 - The visual check measures the declared font family, not whether the webfont actually loaded.
-- There's no vision-model judge yet: the calling agent reviews its own screenshots against the voice. A dedicated judge comes after the benchmark shows whether it's needed.
-- Playbooks are hand-written. Extracting them from Figma, screenshots, URLs and codebases is Phase 1.
+- The MCP `check` tool has no vision-model judge yet: the calling agent reviews its own screenshots against the voice. The benchmark harness does have an optional judge.
+- The designer agent extracts **foundations** (tokens, rules, voice) and only *names* components. Discovering and building components is Phase 5. Screenshot-only sources give exact colours but no spacing or type scale yet.
+- The MCP server still reads a playbook directory. Moving it onto the API is a later phase.
+
+## Running the API
+
+```bash
+npm run serve
+```
+
+It listens on `http://localhost:4141`. Local mode needs no key; set `DESIGNBASE_AUTH=keys` to require `Authorization: Bearer dbk_…`. Data lives in `.designbase/data` (override with `DESIGNBASE_DATA`). Model keys come from the environment or `.env`.
+
+| Route | Purpose |
+|---|---|
+| `POST /v1/playbooks` | Create a playbook (optionally with `content`) |
+| `POST /v1/playbooks/:id/sources` | Add a `{ "url": … }` or upload screenshots (multipart `file`) |
+| `POST /v1/playbooks/:id/extract` | Start the designer agent; returns a job |
+| `GET /v1/jobs/:id/events` | Live progress (SSE) |
+| `GET /v1/playbooks/:id/proposals?status=open` | What the agent proposes, with confidence and evidence |
+| `POST /v1/proposals/:pid/review` | `{ "decision": "accept" \| "reject", "edited"?: …, "note"?: … }` |
+| `POST /v1/playbooks/:id/proposals/accept` | Accept everything above `{ "minConfidence": 0.8 }` |
+| `POST /v1/playbooks/:id/apply` | Commit accepted proposals as a new version |
+| `GET /v1/playbooks/:id/versions`, `/diff?from=&to=` | History and semantic diffs |
+| `GET /v1/playbooks/:id/tokens?format=dtcg\|css\|tailwind-v4\|tailwind-v3` | Export tokens |
+| `POST /v1/playbooks/:id/brief` | `{ "task": … }` → design brief |
+| `POST /v1/playbooks/:id/check` | `{ "code" }` or `{ "url" }` → violations, score, fixes |
+| `POST /v1/keys` | Create an API key for the workspace |
+
+A full run against a live site:
+
+```bash
+PB=$(curl -s -X POST localhost:4141/v1/playbooks -H 'content-type: application/json' -d '{"name":"My product"}' | jq -r .id)
+curl -s -X POST localhost:4141/v1/playbooks/$PB/sources -H 'content-type: application/json' -d '{"url":"https://example.com"}'
+JOB=$(curl -s -X POST localhost:4141/v1/playbooks/$PB/extract | jq -r .id)
+curl -N localhost:4141/v1/jobs/$JOB/events
+curl -s "localhost:4141/v1/playbooks/$PB/proposals?status=open" | jq '.proposals[] | {key, confidence}'
+```
 
 ## Project layout
 
 ```
-src/        playbook loader, brief builder, linter, visual checker, MCP server, CLI + hook
+src/core/      playbook schema v1, DTCG io, versioning + diff, materialize
+src/store/     SQLite store: playbooks, versions, assets, jobs, proposals, reviews
+src/ai/        model client, policy + fallbacks, structured output, cache
+src/designer/  designer agent: measure, synthesize, interpret, extract/apply
+src/api/       Hono API, worker, server
+src/*.ts       engine: brief, lint, visual check, MCP server, CLI + hook
 playbook/   Almanac sample playbook
 examples/   on- and off-brand samples, Claude Code hook config
 bench/      model client, renderer, scorer, runner, reports, tasks, runs/, results/
-test/       node:test suite (lint, brief, visual, hook)
-docs/       product plan and market research
+test/       node:test suite (lint, brief, visual, hook, store, API end to end)
+docs/       market research (PLAN.md) and phase-wise build plan (ROADMAP.md)
 ```
