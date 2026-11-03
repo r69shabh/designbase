@@ -1,6 +1,6 @@
 # designbase — product exploration & plan
 
-*Draft, 3 Nov 2026. Updated 3 Nov 2026: Phase 0 build done, benchmark not yet run.*
+*Draft, 3 Nov 2026. Updated 3 Nov 2026: Phase 0 built. **The detailed, phase-wise build plan for the core system (engine, backend, AI layer, designer agent) is in [ROADMAP.md](ROADMAP.md).** This document keeps the market research and product framing.*
 
 ## 1. The problem, stated precisely
 
