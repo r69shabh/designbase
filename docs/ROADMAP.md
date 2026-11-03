@@ -237,6 +237,9 @@ Pipeline: **ingest → measure → interpret → synthesize → verify → propo
 
 ## 6. Order of work, at a glance
 
+*What comes after these phases (benchmarking program, modeling, hosted backend, surfaces, and the open list of gaps) is in [NEXT.md](NEXT.md).*
+
+
 ```
 Phase 1 core ──▶ Phase 2 API ──▶ Phase 4 designer v1 (foundations) ──▶ Phase 5 designer v2 (components) ──▶ Phase 6 service ──▶ Phase 7 learning
                  Phase 3 AI ──┘          ▲ extraction benchmark first

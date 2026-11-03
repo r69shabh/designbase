@@ -12,7 +12,7 @@ Pasting a Figma screenshot into the chat doesn't fix it. "AI is bad at design" i
 2. **Adherence:** it sees the system and drifts anyway, back to Tailwind blue, `rounded-xl` and Inter.
 3. **No feedback:** nothing checks the output, so the agent never learns it was wrong.
 
-Most tools in this space (Figma's MCP server, Supernova, Knapsack) work on #1. designbase is built around #2 and #3: give the agent **only what the task needs**, then **check its work against the playbook and make it fix what's off**. Market research is in [docs/PLAN.md](docs/PLAN.md); the phase-wise build plan is in [docs/ROADMAP.md](docs/ROADMAP.md).
+Most tools in this space (Figma's MCP server, Supernova, Knapsack) work on #1. designbase is built around #2 and #3: give the agent **only what the task needs**, then **check its work against the playbook and make it fix what's off**. Market research is in [docs/PLAN.md](docs/PLAN.md); the phase-wise build plan is in [docs/ROADMAP.md](docs/ROADMAP.md), and what comes after it (benchmarking, modeling, backend, consistency model, open gaps) is in [docs/NEXT.md](docs/NEXT.md).
 
 ## Target users
 
