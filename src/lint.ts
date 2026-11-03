@@ -88,7 +88,7 @@ export function lintSource(pb: Playbook, src: string, opts: LintOptions = {}): V
           const below = steps.filter(([, v]) => v < px).pop();
           const above = steps.find(([, v]) => v > px);
           const prefix = cls.replace(/-[^-]+$/, "");
-          const options = [below, above].filter(Boolean).map(([k, v]) => `${prefix}-${k} (${v}px)`).join(" or ");
+          const options = [below, above].filter((s): s is [string, number] => !!s).map(([k, v]) => `${prefix}-${k} (${v}px)`).join(" or ");
           add("spacing-scale", index, `Spacing \`${raw}\` (${px}px) is off-scale → ${options}`);
         }
         continue;

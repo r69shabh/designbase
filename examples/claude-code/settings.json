@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "npx --prefix /ABSOLUTE/PATH/TO/designbase tsx /ABSOLUTE/PATH/TO/designbase/src/cli.ts hook" }
+        ]
+      }
+    ]
+  }
+}
