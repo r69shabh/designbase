@@ -163,7 +163,8 @@ export function lintSource(pb: Playbook, src: string, opts: LintOptions = {}): V
 export function scoreViolations(vs: Violation[]): number {
   const errors = vs.filter((v) => v.severity === "error").reduce((n, v) => n + (v.count ?? 1), 0);
   const warns = vs.filter((v) => v.severity === "warn").reduce((n, v) => n + (v.count ?? 1), 0);
-  return Math.max(0, 100 - errors * 8 - warns * 3);
+  // Gentle slope so heavily off-brand outputs still differ from each other in the benchmark.
+  return Math.max(0, 100 - errors * 3 - warns);
 }
 
 export function formatViolations(vs: Violation[], file?: string): string {

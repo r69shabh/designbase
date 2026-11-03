@@ -1,0 +1,12 @@
+[
+  { "id": "01-dashboard", "prompt": "Build the main dashboard for an invoicing app: monthly revenue, outstanding balance, on-time payment rate and customer count, a weekly collections chart, recent activity, and a table of recent invoices." },
+  { "id": "02-settings", "prompt": "Build the workspace settings page: profile (name, email), invoicing defaults (payment terms, currency), notification preferences, and a danger zone to delete the workspace." },
+  { "id": "03-login", "prompt": "Build the sign-in screen with email and password, a forgot-password link, and a link to create an account." },
+  { "id": "04-invoice-list", "prompt": "Build the invoices list page with a search field, status filter, a table of invoices (number, customer, issue date, due date, status, amount) and a button to create a new invoice." },
+  { "id": "05-empty-customers", "prompt": "Build the customers page for a brand-new account that has no customers yet, encouraging the user to add their first customer." },
+  { "id": "06-invoice-detail", "prompt": "Build an invoice detail page: invoice header with status, bill-to and bill-from blocks, line items with quantities and totals, payment history, and actions to send a reminder, download PDF, or void the invoice." },
+  { "id": "07-new-customer-form", "prompt": "Build a form to add a new customer: company name, contact name, email, phone, billing address, tax ID and default payment terms." },
+  { "id": "08-pricing", "prompt": "Build a pricing page with three plans (Solo, Team, Business), a monthly/yearly toggle, a feature comparison and an FAQ." },
+  { "id": "09-team", "prompt": "Build the team members page: list of members with role and last active date, pending invitations, and a way to invite someone by email." },
+  { "id": "10-reports", "prompt": "Build a reports page showing revenue by month for the year, top customers by revenue, average days to pay, and an export button." }
+]
