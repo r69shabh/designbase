@@ -11,7 +11,9 @@ export interface ColorStat {
   border: number; // elements with this border colour
   buttonBg: number; // buttons filled with it
   link: number; // links drawn in it
+  onFill: number; // text drawn on a filled button: little volume, but part of the system
   imageShare: number; // share of screenshot pixels
+  imagePixels: number; // exact-colour pixels in screenshots
 }
 
 export interface Evidence { source: string; detail: string }
@@ -42,12 +44,12 @@ const lightness = (hex: string) => {
 function addColor(stats: ColorStat[], hex: string | null, field: keyof Omit<ColorStat, "hex">, amount: number) {
   if (!hex || amount <= 0) return;
   let s = stats.find((c) => distance(hexRgb(c.hex), hexRgb(hex)) < 8);
-  if (!s) stats.push((s = { hex, text: 0, bgArea: 0, border: 0, buttonBg: 0, link: 0, imageShare: 0 }));
+  if (!s) stats.push((s = { hex, text: 0, bgArea: 0, border: 0, buttonBg: 0, link: 0, onFill: 0, imageShare: 0, imagePixels: 0 }));
   s[field] += amount;
 }
 
 const weightOf = (c: ColorStat, totalArea: number) =>
-  c.text / 200 + (c.bgArea / Math.max(totalArea, 1)) * 20 + c.border / 4 + c.buttonBg * 2 + c.link / 2 + c.imageShare * 20;
+  c.text / 200 + (c.bgArea / Math.max(totalArea, 1)) * 20 + c.border / 4 + c.buttonBg * 2 + c.link / 2 + c.onFill + c.imageShare * 20 + (c.imagePixels >= 60 ? 0.15 : 0);
 
 /** Count values, ignoring 0 and absurd sizes. */
 function histogram(values: number[], max = 160): Map<number, number> {
@@ -92,11 +94,19 @@ export function synthesize(urls: UrlMeasurement[], images: { name: string; m: Im
     if (e.text > 0) addColor(colors, cssColorHex(e.color), e.role === "link" ? "link" : "text", e.text);
     if (e.bg) {
       addColor(colors, cssColorHex(e.bg), "bgArea", e.box.w * e.box.h);
-      if (e.role === "button") addColor(colors, cssColorHex(e.bg), "buttonBg", 1);
+      if (e.role === "button") {
+        addColor(colors, cssColorHex(e.bg), "buttonBg", 1);
+        if (e.text > 0) addColor(colors, cssColorHex(e.color), "onFill", 1);
+      }
     }
     if (e.border) addColor(colors, cssColorHex(e.border), "border", 1);
   }
-  for (const { m } of images) for (const c of m.colors) addColor(colors, c.hex, "imageShare", c.share);
+  for (const { m } of images) {
+    for (const c of m.colors) {
+      addColor(colors, c.hex, "imageShare", c.share);
+      addColor(colors, c.hex, "imagePixels", c.pixels);
+    }
+  }
   const significant = colors
     .filter((c) => weightOf(c, totalArea) >= 0.15 || c.buttonBg > 0)
     .sort((a, b) => weightOf(b, totalArea) - weightOf(a, totalArea));
@@ -107,11 +117,26 @@ export function synthesize(urls: UrlMeasurement[], images: { name: string; m: Im
     if (c) named.set(c, name);
   };
   const imageOnly = urls.length === 0;
-  take("background", (c) => c.bgArea > 0 || (imageOnly && lightness(c.hex) > 0.75), (a, b) => b.bgArea + b.imageShare - (a.bgArea + a.imageShare));
-  take("text", (c) => c.text > 0 || (imageOnly && lightness(c.hex) < 0.3), (a, b) => b.text + b.imageShare - (a.text + a.imageShare));
-  take("accent", (c) => saturation(c.hex) > 0.35 && (c.buttonBg > 0 || c.link > 0 || imageOnly), (a, b) => b.buttonBg * 10 + b.link + b.imageShare * 100 - (a.buttonBg * 10 + a.link + a.imageShare * 100));
-  take("border", (c) => c.border > 0 && saturation(c.hex) < 0.35 && lightness(c.hex) > 0.5, (a, b) => b.border - a.border);
-  take("surface", (c) => c.bgArea > 0 && saturation(c.hex) < 0.35, (a, b) => b.bgArea - a.bgArea);
+  if (imageOnly) {
+    // Pixels only: no element roles, so lean on area and contrast. Works for dark themes too.
+    const neutral = (c: ColorStat) => saturation(c.hex) < 0.35;
+    take("background", () => true, (a, b) => b.imageShare - a.imageShare);
+    const bg = [...named].find(([, n]) => n === "background")?.[0];
+    const dl = (c: ColorStat) => (bg ? Math.abs(lightness(c.hex) - lightness(bg.hex)) : 0);
+    take("text", neutral, (a, b) => dl(b) - dl(a));
+    take("accent", (c) => !neutral(c), (a, b) => b.imageShare - a.imageShare);
+    // Near-background neutrals: the biggest is the raised surface, the most contrasting is the border.
+    const near = (c: ColorStat) => neutral(c) && dl(c) > 0.02 && dl(c) < 0.35;
+    take("surface", near, (a, b) => b.imageShare - a.imageShare);
+    take("border", near, (a, b) => dl(b) - dl(a));
+  } else {
+    take("background", (c) => c.bgArea > 0, (a, b) => b.bgArea - a.bgArea);
+    take("text", (c) => c.text > 0, (a, b) => b.text - a.text);
+    take("accent", (c) => saturation(c.hex) > 0.35 && (c.buttonBg > 0 || c.link > 0), (a, b) => b.buttonBg * 10 + b.link - (a.buttonBg * 10 + a.link));
+    // The most-used neutral border, in light and dark themes alike.
+    take("border", (c) => c.border > 0 && saturation(c.hex) < 0.35, (a, b) => b.border - a.border);
+    take("surface", (c) => c.bgArea > 0 && saturation(c.hex) < 0.35, (a, b) => b.bgArea - a.bgArea);
+  }
   // Remaining neutral text colours, darkest first.
   for (let i = 2; i <= 3; i++) take(`text-${i}`, (c) => c.text > 0 && saturation(c.hex) < 0.35, (a, b) => lightness(a.hex) - lightness(b.hex));
   let other = 1;
@@ -124,6 +149,7 @@ export function synthesize(urls: UrlMeasurement[], images: { name: string; m: Im
       c.buttonBg && `${c.buttonBg} button fill(s)`,
       c.border && `${c.border} border(s)`,
       c.link && `link text`,
+      c.onFill && `text on ${c.onFill} filled button(s)`,
       c.imageShare && `${(c.imageShare * 100).toFixed(1)}% of screenshot pixels`,
     ].filter(Boolean);
     tokens.push({

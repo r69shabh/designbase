@@ -89,7 +89,9 @@ Benchmarks are the product's conscience. Four of them, all run nightly or per re
 - Same harness, conditions A–D, plus **E: designbase with an *extracted* playbook** (not hand-written). This is the honest end-to-end number.
 - Track uplift per release. A regression in uplift blocks the release.
 
-### B3. ExtractBench, extraction accuracy
+### B3. ExtractBench, extraction accuracy ✅ v1 built (`npm run bench:extract`)
+*v1 results: all five gates pass. Live-page colour F1 99, spacing 99, type 100, roles 100, component recall 100. Screenshot colour F1 97, roles 100. Primer (real GitHub CSS) precision 100 for colours. The synthetic cases score ~100, which partly reflects that the generator and extractor share assumptions. The next truth sets (Carbon, Polaris, real product pages) are what keep this honest.*
+
 *Question: how close is the learned playbook to the truth?*
 - **Ground truth:** (a) our playbooks rendered to about 20 screens each, where truth is exact; (b) open design systems with published token files and docs sites (Primer, Carbon, Atlassian, Polaris, Radix Themes, Material), where truth comes from their token JSON.
 - **Metrics:** colour F1 at ΔE₀₀ < 3, role accuracy, spacing-scale F1, type-scale error, radius and shadow accuracy, **component recall** (true components found), and **component fidelity** (render-and-compare score).

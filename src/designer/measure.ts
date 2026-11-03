@@ -44,7 +44,8 @@ function collect(): ElementSample[] {
   const transparent = (c: string) => c === "transparent" || /rgba\([^)]*,\s*0\)$/.test(c);
   const out: ElementSample[] = [];
   const index = new Map<Element, number>();
-  for (const el of Array.from(document.body.querySelectorAll("*"))) {
+  // Include <body> itself: many sites set the page background and base font there.
+  for (const el of [document.body, ...Array.from(document.body.querySelectorAll("*"))]) {
     if (["SCRIPT", "STYLE", "LINK", "META", "BR", "NOSCRIPT", "TEMPLATE"].includes(el.tagName)) continue;
     if (el.closest("svg") && el.tagName.toLowerCase() !== "svg") continue;
     const r = el.getBoundingClientRect();
@@ -60,7 +61,6 @@ function collect(): ElementSample[] {
       : ["img", "svg", "picture", "video", "canvas"].includes(tag) ? "image"
       : own > 0 ? "text"
       : s.display !== "inline" ? "container" : "other";
-    const borderW = px(s.borderTopWidth) + px(s.borderRightWidth) + px(s.borderBottomWidth) + px(s.borderLeftWidth);
     const lh = s.lineHeight === "normal" ? px(s.fontSize) * 1.2 : px(s.lineHeight);
     let parent = -1;
     for (let p = el.parentElement; p; p = p.parentElement) {
@@ -81,7 +81,8 @@ function collect(): ElementSample[] {
       box: { x: Math.round(r.x), y: Math.round(r.y + window.scrollY), w: Math.round(r.width), h: Math.round(r.height) },
       color: s.color,
       bg: transparent(s.backgroundColor) ? "" : s.backgroundColor,
-      border: borderW > 0 && s.borderTopStyle !== "none" ? s.borderTopColor : null,
+      // The colour of whichever side is drawn (a left-only accent rule counts).
+      border: (["Top", "Left", "Bottom", "Right"] as const).map((side) => (px(s.getPropertyValue(`border-${side.toLowerCase()}-width`)) > 0 && s.getPropertyValue(`border-${side.toLowerCase()}-style`) !== "none" ? s.getPropertyValue(`border-${side.toLowerCase()}-color`) : null)).find((c) => c && !transparent(c)) ?? null,
       font: s.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
       fontStack: s.fontFamily,
       fontSize: px(s.fontSize),
@@ -125,15 +126,28 @@ export async function measureUrl(target: string, viewport = { width: 1280, heigh
   });
 }
 
-export interface ImageColor { hex: string; share: number }
+export interface ImageColor { hex: string; share: number; pixels: number }
 export interface ImageMeasurement { width: number; height: number; colors: ImageColor[] }
+
+/** Is `c` (approximately) a mix of `a` and `b`, the way anti-aliased edges and shadows are? */
+function isBlend(c: number[], a: number[], b: number[]): boolean {
+  const ab = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
+  const len2 = ab[0] ** 2 + ab[1] ** 2 + ab[2] ** 2;
+  if (len2 < 400) return false;
+  const t = ((c[0] - a[0]) * ab[0] + (c[1] - a[1]) * ab[1] + (c[2] - a[2]) * ab[2]) / len2;
+  if (t < 0.06 || t > 0.94) return false;
+  return distance(c, [a[0] + t * ab[0], a[1] + t * ab[1], a[2] + t * ab[2]]) < 4;
+}
 
 /**
  * Exact colours of a screenshot. Flat UI fills repeat the exact same RGB many times, so a histogram
- * of exact values (merging near-duplicates from compression) recovers them precisely; anti-aliased
- * edges spread across many rare values and fall below the threshold.
+ * of exact values (merging near-duplicates from compression) recovers them precisely. Small text and
+ * 1px borders still leave a few hundred exact pixels, so colours are kept by absolute pixel count;
+ * anti-aliasing and shadow blur produce in-between colours, which are dropped when they sit on the
+ * line between two stronger colours.
  */
-export async function measureImage(png: Buffer, mime = "image/png"): Promise<ImageMeasurement> {
+export async function measureImage(png: Buffer, mime = "image/png", opts: { minPixels?: number } = {}): Promise<ImageMeasurement> {
+  const minPixels = opts.minPixels ?? 60;
   return withPage(400, 300, async (page) => {
     const result = await page.evaluate(
       async ({ data, mime }) => {
@@ -152,19 +166,22 @@ export async function measureImage(png: Buffer, mime = "image/png"): Promise<Ima
           const key = (px[i] << 16) | (px[i + 1] << 8) | px[i + 2];
           counts.set(key, (counts.get(key) ?? 0) + 1);
         }
-        return { width: canvas.width, height: canvas.height, counts: [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4_000) };
+        return { width: canvas.width, height: canvas.height, counts: [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6_000) };
       },
       { data: png.toString("base64"), mime },
     );
     const total = result.width * result.height;
-    const colors: ImageColor[] = [];
+    const merged: { rgb: number[]; pixels: number }[] = [];
     for (const [key, n] of result.counts) {
       const rgb = [(key >> 16) & 255, (key >> 8) & 255, key & 255];
-      const near = colors.find((c) => distance(hexRgb(c.hex), rgb) < 6);
-      if (near) near.share += n / total;
-      else if (n / total >= 0.0004) colors.push({ hex: rgbHex(rgb), share: n / total });
+      const near = merged.find((c) => distance(c.rgb, rgb) < 6);
+      if (near) near.pixels += n;
+      else if (n >= minPixels / 3) merged.push({ rgb, pixels: n });
     }
-    return { width: result.width, height: result.height, colors: colors.filter((c) => c.share >= 0.0008).sort((a, b) => b.share - a.share) };
+    const kept = merged.filter((c) => c.pixels >= minPixels).sort((a, b) => b.pixels - a.pixels);
+    // Blend test against stronger colours only (a blend always has fewer pixels than what it blends).
+    const colors = kept.filter((c, i) => !kept.slice(0, i).some((a, j) => kept.slice(0, i).some((b, k) => k > j && isBlend(c.rgb, a.rgb, b.rgb))));
+    return { width: result.width, height: result.height, colors: colors.map((c) => ({ hex: rgbHex(c.rgb), share: c.pixels / total, pixels: c.pixels })) };
   });
 }
 

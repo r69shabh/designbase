@@ -1,0 +1,1371 @@
+[
+  {
+    "name": "almanac",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 0.875,
+        "f1": 0.9333333333333333,
+        "missed": [
+          "4"
+        ],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": null,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "missed": [
+          "2"
+        ],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#66625A"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "badge",
+        "card",
+        "stat",
+        "table",
+        "header",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 93.3
+  },
+  {
+    "name": "synth-1 (light, 4px, r8)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": true,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-2 (light, 8px, r16, shadows)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": true,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-3 (light, 4px, r0)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": false,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#65615D"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-4 (light, 8px, r8)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": true,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#5D655D"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-5 (light, 8px, r16, shadows)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": false,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-6 (light, 4px, r16, shadows)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": true,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#5D6065"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 100
+  },
+  {
+    "name": "synth-7 (dark, 4px, r8)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#171212"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": false,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1": 0.9,
+        "missed": [
+          "#171212"
+        ],
+        "extra": [
+          "#E8E3E3"
+        ]
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 99.1
+  },
+  {
+    "name": "synth-8 (dark, 4px, r8, shadows)",
+    "world": "closed",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "missed": [
+          "#171412"
+        ],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "bodySize": false,
+      "fonts": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "radii": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "pill": true,
+      "shadows": true
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "missed": [],
+        "extra": []
+      },
+      "roles": {
+        "accuracy": 1,
+        "wrong": []
+      },
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 1,
+      "f1": 1,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "stat",
+        "card",
+        "table",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": []
+    },
+    "extractScore": 99.1
+  },
+  {
+    "name": "primer (GitHub, open world)",
+    "world": "open",
+    "url": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.03614457831325301,
+        "f1": 0.06976744186046512,
+        "missed": [
+          "#1B7C83",
+          "#3192AA",
+          "#0757BA",
+          "#197935",
+          "#95D8A6",
+          "#1C8139",
+          "#C21C2C",
+          "#0860CA",
+          "#CAECFF",
+          "#393F46",
+          "#0969DA",
+          "#218BFF",
+          "#59636E",
+          "#116329",
+          "#8250DF",
+          "#A475F9",
+          "#CF222E",
+          "#A40E26",
+          "#818B98",
+          "#4D2D00",
+          "#633C01",
+          "#C8D1DA",
+          "#DAE0E7",
+          "#DDF4FF",
+          "#FFF8C5",
+          "#FFEBE9",
+          "#EFF2F5",
+          "#FBEFFF",
+          "#BC4C00",
+          "#FFF1E5",
+          "#BF3989",
+          "#FFEFF7",
+          "#DAFBE1",
+          "#E6EAEF",
+          "#EAC54F",
+          "#0550AE",
+          "#0A3069",
+          "#953800",
+          "#ACEEBB",
+          "#4AC26B",
+          "#2DA44E",
+          "#F0DB3D",
+          "#FFD642",
+          "#F68C41",
+          "#B6E3FF",
+          "#54AEFF",
+          "#E0E6EB",
+          "#9D615C",
+          "#F2E9E9",
+          "#006EDB",
+          "#D1F0FF",
+          "#856D4C",
+          "#EEEAE2",
+          "#D43511",
+          "#FFE5DB",
+          "#808FA3",
+          "#E8ECF2",
+          "#30A147",
+          "#CAF7CA",
+          "#866E04",
+          "#F7EEA1",
+          "#527A29",
+          "#E3F2B5",
+          "#64762D",
+          "#F0F0AD",
+          "#EB670F",
+          "#FFE7D1",
+          "#167E53",
+          "#BFF8DB",
+          "#CE2C85",
+          "#FFE5F1",
+          "#A830E8",
+          "#F8E5FF",
+          "#894CEB",
+          "#F1E5FF",
+          "#DF0C24",
+          "#FFE2E0",
+          "#179B9B",
+          "#C7F5EF",
+          "#B88700",
+          "#FFEC9E",
+          "#FFCECB",
+          "#E6D6D5",
+          "#8A5551",
+          "#D4B7B5",
+          "#C59E9B",
+          "#B4827E",
+          "#744744",
+          "#5D3937",
+          "#432928",
+          "#ADE1FF",
+          "#005FCC",
+          "#75C8FF",
+          "#47AFFF",
+          "#0F8FFF",
+          "#004DB3",
+          "#003D99",
+          "#002B75",
+          "#DFD7C8",
+          "#755F43",
+          "#CBBDA4",
+          "#B8A484",
+          "#A68B64",
+          "#64513A",
+          "#51412F",
+          "#3A2E22",
+          "#FECEBE",
+          "#BA2E12",
+          "#FCAB92",
+          "#F88768",
+          "#F25F3A",
+          "#9B2712",
+          "#7E2011",
+          "#5D180E",
+          "#007B94",
+          "#BDF4FF",
+          "#7AE9FF",
+          "#006A80",
+          "#00D0FA",
+          "#00B7DB",
+          "#0099B8",
+          "#00596B",
+          "#004857",
+          "#003742",
+          "#647182",
+          "#D2DAE4",
+          "#5C6570",
+          "#B4C0CF",
+          "#9BA9BB",
+          "#4E535A",
+          "#424448",
+          "#303031",
+          "#2C8141",
+          "#9CEDA0",
+          "#2B6E3F",
+          "#54D961",
+          "#31BF46",
+          "#285C3B",
+          "#254B34",
+          "#1D3528",
+          "#5A61E7",
+          "#E5E9FF",
+          "#D2D7FE",
+          "#494EDF",
+          "#B1B9FB",
+          "#979FF7",
+          "#7A82F0",
+          "#393CD5",
+          "#2D2DB4",
+          "#25247B",
+          "#786002",
+          "#D8BD0E",
+          "#C2A60A",
+          "#A68C07",
+          "#654F01",
+          "#523F00",
+          "#3D2E00",
+          "#C7E580",
+          "#476C28",
+          "#9BD039",
+          "#80B530",
+          "#6C9D2F",
+          "#3A5B25",
+          "#2F4A21",
+          "#213319",
+          "#DBE170",
+          "#56682C",
+          "#B9C832",
+          "#9BAE32",
+          "#819532",
+          "#495A2B",
+          "#3B4927",
+          "#2A331F",
+          "#B8500F",
+          "#FECFAA",
+          "#A24610",
+          "#FBAF74",
+          "#8D3C11",
+          "#70300F",
+          "#54230D",
+          "#80EFB9",
+          "#156F4B",
+          "#1DD781",
+          "#1DBF76",
+          "#1AA267",
+          "#135D41",
+          "#114B36",
+          "#0D3627",
+          "#FDC9E2",
+          "#B12F79",
+          "#F8A5CF",
+          "#F184BC",
+          "#E55DA5",
+          "#8E2E66",
+          "#6E2B53",
+          "#4D233D",
+          "#F0CDFE",
+          "#961EDC",
+          "#E2A7FB",
+          "#D487F7",
+          "#C264F2",
+          "#7D1EB8",
+          "#651D96",
+          "#471769",
+          "#E6D2FE",
+          "#783AE4",
+          "#D1B1FC",
+          "#BC91F8",
+          "#A672F3",
+          "#6223D7",
+          "#4F21AB",
+          "#391B79",
+          "#FECDCD",
+          "#C50D28",
+          "#FDA5A7",
+          "#FB8389",
+          "#F85461",
+          "#A60C29",
+          "#880C27",
+          "#610A20",
+          "#127E81",
+          "#89EBE1",
+          "#106E75",
+          "#22D3C7",
+          "#1DB9B4",
+          "#0D5B63",
+          "#0A4852",
+          "#073740",
+          "#946A00",
+          "#805900",
+          "#EBB400",
+          "#D19D00",
+          "#704D00",
+          "#5C3D00",
+          "#422B00",
+          "#82071E",
+          "#6639BA",
+          "#FFD8B5",
+          "#3B2300",
+          "#FD8C73"
+        ],
+        "extra": []
+      },
+      "roles": null,
+      "spacing": {
+        "precision": 0.625,
+        "recall": 0.22727272727272727,
+        "f1": 0.3333333333333333,
+        "missed": [
+          "112",
+          "128",
+          "2",
+          "20",
+          "28",
+          "32",
+          "36",
+          "4",
+          "40",
+          "44",
+          "48",
+          "64",
+          "80",
+          "96",
+          "1",
+          "10",
+          "14"
+        ],
+        "extra": [
+          "3",
+          "5",
+          "15"
+        ]
+      },
+      "fontSizes": {
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "missed": [
+          "40",
+          "20"
+        ],
+        "extra": []
+      },
+      "bodySize": null,
+      "fonts": null,
+      "radii": {
+        "precision": 1,
+        "recall": 0.3333333333333333,
+        "f1": 0.5,
+        "missed": [
+          "12",
+          "3"
+        ],
+        "extra": []
+      },
+      "pill": null,
+      "shadows": null
+    },
+    "screenshot": {
+      "colors": {
+        "precision": 1,
+        "recall": 0.03614457831325301,
+        "f1": 0.06976744186046512,
+        "missed": [
+          "#1B7C83",
+          "#3192AA",
+          "#0757BA",
+          "#197935",
+          "#95D8A6",
+          "#1C8139",
+          "#C21C2C",
+          "#0860CA",
+          "#D1242F",
+          "#CAECFF",
+          "#393F46",
+          "#0969DA",
+          "#218BFF",
+          "#59636E",
+          "#116329",
+          "#8250DF",
+          "#A475F9",
+          "#A40E26",
+          "#818B98",
+          "#4D2D00",
+          "#633C01",
+          "#C8D1DA",
+          "#DAE0E7",
+          "#DDF4FF",
+          "#FFF8C5",
+          "#FFEBE9",
+          "#EFF2F5",
+          "#FBEFFF",
+          "#25292E",
+          "#BC4C00",
+          "#FFF1E5",
+          "#BF3989",
+          "#FFEFF7",
+          "#DAFBE1",
+          "#E6EAEF",
+          "#EAC54F",
+          "#0550AE",
+          "#0A3069",
+          "#953800",
+          "#ACEEBB",
+          "#4AC26B",
+          "#2DA44E",
+          "#F0DB3D",
+          "#FFD642",
+          "#F68C41",
+          "#B6E3FF",
+          "#54AEFF",
+          "#9D615C",
+          "#F2E9E9",
+          "#006EDB",
+          "#D1F0FF",
+          "#856D4C",
+          "#EEEAE2",
+          "#D43511",
+          "#FFE5DB",
+          "#808FA3",
+          "#E8ECF2",
+          "#30A147",
+          "#CAF7CA",
+          "#866E04",
+          "#F7EEA1",
+          "#527A29",
+          "#E3F2B5",
+          "#64762D",
+          "#F0F0AD",
+          "#EB670F",
+          "#FFE7D1",
+          "#167E53",
+          "#BFF8DB",
+          "#CE2C85",
+          "#FFE5F1",
+          "#A830E8",
+          "#F8E5FF",
+          "#894CEB",
+          "#F1E5FF",
+          "#DF0C24",
+          "#FFE2E0",
+          "#179B9B",
+          "#C7F5EF",
+          "#B88700",
+          "#FFEC9E",
+          "#FFCECB",
+          "#E6D6D5",
+          "#8A5551",
+          "#D4B7B5",
+          "#C59E9B",
+          "#B4827E",
+          "#744744",
+          "#5D3937",
+          "#432928",
+          "#ADE1FF",
+          "#005FCC",
+          "#75C8FF",
+          "#47AFFF",
+          "#0F8FFF",
+          "#004DB3",
+          "#003D99",
+          "#002B75",
+          "#DFD7C8",
+          "#755F43",
+          "#CBBDA4",
+          "#B8A484",
+          "#A68B64",
+          "#64513A",
+          "#51412F",
+          "#3A2E22",
+          "#FECEBE",
+          "#BA2E12",
+          "#FCAB92",
+          "#F88768",
+          "#F25F3A",
+          "#9B2712",
+          "#7E2011",
+          "#5D180E",
+          "#007B94",
+          "#BDF4FF",
+          "#7AE9FF",
+          "#006A80",
+          "#00D0FA",
+          "#00B7DB",
+          "#0099B8",
+          "#00596B",
+          "#004857",
+          "#003742",
+          "#647182",
+          "#D2DAE4",
+          "#5C6570",
+          "#B4C0CF",
+          "#9BA9BB",
+          "#4E535A",
+          "#424448",
+          "#303031",
+          "#2C8141",
+          "#9CEDA0",
+          "#2B6E3F",
+          "#54D961",
+          "#31BF46",
+          "#285C3B",
+          "#254B34",
+          "#1D3528",
+          "#5A61E7",
+          "#E5E9FF",
+          "#D2D7FE",
+          "#494EDF",
+          "#B1B9FB",
+          "#979FF7",
+          "#7A82F0",
+          "#393CD5",
+          "#2D2DB4",
+          "#25247B",
+          "#786002",
+          "#D8BD0E",
+          "#C2A60A",
+          "#A68C07",
+          "#654F01",
+          "#523F00",
+          "#3D2E00",
+          "#C7E580",
+          "#476C28",
+          "#9BD039",
+          "#80B530",
+          "#6C9D2F",
+          "#3A5B25",
+          "#2F4A21",
+          "#213319",
+          "#DBE170",
+          "#56682C",
+          "#B9C832",
+          "#9BAE32",
+          "#819532",
+          "#495A2B",
+          "#3B4927",
+          "#2A331F",
+          "#B8500F",
+          "#FECFAA",
+          "#A24610",
+          "#FBAF74",
+          "#8D3C11",
+          "#70300F",
+          "#54230D",
+          "#80EFB9",
+          "#156F4B",
+          "#1DD781",
+          "#1DBF76",
+          "#1AA267",
+          "#135D41",
+          "#114B36",
+          "#0D3627",
+          "#FDC9E2",
+          "#B12F79",
+          "#F8A5CF",
+          "#F184BC",
+          "#E55DA5",
+          "#8E2E66",
+          "#6E2B53",
+          "#4D233D",
+          "#F0CDFE",
+          "#961EDC",
+          "#E2A7FB",
+          "#D487F7",
+          "#C264F2",
+          "#7D1EB8",
+          "#651D96",
+          "#471769",
+          "#E6D2FE",
+          "#783AE4",
+          "#D1B1FC",
+          "#BC91F8",
+          "#A672F3",
+          "#6223D7",
+          "#4F21AB",
+          "#391B79",
+          "#FECDCD",
+          "#C50D28",
+          "#FDA5A7",
+          "#FB8389",
+          "#F85461",
+          "#A60C29",
+          "#880C27",
+          "#610A20",
+          "#127E81",
+          "#89EBE1",
+          "#106E75",
+          "#22D3C7",
+          "#1DB9B4",
+          "#0D5B63",
+          "#0A4852",
+          "#073740",
+          "#946A00",
+          "#805900",
+          "#EBB400",
+          "#D19D00",
+          "#704D00",
+          "#5C3D00",
+          "#422B00",
+          "#82071E",
+          "#6639BA",
+          "#FFD8B5",
+          "#3B2300",
+          "#FD8C73"
+        ],
+        "extra": []
+      },
+      "roles": null,
+      "spacing": null,
+      "fontSizes": null,
+      "bodySize": null,
+      "fonts": null,
+      "radii": null,
+      "pill": null,
+      "shadows": null
+    },
+    "components": {
+      "recall": 1,
+      "precision": 0.8,
+      "f1": 0.888888888888889,
+      "variantRecall": 1,
+      "found": [
+        "button",
+        "card",
+        "badge",
+        "input"
+      ],
+      "missed": [],
+      "unmatchedCandidates": [
+        "box×3"
+      ]
+    },
+    "extractScore": 87.5
+  }
+]

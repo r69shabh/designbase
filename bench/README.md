@@ -1,6 +1,6 @@
 # designbase benchmarks
 
-Two benchmarks share one harness, one task set and one scorer:
+Three benchmarks. **ExtractBench** (below) measures the designer agent's extraction. The other two share one harness, one task set and one scorer:
 
 1. **DesignBench (model leaderboard).** How well does each model follow a product's design system *on its own*? Every model gets the same 10 UI tasks with either screenshots of approved screens or the whole design system pasted in, and is scored the same way. Suite: `models`.
 2. **designbase uplift.** How much does designbase improve each model? The same models also run with the designbase brief and with the full check→fix loop. Suite: `tool`, a superset of `models`, so results are shared.
@@ -60,3 +60,32 @@ To benchmark an agent such as Claude Code or Cursor rather than a raw model, gen
 - The A condition is penalised by the `use-components` rule because screenshots can't tell a model which components exist. That's the real-world gap being measured, but read A's lint score with that in mind.
 - An LLM judge favours its own model family. Use a judge from a family not under test, or average two.
 - Free-tier keys hit rate limits (Groq: 8k tokens/min, too small for the D loop; Gemini: daily quota). Run with `--concurrency 1`, or use paid keys for a full run.
+
+## ExtractBench: extraction accuracy
+
+*How close is what the designer agent extracts to the truth?* It runs the deterministic stages (measure → synthesize → discover components) with no model calls, so it's free and reproducible.
+
+```bash
+npm run bench:extract
+```
+
+Options: `--cases almanac,synth-3,primer` and `--seeds 8`.
+
+| Case | Truth | World |
+|---|---|---|
+| `almanac` | The hand-written playbook, on its two exemplar pages | closed |
+| `synth-1…N` | Seeded random design systems (light/dark, 4/8px base, type ratio 1.2–1.33, sharp/soft/round corners, with/without shadows, different fonts) rendered into a dashboard and a settings page. The generator records every token it used and marks each component instance with `data-truth` (read only by the scorer). | closed |
+| `primer` | GitHub's Primer: real `@primer/css` on pages built from its shipped classes, scored against the published `@primer/primitives` tokens | open (precision only) |
+
+Each case runs twice: from the **live page** (all tokens and components) and from a **screenshot** only (colours).
+
+| Metric | How |
+|---|---|
+| Colours | One-to-one match at CIEDE2000 ΔE ≤ 3: precision, recall, F1; plus role accuracy (is `background`/`text`/`accent`/`border` the right colour?) |
+| Spacing, type, radius | Exact value match (type ±0.5px): precision, recall, F1; body size; pill and shadow presence |
+| Fonts | Family set F1 |
+| Components | A candidate is labelled with the truth component most of its instances overlap (box IoU ≥ 0.6). Recall, precision, and variant recall (colour treatments found vs used) |
+
+It writes `results/extractbench.md` (gates, per-case tables, and a "what was missed" list) and `results/extractbench.json`.
+
+**Gates** (closed-world averages, from ROADMAP Phase 4/5): URL colour F1 ≥ 0.95, spacing F1 ≥ 0.90, type F1 ≥ 0.90, screenshot colour F1 ≥ 0.85, component recall ≥ 0.80.
