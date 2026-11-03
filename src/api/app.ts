@@ -131,9 +131,14 @@ export function createApp(store: Store, opts: { auth?: "local" | "keys" } = {}) 
       }
       return c.json({ sources: added }, 201);
     }
-    const { url } = await parse(c, z.object({ url: z.string().min(1) }));
-    if (!/^https?:\/\//.test(url) && auth !== "local") throw new HTTPException(400, { message: "URL must be http(s)" });
-    return c.json(store.addSource(pb.id, "url", { uri: url }), 201);
+    const body = await parse(c, z.union([z.object({ url: z.string().min(1) }), z.object({ repo: z.string().min(1) })]));
+    if ("repo" in body) {
+      // Local paths only in local mode; hosted mode gets repos through the GitHub connector.
+      if (auth !== "local") throw new HTTPException(400, { message: "Repo paths are only accepted in local mode" });
+      return c.json(store.addSource(pb.id, "repo", { uri: body.repo }), 201);
+    }
+    if (!/^https?:\/\//.test(body.url) && auth !== "local") throw new HTTPException(400, { message: "URL must be http(s)" });
+    return c.json(store.addSource(pb.id, "url", { uri: body.url }), 201);
   });
 
   // --- extraction & jobs ---
@@ -142,6 +147,10 @@ export function createApp(store: Store, opts: { auth?: "local" | "keys" } = {}) 
     const body = await c.req.json().catch(() => ({}));
     const { sources, interpret } = z.object({ sources: z.array(z.string()).optional(), interpret: z.boolean().default(true) }).parse(body);
     return c.json(store.enqueue("extract", { playbookId: pb.id, sources, interpret }, pb.id), 202);
+  });
+  app.post("/v1/playbooks/:id/scan", (c) => {
+    const pb = playbookOr404(c);
+    return c.json(store.enqueue("scan", { playbookId: pb.id }, pb.id), 202);
   });
   app.post("/v1/playbooks/:id/discover", async (c) => {
     const pb = playbookOr404(c);

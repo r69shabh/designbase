@@ -138,7 +138,7 @@ export function applyProposals(store: Store, playbookId: string, message = "Appl
   // Built components (from discovery) replace same-named ones; name-only proposals carry no code and are skipped.
   const components = new Map(base.components.map((c) => [c.name, c]));
   for (const p of accepted.filter((p) => p.kind === "component" && typeof (p.data as { code?: unknown }).code === "string")) {
-    const { verification: _v, assets: _a, propSpecs, ...d } = p.data as Record<string, unknown> & { propSpecs: { name: string; type: string; required: boolean }[] };
+    const { verification: _v, assets: _a, file: _f, usedBy: _u, propSpecs, ...d } = p.data as Record<string, unknown> & { propSpecs: { name: string; type: string; required: boolean }[] };
     components.set(p.key, ComponentSchema.parse({ ...d, replaces: cleanReplaces((d.replaces as string[]) ?? []), propSpecs, props: propSpecs.map((x) => `${x.name}${x.required ? "" : "?"}: ${x.type}`).join("; ") }));
   }
 

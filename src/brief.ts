@@ -103,9 +103,18 @@ export function buildBrief(pb: Playbook, task: string, opts: BriefOptions = {}):
     out.push("## Pattern", "", "No stored pattern matches this task. Compose from the components below and follow the voice and rhythm rules.", "");
   }
 
-  out.push(`## Components to use (import from the playbook's components folder; do not re-create them)`, "");
+  out.push(`## Components to use (import them; never re-create them)`, "");
+  const importLine = (c: (typeof components)[number]) => {
+    const names = [c.name, ...(c.parts ?? [])].join(", ");
+    const path = c.importPath ?? `@/components/${c.name}`;
+    return c.exportName === "default" ? `import ${c.name} from "${path}";` : `import { ${names} } from "${path}";`;
+  };
   components.forEach((c, i) => {
-    out.push(`### ${c.name}`, "", c.summary, "", `Props: \`${c.props}\``, `Do: ${c.do.join("; ")}`, `Don't: ${c.dont.join("; ")}`, "");
+    out.push(`### ${c.name}`, "", c.summary, "", `\`${importLine(c)}\``, `Props: \`${c.props}\``);
+    if (c.example) out.push(`Example: \`${c.example}\``);
+    if (c.do.length) out.push(`Do: ${c.do.join("; ")}`);
+    if (c.dont.length) out.push(`Don't: ${c.dont.join("; ")}`);
+    out.push("");
     if (i < fullCode) out.push("```tsx", c.code.trim(), "```", "");
   });
   const others = pb.components.filter((c) => !components.includes(c));

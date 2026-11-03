@@ -15,7 +15,10 @@ export interface Tokens {
   breakpoints: Record<string, number>;
 }
 export interface Rule { id: string; severity: "error" | "warn"; kind: string; title: string; why: string; fix: string }
-export interface Component { name: string; file: string; summary: string; keywords: string[]; props: string; do: string[]; dont: string[]; code: string; replaces?: string[] }
+export interface Component {
+  name: string; file: string; summary: string; keywords: string[]; props: string; do: string[]; dont: string[]; code: string;
+  replaces?: string[]; origin?: "playbook" | "repo" | "generated"; importPath?: string; exportName?: string; parts?: string[]; example?: string;
+}
 export interface Pattern { name: string; keywords: string[]; summary: string; components: string[]; skeleton: string; rhythm: string; exemplar: string | null }
 
 export interface Playbook {

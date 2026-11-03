@@ -1,11 +1,13 @@
 // In-process job worker. Jobs live in SQLite, so a restart resumes them (expired leases are reclaimed).
 import { runDiscovery } from "../designer/discover-job.ts";
 import { runExtraction } from "../designer/extract.ts";
+import { runScan } from "../designer/scan-job.ts";
 import type { Job, Store } from "../store/db.ts";
 
 const handlers: Record<string, (store: Store, job: Job) => Promise<unknown>> = {
   extract: runExtraction,
   discover: (store, job) => runDiscovery(store, job),
+  scan: runScan,
 };
 
 export function startWorker(store: Store, opts: { pollMs?: number; handlers?: Partial<typeof handlers> } = {}) {

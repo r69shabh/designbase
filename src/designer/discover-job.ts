@@ -17,6 +17,7 @@ export interface DiscoverResult {
   candidates: number;
   built: { name: string; score: number; passed: boolean; rounds: number }[];
   failed: { candidate: string; error: string }[];
+  reused: { candidate: string; component: string }[];
   cost: number;
 }
 
@@ -31,7 +32,7 @@ export async function runDiscovery(store: Store, job: Job, synth: Synthesizer = 
   const workRoot = join(store.dir, "work", job.id);
   const pb = materialize(head.content, join(workRoot, "head"));
   const pages: UrlMeasurement[] = [];
-  const result: DiscoverResult = { candidates: 0, built: [], failed: [], cost: 0 };
+  const result: DiscoverResult = { candidates: 0, built: [], failed: [], reused: [], cost: 0 };
 
   try {
     for (const s of urls) {
@@ -48,6 +49,13 @@ export async function runDiscovery(store: Store, job: Job, synth: Synthesizer = 
     store.db.prepare("UPDATE proposals SET status = 'superseded' WHERE playbook_id = ? AND kind = 'component' AND status = 'open'").run(playbookId);
 
     for (const c of candidates) {
+      // The team already has this component (from the repo or an earlier build): use it, don't regenerate.
+      const existing = head.content.components.find((x) => x.replaces.includes(c.kind) || x.name.toLowerCase() === c.kind);
+      if (existing) {
+        result.reused.push({ candidate: `${c.kind}×${c.instances.length}`, component: existing.name });
+        log(`${c.kind} already exists as ${existing.name}${existing.importPath ? ` (${existing.importPath})` : ""}; reusing it`);
+        continue;
+      }
       const page = pages.find((p) => p.url === c.instances[0].page)!;
       const [crop] = await cropBoxes(page.screenshot, [c.instances[0].box]);
       log(`Building ${c.kind} (${c.skins.length} variant${c.skins.length === 1 ? "" : "s"})`);
