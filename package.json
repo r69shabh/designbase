@@ -16,7 +16,8 @@
     "bench:prompt": "tsx bench/prompt.ts",
     "bench:shots": "tsx bench/shots.ts",
     "bench:run": "tsx bench/run.ts",
-    "bench:report": "tsx bench/report.ts"
+    "bench:report": "tsx bench/report.ts",
+    "bench:rescore": "tsx bench/rescore.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

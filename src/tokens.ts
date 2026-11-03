@@ -37,6 +37,10 @@ export function exportTokens(pb: Playbook, format: TokenFormat): string {
         "  --shadow-*: initial;",
         "  --spacing: 4px;",
         "}",
+        "",
+        "@layer base {",
+        "  html { font-family: var(--font-body); color: var(--color-ink); background: var(--color-paper); }",
+        "}",
       ].join("\n");
     case "tailwind-v3":
       return `/** @type {import('tailwindcss').Config} */

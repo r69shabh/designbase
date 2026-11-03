@@ -77,6 +77,8 @@ function themeCss(pb: Playbook): string {
     ...Object.entries(t.fontSize).map(([k, v]) => `  --text-${k}: ${v / 16}rem;`),
     ...Object.entries(t.radius).filter(([k]) => k !== "none" && k !== "full").map(([k, v]) => `  --radius-${k}: ${v}px;`),
     "}",
+    // The base layer a real app gets from the design system, so models aren't penalised for not restating it.
+    "@layer base { html { font-family: var(--font-body); color: var(--color-ink); background: var(--color-paper); } }",
   ].join("\n");
 }
 

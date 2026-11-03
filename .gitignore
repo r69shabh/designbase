@@ -5,3 +5,4 @@ node_modules/
 bench/runs/**/work*/
 bench/runs/**/final/
 bench/runs/**/*.png
+.env

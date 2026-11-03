@@ -1,25 +1,28 @@
 {
-  "judge": "google/gemini-4-argon",
+  "judge": "gemini:gemini-4-argon",
   "maxFixRounds": 3,
-  "concurrency": 6,
+  "concurrency": 4,
   "suites": {
     "models": ["A-screenshot", "B-dump"],
     "tool": ["A-screenshot", "B-dump", "C-brief", "D-loop"]
   },
   "models": [
-    "anthropic/claude-opus-5.5",
-    "anthropic/claude-sonnet-5.5",
-    "anthropic/claude-haiku-5.5",
-    "openai/gpt-6.1-terra-pro",
-    "openai/gpt-6.1-terra",
-    "google/gemini-4-argon",
-    "google/gemini-3.8-flash",
-    "x-ai/grok-4.7",
-    "deepseek/deepseek-v4.1-flash",
-    "qwen/qwen3.8-max-0902",
-    "moonshotai/kimi-k3.1-pro",
-    "z-ai/glm-5.3-prime",
-    "mistralai/mistral-large-4-0",
-    "minimax/minimax-m3.1-flash"
+    { "id": "openrouter:anthropic/claude-opus-5.5", "vision": true },
+    { "id": "openrouter:anthropic/claude-sonnet-5.5", "vision": true },
+    { "id": "openrouter:anthropic/claude-haiku-5.5", "vision": true },
+    { "id": "openrouter:openai/gpt-6.1-terra-pro", "vision": true },
+    { "id": "openrouter:openai/gpt-6.1-terra", "vision": true },
+    { "id": "openrouter:x-ai/grok-4.7", "vision": true },
+    { "id": "openrouter:qwen/qwen3.8-max-0902", "vision": true },
+    { "id": "openrouter:moonshotai/kimi-k3.1-pro", "vision": true },
+    { "id": "openrouter:z-ai/glm-5.3-prime", "vision": false },
+    { "id": "gemini:gemini-4-argon", "vision": true },
+    { "id": "gemini:gemini-3.8-flash", "vision": true },
+    { "id": "groq:openai/gpt-oss-120b", "vision": false },
+    { "id": "groq:qwen/qwen3.8-27b", "vision": false },
+    { "id": "nvidia:deepseek-ai/deepseek-v4.1-flash", "vision": false },
+    { "id": "nvidia:minimaxai/minimax-m3.1-flash", "vision": false },
+    { "id": "nvidia:mistralai/mistral-large-4-1t-a52b", "vision": false },
+    { "id": "nvidia:nvidia/nemotron-3-ultra-550b-a55b", "vision": false }
   ]
 }

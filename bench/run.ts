@@ -7,10 +7,10 @@ import { parseArgs } from "node:util";
 import { loadPlaybook } from "../src/playbook.ts";
 import { closeBrowser } from "../src/visual.ts";
 import { CONDITIONS, fixMessage, initialMessages, type Condition, type Task } from "./lib/conditions.ts";
-import { complete, extractCode, listModels, type Message } from "./lib/models.ts";
+import { checkProviders, complete, extractCode, parseModel, type Message, type ModelSpec, type Provider } from "./lib/models.ts";
 import { scoreFile, type Score } from "./lib/score.ts";
 
-interface Config { judge: string; maxFixRounds: number; concurrency: number; suites: Record<string, Condition[]>; models: string[] }
+interface Config { judge: string; maxFixRounds: number; concurrency: number; suites: Record<string, Condition[]>; models: ModelSpec[] }
 export interface RunResult {
   model: string;
   condition: Condition;
@@ -24,6 +24,11 @@ export interface RunResult {
   error?: string;
   finishedAt: string;
 }
+
+// Keys can live in a git-ignored .env as well as the shell environment.
+try {
+  process.loadEnvFile(".env");
+} catch {}
 
 const BENCH = "bench";
 const config: Config = JSON.parse(readFileSync(join(BENCH, "config.json"), "utf8"));
@@ -44,23 +49,44 @@ const { values: args } = parseArgs({
 const slug = (model: string) => model.replace(/[/:]/g, "__");
 export const runDir = (model: string, condition: string, task: string) => join(BENCH, "runs", slug(model), condition, task);
 
-const models = args.models ? args.models.split(",") : config.models;
+const requested: ModelSpec[] = args.models
+  ? args.models.split(",").map((id) => config.models.find((m) => m.id === id) ?? { id, vision: false })
+  : config.models;
 const conditions = (args.conditions ? args.conditions.split(",") : config.suites[args.suite!]) as Condition[];
 if (!conditions) throw new Error(`Unknown suite ${args.suite}. Suites: ${Object.keys(config.suites).join(", ")}`);
 for (const c of conditions) if (!(c in CONDITIONS)) throw new Error(`Unknown condition ${c}`);
 const selectedTasks = args.tasks ? tasks.filter((t) => args.tasks!.split(",").includes(t.id)) : tasks;
-const judge = args.judge === "none" ? undefined : args.judge ?? config.judge;
+let judge = args.judge === "none" ? undefined : args.judge ?? config.judge;
 const concurrency = Number(args.concurrency ?? config.concurrency);
 
-const catalog = await listModels();
-for (const m of [...models, ...(judge ? [judge] : [])]) if (!catalog.has(m)) throw new Error(`OpenRouter has no model "${m}"`);
+// Drop models whose provider key is missing or rejected, instead of failing every call.
+const providers = await checkProviders([...new Set([...requested.map((m) => m.id), ...(judge ? [judge] : [])].map((id) => parseModel(id).provider))]);
+for (const [p, s] of providers) if (!s.ok) console.warn(`  ! skipping ${p} models: ${s.reason}`);
+const available = (id: string) => {
+  const { provider, model } = parseModel(id);
+  const p = providers.get(provider)!;
+  return p.ok && p.models.has(model);
+};
+const models = requested.filter((m) => {
+  if (!providers.get(parseModel(m.id).provider)!.ok) return false;
+  if (!available(m.id)) console.warn(`  ! ${m.id}: provider doesn't list this model, skipping`);
+  return available(m.id);
+});
+if (judge && !available(judge)) {
+  console.warn(`  ! judge ${judge} unavailable, running without a judge`);
+  judge = undefined;
+}
+const price = (id: string): [number, number] => {
+  const { provider, model } = parseModel(id);
+  return providers.get(provider)!.prices.get(model) ?? [0, 0];
+};
 
-const jobs = models.flatMap((model) =>
+const jobs = models.flatMap((m) =>
   conditions.flatMap((condition) =>
     selectedTasks
       // Screenshot condition needs a vision model.
-      .filter(() => condition !== "A-screenshot" || catalog.get(model)!.vision)
-      .map((task) => ({ model, condition, task })),
+      .filter(() => condition !== "A-screenshot" || m.vision)
+      .map((task) => ({ model: m.id, condition, task })),
   ),
 );
 const todo = jobs.filter((j) => args.force || !existsSync(join(runDir(j.model, j.condition, j.task.id), "result.json")));
@@ -73,15 +99,16 @@ const EST: Record<Condition, { in: number; out: number }> = {
   "D-loop": { in: 16_000, out: 11_000 },
 };
 const estimate = todo.reduce((sum, j) => {
-  const m = catalog.get(j.model)!;
+  const [pin, pout] = price(j.model);
   const e = EST[j.condition];
-  const judgeCost = judge ? 4_000 * catalog.get(judge)!.promptPrice + 300 * catalog.get(judge)!.completionPrice : 0;
-  return sum + e.in * m.promptPrice + e.out * m.completionPrice + judgeCost;
+  const [jin, jout] = judge ? price(judge) : [0, 0];
+  return sum + e.in * pin + e.out * pout + 4_000 * jin + 300 * jout;
 }, 0);
 
 console.log(`designbase bench — suite "${args.suite}"`);
-console.log(`  models: ${models.length}  conditions: ${conditions.join(", ")}  tasks: ${selectedTasks.length}  judge: ${judge ?? "none"}`);
-console.log(`  jobs: ${jobs.length} (${jobs.length - todo.length} cached, ${todo.length} to run)  estimated cost: ~$${estimate.toFixed(2)} (reasoning-heavy models can run 2-3× higher)`);
+console.log(`  models: ${models.map((m) => m.id).join(", ")}`);
+console.log(`  count: ${models.length}  conditions: ${conditions.join(", ")}  tasks: ${selectedTasks.length}  judge: ${judge ?? "none"}`);
+console.log(`  jobs: ${jobs.length} (${jobs.length - todo.length} cached, ${todo.length} to run)  estimated cost: ~$${estimate.toFixed(2)} where the provider publishes prices (OpenRouter, Groq); reasoning-heavy models can run 2-3× higher. Gemini and NVIDIA usage is not estimated.`);
 if (args["dry-run"]) process.exit(0);
 
 const pb = loadPlaybook();
