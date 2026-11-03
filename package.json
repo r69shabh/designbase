@@ -1,0 +1,28 @@
+{
+  "name": "designbase",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Phase 0: a playbook-aware MCP server that briefs AI agents and checks their UI output",
+  "bin": {
+    "designbase": "src/cli.ts"
+  },
+  "scripts": {
+    "mcp": "tsx src/server.ts",
+    "brief": "tsx src/cli.ts brief",
+    "check": "tsx src/cli.ts check",
+    "bench": "tsx bench/score.ts",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "playwright": "^1.64.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
