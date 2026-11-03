@@ -5,6 +5,9 @@ import type { Page } from "playwright";
 import { getBrowser, toUrl } from "../visual.ts";
 
 export interface ElementSample {
+  /** Index in the elements array, and the index of the nearest measured ancestor (-1 at the top). */
+  idx: number;
+  parent: number;
   tag: string;
   role: "text" | "heading" | "button" | "input" | "link" | "container" | "image" | "other";
   text: number; // length of own text
@@ -20,6 +23,9 @@ export interface ElementSample {
   spacing: { padding: number[]; margin: number[]; gap: number[] };
   radius: number;
   shadow: string;
+  layout: { display: string; direction: string; align: string; justify: string };
+  /** First characters of the element's own text, for describing components. */
+  sample: string;
 }
 
 export interface UrlMeasurement {
@@ -37,6 +43,7 @@ function collect(): ElementSample[] {
   const px = (v: string) => parseFloat(v) || 0;
   const transparent = (c: string) => c === "transparent" || /rgba\([^)]*,\s*0\)$/.test(c);
   const out: ElementSample[] = [];
+  const index = new Map<Element, number>();
   for (const el of Array.from(document.body.querySelectorAll("*"))) {
     if (["SCRIPT", "STYLE", "LINK", "META", "BR", "NOSCRIPT", "TEMPLATE"].includes(el.tagName)) continue;
     if (el.closest("svg") && el.tagName.toLowerCase() !== "svg") continue;
@@ -55,7 +62,19 @@ function collect(): ElementSample[] {
       : s.display !== "inline" ? "container" : "other";
     const borderW = px(s.borderTopWidth) + px(s.borderRightWidth) + px(s.borderBottomWidth) + px(s.borderLeftWidth);
     const lh = s.lineHeight === "normal" ? px(s.fontSize) * 1.2 : px(s.lineHeight);
+    let parent = -1;
+    for (let p = el.parentElement; p; p = p.parentElement) {
+      const i = index.get(p);
+      if (i !== undefined) {
+        parent = i;
+        break;
+      }
+    }
+    index.set(el, out.length);
+    const ownText = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.textContent!.trim()).join(" ").trim();
     out.push({
+      idx: out.length,
+      parent,
       tag,
       role,
       text: own,
@@ -76,6 +95,8 @@ function collect(): ElementSample[] {
       },
       radius: px(s.borderTopLeftRadius),
       shadow: s.boxShadow,
+      layout: { display: s.display, direction: s.flexDirection, align: s.alignItems, justify: s.justifyContent },
+      sample: ownText.slice(0, 40) || (["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName) ? String((el as HTMLInputElement).value ?? "") : "").slice(0, 40) || (el.getAttribute("placeholder") ?? "").slice(0, 40),
     });
   }
   return out;
