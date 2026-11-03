@@ -16,7 +16,7 @@ interface Measured {
   sel: string;
   color: string;
   bg: string;
-  effectiveBg: string;
+  effectiveBg: string | null;
   borderColors: string[];
   font: string;
   fontSize: number;
@@ -69,10 +69,12 @@ function measurePage(): Measured[] {
     const cls = typeof el.className === "string" ? el.className.trim().split(/\s+/).slice(0, 2).filter(Boolean) : [];
     return el.tagName.toLowerCase() + (el.id ? `#${el.id}` : "") + (cls.length ? "." + cls.join(".") : "");
   };
-  const effectiveBg = (el: Element | null): string => {
+  // null when text sits on a gradient or image: contrast can't be computed from styles alone.
+  const effectiveBg = (el: Element | null): string | null => {
     for (let n = el; n; n = n.parentElement) {
-      const bg = getComputedStyle(n).backgroundColor;
-      if (!transparent(bg)) return bg;
+      const cs = getComputedStyle(n);
+      if (cs.backgroundImage !== "none") return null;
+      if (!transparent(cs.backgroundColor)) return cs.backgroundColor;
     }
     return "rgb(255, 255, 255)";
   };
@@ -99,7 +101,9 @@ function measurePage(): Measured[] {
       hasText,
       spacing: [
         s.paddingTop, s.paddingRight, s.paddingBottom, s.paddingLeft,
-        s.marginTop, s.marginRight, s.marginBottom, s.marginLeft,
+        s.marginTop, s.marginBottom,
+        // Equal left/right margins are almost always margin: 0 auto centring, not a spacing choice.
+        ...(px(s.marginLeft) === px(s.marginRight) && px(s.marginLeft) > 0 ? [] : [s.marginLeft, s.marginRight]),
         s.rowGap, s.columnGap,
       ].map(px),
       radius: [s.borderTopLeftRadius, s.borderTopRightRadius, s.borderBottomRightRadius, s.borderBottomLeftRadius].map(px),
@@ -134,6 +138,8 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
   const families = Object.values(t.font).map((f) => f.family.toLowerCase());
   const sizes = new Set(Object.values(t.fontSize));
   const spacing = new Set(Object.values(t.spacing));
+  const steps = Object.values(t.spacing).sort((a, b) => a - b);
+  const nearestSteps = (v: number) => [steps.filter((s) => s < v).pop(), steps.find((s) => s > v)].filter((s) => s !== undefined).map((s) => `${s}px`).join(" or ");
   const radii = new Set(Object.values(t.radius));
   const col = new Collector(pb);
 
@@ -156,7 +162,7 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
       if (!sizes.has(size)) col.add("type-scale", String(size), `Font size ${size}px is off the type scale`, el.sel);
 
       const fg = parseColor(el.color);
-      const bg = parseColor(el.effectiveBg);
+      const bg = el.effectiveBg ? parseColor(el.effectiveBg) : null;
       if (fg && bg) {
         const ratio = contrast(fg, bg);
         const large = el.fontSize >= 24 || (el.fontSize >= 18.66 && el.bold);
@@ -166,7 +172,7 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
 
     for (const v of el.spacing) {
       const r = Math.round(v);
-      if (r > 0 && !spacing.has(r) && Math.abs(v - r) < 0.01) col.add("spacing-scale", String(r), `Spacing ${r}px is off the scale`, el.sel);
+      if (r > 0 && !spacing.has(r) && Math.abs(v - r) < 0.01) col.add("spacing-scale", String(r), `Spacing ${r}px is off the scale → ${nearestSteps(r)}`, el.sel);
     }
     for (const v of el.radius) {
       const r = Math.round(v);

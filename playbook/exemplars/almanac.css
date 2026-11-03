@@ -1,6 +1,6 @@
 /* Hand-written stand-in for the compiled Tailwind output of the Almanac tokens, so exemplars render without a build step. */
 :root {
-  --paper: #F4F1EA; --paper-2: #EAE5D9; --ink: #1B1A17; --ink-2: #4D4A42; --ink-3: #6B675E;
+  --paper: #F4F1EA; --paper-2: #EAE5D9; --ink: #1B1A17; --ink-2: #4D4A42; --ink-3: #66625A;
   --line: #D6D0C2; --accent: #B8401A; --accent-ink: #F4F1EA; --moss: #2F6B4F; --ochre: #8A5F12; --brick: #9E3326;
   --display: "Fraunces", Georgia, serif; --body: "IBM Plex Sans", sans-serif; --mono: "IBM Plex Mono", monospace;
 }
