@@ -75,7 +75,12 @@ Options: `--cases almanac,synth-3,primer` and `--seeds 8`.
 |---|---|---|
 | `almanac` | The hand-written playbook, on its two exemplar pages | closed |
 | `synth-1…N` | Seeded random design systems (light/dark, 4/8px base, type ratio 1.2–1.33, sharp/soft/round corners, with/without shadows, different fonts) rendered into a dashboard and a settings page. The generator records every token it used and marks each component instance with `data-truth` (read only by the scorer). | closed |
-| `primer` | GitHub's Primer: real `@primer/css` on pages built from its shipped classes, scored against the published `@primer/primitives` tokens | open (precision only) |
+| `primer` | GitHub's Primer: real `@primer/css` on pages built from its shipped classes, scored against the published `@primer/primitives` tokens | open |
+| `bootstrap` | Bootstrap 5's own CSS and components (`btn`, `card`, `badge`, `form-control`, `table`); truth from its CSS colours, `$spacers`, type and radius scales | open |
+| `bulma` | Bulma 1 (`button`, `box`, `tag`, `input`, `table`); colours evaluated from its runtime `--bulma-*-h/s/l` variables | open |
+| `carbon` | IBM Carbon (`cds--btn`, `cds--tile`, `cds--tag`, `cds--text-input`, `cds--data-table`); scales from `@carbon/layout` and `@carbon/type` | open |
+
+Open-world cases score **precision** (every value we report must exist in the library) and **core roles**: the page background, text, primary action and border, read from the computed colours of the elements that define them (`body`, the primary button, the input border).
 
 Each case runs twice: from the **live page** (all tokens and components) and from a **screenshot** only (colours).
 

@@ -36,6 +36,15 @@ const saturation = (hex: string) => {
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
   return max === 0 ? 0 : (max - min) / max;
 };
+const hue = (hex: string) => {
+  const [r, g, b] = hexRgb(hex).map((v) => v / 255);
+  const max = Math.max(r, g, b), d = max - Math.min(r, g, b);
+  if (!d) return 0;
+  const h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return (h * 60 + 360) % 360;
+};
+/** Red is reserved for danger in almost every system; it's the accent only if nothing else competes. */
+const isRed = (hex: string) => saturation(hex) > 0.35 && (hue(hex) < 15 || hue(hex) > 340);
 const lightness = (hex: string) => {
   const [r, g, b] = hexRgb(hex);
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
@@ -124,15 +133,23 @@ export function synthesize(urls: UrlMeasurement[], images: { name: string; m: Im
     const bg = [...named].find(([, n]) => n === "background")?.[0];
     const dl = (c: ColorStat) => (bg ? Math.abs(lightness(c.hex) - lightness(bg.hex)) : 0);
     take("text", neutral, (a, b) => dl(b) - dl(a));
-    take("accent", (c) => !neutral(c), (a, b) => b.imageShare - a.imageShare);
+    take("accent", (c) => !neutral(c), (a, b) => b.imageShare * (isRed(b.hex) ? 0.4 : 1) - a.imageShare * (isRed(a.hex) ? 0.4 : 1));
     // Near-background neutrals: the biggest is the raised surface, the most contrasting is the border.
-    const near = (c: ColorStat) => neutral(c) && dl(c) > 0.02 && dl(c) < 0.35;
+    // Surfaces and borders are near-greys (low chroma, in light and dark themes); pale tints are not.
+    const chroma = (c: ColorStat) => Math.max(...hexRgb(c.hex)) - Math.min(...hexRgb(c.hex));
+    const near = (c: ColorStat) => chroma(c) < 30 && dl(c) > 0.02 && dl(c) < 0.35;
     take("surface", near, (a, b) => b.imageShare - a.imageShare);
     take("border", near, (a, b) => dl(b) - dl(a));
   } else {
     take("background", (c) => c.bgArea > 0, (a, b) => b.bgArea - a.bgArea);
-    take("text", (c) => c.text > 0, (a, b) => b.text - a.text);
-    take("accent", (c) => saturation(c.hex) > 0.35 && (c.buttonBg > 0 || c.link > 0), (a, b) => b.buttonBg * 10 + b.link - (a.buttonBg * 10 + a.link));
+    // The colour declared on <body>/<html> is the base text colour, unless barely anything uses it.
+    // <body> first: <html> usually just carries the browser default (black).
+    const declared = ["body", "html"].map((tag) => elements.find((e) => e.tag === tag)).map((e) => e && cssColorHex(e.color)).find(Boolean);
+    const maxText = Math.max(0, ...significant.map((c) => c.text));
+    const isDeclared = (c: ColorStat) => !!declared && distance(hexRgb(c.hex), hexRgb(declared)) < 8 && c.text >= Math.min(40, 0.05 * maxText);
+    take("text", (c) => c.text > 0, (a, b) => (isDeclared(b) ? 1e9 : b.text) - (isDeclared(a) ? 1e9 : a.text));
+    const accentScore = (c: ColorStat) => (c.buttonBg * 10 + c.link) * (isRed(c.hex) ? 0.4 : 1);
+    take("accent", (c) => saturation(c.hex) > 0.35 && (c.buttonBg > 0 || c.link > 0), (a, b) => accentScore(b) - accentScore(a));
     // The most-used neutral border, in light and dark themes alike.
     take("border", (c) => c.border > 0 && saturation(c.hex) < 0.35, (a, b) => b.border - a.border);
     take("surface", (c) => c.bgArea > 0 && saturation(c.hex) < 0.35, (a, b) => b.bgArea - a.bgArea);

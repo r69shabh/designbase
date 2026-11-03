@@ -50,3 +50,9 @@ test("a synthetic case extracts exactly from the live page", { timeout: 60_000 }
   assert.equal(s.roles!.accuracy, 1, s.roles!.wrong.join("; "));
   assert.equal(s.shadows, true);
 });
+
+test("CSS colour harvesting covers hex, rgb and hsl, and drops transparent values", async () => {
+  const { cssColors } = await import("../bench/extract/libraries.ts");
+  const got = cssColors("a{color:#0d6efd;background:rgba(33, 37, 41, 0.9);border-color:#fff8;outline-color:rgb(0 0 0 / 10%)} b{color:hsl(171deg, 100%, 41%)}");
+  for (const hex of ["#0D6EFD", "#212529", "#FFFFFF", "#00D1B2"]) assert.ok(got.includes(hex), hex);
+});

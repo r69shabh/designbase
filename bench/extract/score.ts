@@ -47,7 +47,8 @@ export function deltaE2000(h1: string, h2: string): number {
 
 export interface PRF { precision: number; recall: number; f1: number; missed: string[]; extra: string[] }
 const prf = (tp: number, nPred: number, nTrue: number, missed: string[], extra: string[]): PRF => {
-  const precision = nPred ? tp / nPred : nTrue ? 0 : 1;
+  // Predicting nothing makes no false claims: precision is vacuously 1 (recall carries the miss).
+  const precision = nPred ? tp / nPred : 1;
   const recall = nTrue ? tp / nTrue : 1;
   return { precision, recall, f1: precision + recall ? (2 * precision * recall) / (precision + recall) : 0, missed, extra };
 };

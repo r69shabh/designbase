@@ -9,6 +9,7 @@ import { measureImage, measureUrl, type UrlMeasurement } from "../../src/designe
 import { synthesize, tokensFromProposals } from "../../src/designer/synthesize.ts";
 import { closeBrowser, getBrowser, toUrl } from "../../src/visual.ts";
 import { scoreComponents, scoreTokens, type ComponentScores, type TokenScores, type TruthBox, type TruthTokens } from "./score.ts";
+import { LIBRARIES, type RoleSelector } from "./libraries.ts";
 import { makePages, makeSystem } from "./synth.ts";
 
 type TruthSpec = { attr: "data-truth" } | { selectors: { component: string; selector: string; variants?: string[] }[] };
@@ -19,6 +20,8 @@ interface Case {
   pages: string[];
   truth: TruthTokens;
   boxes: TruthSpec;
+  /** Core role colours read from known elements at score time (for real libraries). */
+  roleSelectors?: Record<string, RoleSelector>;
 }
 
 const WORK = ".designbase/extractbench";
@@ -143,6 +146,54 @@ ${[["INV-0412", "Northwind", "success", "Paid"], ["INV-0411", "Contoso", "attent
   };
 }
 
+function libraryCases(): Case[] {
+  return LIBRARIES.map((make) => {
+    const lib = make();
+    const dir = join(WORK, lib.name.split(" ")[0]);
+    mkdirSync(dir, { recursive: true });
+    const pages = Object.entries(lib.pages).map(([n, html]) => {
+      const f = resolve(dir, `${n}.html`);
+      writeFileSync(f, html);
+      return f;
+    });
+    return {
+      name: `${lib.name} (open world)`,
+      world: "open" as const,
+      pages,
+      truth: { colors: Object.fromEntries(lib.colors.map((h, i) => [`c${i}`, h])), spacing: lib.spacing, fontSizes: lib.fontSizes, radii: lib.radii },
+      boxes: { attr: "data-truth" as const },
+      roleSelectors: lib.roles,
+    };
+  });
+}
+
+/** Computed colours of the elements that define each role (first match across the pages). */
+async function truthRoles(pages: string[], roles: Record<string, RoleSelector>): Promise<Record<string, string>> {
+  const browser = await getBrowser();
+  const out: Record<string, string> = {};
+  for (const p of pages) {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await page.goto(toUrl(p), { waitUntil: "networkidle" });
+    const found = await page.evaluate((roles) => {
+      const res: Record<string, string> = {};
+      for (const [role, { selector, prop }] of Object.entries(roles)) {
+        const el = document.querySelector(selector);
+        if (!el) continue;
+        let v = getComputedStyle(el)[prop];
+        // A transparent body means the page shows the html (or canvas) background.
+        if (prop === "backgroundColor" && /rgba\([^)]*,\s*0\)$/.test(v)) v = getComputedStyle(document.documentElement).backgroundColor;
+        if (/rgba\([^)]*,\s*0\)$/.test(v)) v = "rgb(255, 255, 255)";
+        const m = v.match(/\d+(\.\d+)?/g)!.slice(0, 3).map((n) => Math.round(Number(n)).toString(16).padStart(2, "0"));
+        res[role] = `#${m.join("").toUpperCase()}`;
+      }
+      return res;
+    }, roles);
+    for (const [k, v] of Object.entries(found)) out[k] ??= v;
+    await page.close();
+  }
+  return out;
+}
+
 // ---------- truth boxes (read from the page by the scorer only) ----------
 
 async function truthBoxes(pages: string[], spec: TruthSpec): Promise<TruthBox[]> {
@@ -192,6 +243,7 @@ const f1s = (s: TokenScores) => [s.colors.f1, s.spacing?.f1, s.fontSizes?.f1, s.
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : NaN);
 
 async function runCase(c: Case): Promise<CaseResult> {
+  if (c.roleSelectors) c.truth.roles = await truthRoles(c.pages, c.roleSelectors);
   const urls: UrlMeasurement[] = [];
   for (const p of c.pages) urls.push(await measureUrl(p));
   const fromUrls = synthesize(urls, []);
@@ -206,8 +258,8 @@ async function runCase(c: Case): Promise<CaseResult> {
   return { name: c.name, world: c.world, url, screenshot, components, extractScore: Math.round(metric * 1000) / 10 };
 }
 
-const all: (() => Case)[] = [almanacCase, ...Array.from({ length: Number(args.seeds) }, (_, i) => () => synthCase(i + 1)), primerCase];
-const cases = all.map((f) => f()).filter((c) => !args.cases || args.cases.split(",").some((n) => c.name.startsWith(n)));
+const all: (() => Case | Case[])[] = [almanacCase, ...Array.from({ length: Number(args.seeds) }, (_, i) => () => synthCase(i + 1)), primerCase, libraryCases];
+const cases = all.flatMap((f) => f()).filter((c) => !args.cases || args.cases.split(",").some((n) => c.name.startsWith(n)));
 const results: CaseResult[] = [];
 for (const c of cases) {
   process.stdout.write(`${c.name} … `);
@@ -236,7 +288,7 @@ const lines = [
   "",
   `How close is the designer agent's extraction to the truth? Deterministic stages only (measure → synthesize → discover); no model calls. Generated ${new Date().toISOString().slice(0, 10)}.`,
   "",
-  "**Closed-world cases** know exactly which tokens and components their pages use, so precision and recall are both meaningful. **Open-world** (Primer) compares against GitHub's whole published token set, so only precision (\"did we report real values?\") is meaningful. Colours match at CIEDE2000 ΔE ≤ 3, sizes exactly (type ±0.5px). Components match by box overlap (IoU ≥ 0.6) with the truth instances.",
+  "**Closed-world cases** (Almanac, seeded synthetic systems) know exactly which tokens and components their pages use, so precision and recall are both meaningful. **Open-world cases** are real published design systems (GitHub Primer, Bootstrap 5, Bulma 1, IBM Carbon) rendered from their own CSS: colours are checked against every colour the library's CSS can produce, scales against its published tokens (so only precision, \"did we report real values?\", is meaningful), and the core roles (page background, text, primary action, border) against the computed colours of the elements that define them. Colours match at CIEDE2000 ΔE ≤ 3, sizes exactly (type ±0.5px). Components match by box overlap (IoU ≥ 0.6) with the truth instances.",
   "",
   "## Gates (closed-world averages)",
   "",

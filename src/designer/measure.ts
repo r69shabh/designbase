@@ -44,8 +44,8 @@ function collect(): ElementSample[] {
   const transparent = (c: string) => c === "transparent" || /rgba\([^)]*,\s*0\)$/.test(c);
   const out: ElementSample[] = [];
   const index = new Map<Element, number>();
-  // Include <body> itself: many sites set the page background and base font there.
-  for (const el of [document.body, ...Array.from(document.body.querySelectorAll("*"))]) {
+  // Include <html> and <body> themselves: sites set the page background and base font there.
+  for (const el of [document.documentElement, document.body, ...Array.from(document.body.querySelectorAll("*"))]) {
     if (["SCRIPT", "STYLE", "LINK", "META", "BR", "NOSCRIPT", "TEMPLATE"].includes(el.tagName)) continue;
     if (el.closest("svg") && el.tagName.toLowerCase() !== "svg") continue;
     const r = el.getBoundingClientRect();
