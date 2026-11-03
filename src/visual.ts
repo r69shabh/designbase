@@ -184,7 +184,7 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
 }
 
 let browser: Browser | null = null;
-async function getBrowser() {
+export async function getBrowser() {
   browser ??= await chromium.launch();
   return browser;
 }
