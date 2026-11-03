@@ -11,11 +11,12 @@
     "mcp": "tsx src/server.ts",
     "brief": "tsx src/cli.ts brief",
     "check": "tsx src/cli.ts check",
-    "bench": "tsx bench/score.ts",
     "test": "node --import tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit",
     "bench:prompt": "tsx bench/prompt.ts",
-    "bench:shots": "tsx bench/shots.ts"
+    "bench:shots": "tsx bench/shots.ts",
+    "bench:run": "tsx bench/run.ts",
+    "bench:report": "tsx bench/report.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

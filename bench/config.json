@@ -1,0 +1,25 @@
+{
+  "judge": "google/gemini-4-argon",
+  "maxFixRounds": 3,
+  "concurrency": 6,
+  "suites": {
+    "models": ["A-screenshot", "B-dump"],
+    "tool": ["A-screenshot", "B-dump", "C-brief", "D-loop"]
+  },
+  "models": [
+    "anthropic/claude-opus-5.5",
+    "anthropic/claude-sonnet-5.5",
+    "anthropic/claude-haiku-5.5",
+    "openai/gpt-6.1-terra-pro",
+    "openai/gpt-6.1-terra",
+    "google/gemini-4-argon",
+    "google/gemini-3.8-flash",
+    "x-ai/grok-4.7",
+    "deepseek/deepseek-v4.1-flash",
+    "qwen/qwen3.8-max-0902",
+    "moonshotai/kimi-k3.1-pro",
+    "z-ai/glm-5.3-prime",
+    "mistralai/mistral-large-4-0",
+    "minimax/minimax-m3.1-flash"
+  ]
+}
