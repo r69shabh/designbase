@@ -3,7 +3,7 @@
 import type { Store, Job } from "../store/db.ts";
 import { closeBrowser } from "../visual.ts";
 import { tokensFromDtcg, tokensToDtcg, type DtcgTree } from "../core/dtcg.ts";
-import { PlaybookContent, type RuleSpec } from "../core/schema.ts";
+import { Component as ComponentSchema, PlaybookContent, type RuleSpec } from "../core/schema.ts";
 import { applyInterpretation, interpret, type Interpretation } from "./interpret.ts";
 import { measureImage, measureUrl, type ImageMeasurement, type UrlMeasurement } from "./measure.ts";
 import { synthesize, tokensFromProposals, type TokenProposal } from "./synthesize.ts";
@@ -134,6 +134,13 @@ export function applyProposals(store: Store, playbookId: string, message = "Appl
   // A playbook that turned out to use shadows must not keep a no-shadows rule.
   if (Object.keys(merged.shadow).length) rules.delete("no-shadows");
 
+  // Built components (from discovery) replace same-named ones; name-only proposals carry no code and are skipped.
+  const components = new Map(base.components.map((c) => [c.name, c]));
+  for (const p of accepted.filter((p) => p.kind === "component" && typeof (p.data as { code?: unknown }).code === "string")) {
+    const { verification: _v, assets: _a, propSpecs, ...d } = p.data as Record<string, unknown> & { propSpecs: { name: string; type: string; required: boolean }[] };
+    components.set(p.key, ComponentSchema.parse({ ...d, propSpecs, props: propSpecs.map((x) => `${x.name}${x.required ? "" : "?"}: ${x.type}`).join("; ") }));
+  }
+
   const voice = accepted.find((p) => p.kind === "voice");
   const meta = accepted.find((p) => p.kind === "meta");
   const content = PlaybookContent.parse({
@@ -142,6 +149,7 @@ export function applyProposals(store: Store, playbookId: string, message = "Appl
     tokens: tokensToDtcg(merged),
     voice: voice ? (voice.data as { bullets: string[] }).bullets.map((b) => `- ${b}`).join("\n") : base.voice,
     rules: [...rules.values()],
+    components: [...components.values()],
   });
   const commit = store.commit(playbookId, content, message);
   store.markApplied(accepted.map((p) => p.id));

@@ -11,7 +11,7 @@
     "mcp": "tsx src/server.ts",
     "brief": "tsx src/cli.ts brief",
     "check": "tsx src/cli.ts check",
-    "test": "node --no-warnings=ExperimentalWarning --import tsx --test test/*.test.ts",
+    "test": "node --no-warnings=ExperimentalWarning --import tsx --test --test-force-exit test/*.test.ts",
     "typecheck": "tsc --noEmit",
     "bench:prompt": "tsx bench/prompt.ts",
     "bench:shots": "tsx bench/shots.ts",

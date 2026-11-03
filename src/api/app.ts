@@ -143,6 +143,18 @@ export function createApp(store: Store, opts: { auth?: "local" | "keys" } = {}) 
     const { sources, interpret } = z.object({ sources: z.array(z.string()).optional(), interpret: z.boolean().default(true) }).parse(body);
     return c.json(store.enqueue("extract", { playbookId: pb.id, sources, interpret }, pb.id), 202);
   });
+  app.post("/v1/playbooks/:id/discover", async (c) => {
+    const pb = playbookOr404(c);
+    if (!pb.headVersion) throw new HTTPException(409, { message: "Apply foundations (tokens) before discovering components." });
+    const body = await c.req.json().catch(() => ({}));
+    const { max } = z.object({ max: z.number().int().min(1).max(30).default(10) }).parse(body);
+    return c.json(store.enqueue("discover", { playbookId: pb.id, max }, pb.id), 202);
+  });
+  app.get("/v1/assets/:hash", (c) => {
+    const a = store.asset(c.req.param("hash"));
+    if (!a) throw new HTTPException(404, { message: "No such asset" });
+    return c.body(new Uint8Array(a.read()), 200, { "content-type": a.mime, "cache-control": "public, max-age=31536000, immutable" });
+  });
   const jobOr404 = (c: Context<Env>) => {
     const job = store.job(c.req.param("jobId")!);
     const pb = job?.playbookId ? store.playbook(job.playbookId) : null;

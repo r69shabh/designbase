@@ -116,7 +116,7 @@ createRoot(document.getElementById("root")).render(createElement(App));
 
   writeFileSync(
     join(outDir, "in.css"),
-    `@import "tailwindcss" source(none);\n@source ${JSON.stringify(src)};\n@source ${JSON.stringify(resolve(pb.root, "components"))};\n${themeCss(pb)}\n`,
+    `@import ${JSON.stringify(join(ROOT, "node_modules/tailwindcss/index.css"))} source(none);\n@source ${JSON.stringify(src)};\n@source ${JSON.stringify(resolve(pb.root, "components"))};\n${themeCss(pb)}\n`,
   );
   try {
     await run(TAILWIND, ["-i", join(outDir, "in.css"), "-o", join(outDir, "app.css")], { cwd: ROOT });
