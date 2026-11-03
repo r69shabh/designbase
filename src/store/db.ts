@@ -60,7 +60,8 @@ export interface Proposal {
   data: unknown;
   confidence: number;
   evidence: unknown[];
-  status: "open" | "accepted" | "rejected";
+  /** superseded: replaced by a newer extraction; applied: accepted and committed into a version. */
+  status: "open" | "accepted" | "rejected" | "superseded" | "applied";
   createdAt: string;
 }
 
@@ -250,6 +251,13 @@ export class Store {
     this.db.prepare("UPDATE proposals SET status = ? WHERE id = ?").run(decision === "accept" ? "accepted" : "rejected", proposalId);
     if (opts.edited !== undefined) this.db.prepare("UPDATE proposals SET data = ? WHERE id = ?").run(JSON.stringify(opts.edited), proposalId);
     return this.proposal(proposalId)!;
+  }
+  supersedeOpen(playbookId: string) {
+    this.db.prepare("UPDATE proposals SET status = 'superseded' WHERE playbook_id = ? AND status = 'open'").run(playbookId);
+  }
+  markApplied(ids: string[]) {
+    const stmt = this.db.prepare("UPDATE proposals SET status = 'applied' WHERE id = ?");
+    for (const id of ids) stmt.run(id);
   }
   reviews(playbookId: string) {
     return this.db

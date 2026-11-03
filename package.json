@@ -17,7 +17,8 @@
     "bench:shots": "tsx bench/shots.ts",
     "bench:run": "tsx bench/run.ts",
     "bench:report": "tsx bench/report.ts",
-    "bench:rescore": "tsx bench/rescore.ts"
+    "bench:rescore": "tsx bench/rescore.ts",
+    "serve": "node --no-warnings=ExperimentalWarning --import tsx src/api/serve.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.6",

@@ -27,7 +27,10 @@ export interface UrlMeasurement {
   title: string;
   viewport: { width: number; height: number };
   elements: ElementSample[];
+  /** Full page. */
   screenshot: Buffer;
+  /** First viewport only: what the interpreter sees. */
+  viewportShot: Buffer;
 }
 
 function collect(): ElementSample[] {
@@ -96,7 +99,8 @@ export async function measureUrl(target: string, viewport = { width: 1280, heigh
     await page.evaluate(() => document.fonts?.ready);
     const elements = await page.evaluate(collect);
     const screenshot = await page.screenshot({ fullPage: true });
-    return { url: target, title: await page.title(), viewport, elements, screenshot };
+    const viewportShot = await page.screenshot();
+    return { url: target, title: await page.title(), viewport, elements, screenshot, viewportShot };
   });
 }
 
