@@ -1,3 +1,4 @@
+import type { Look } from "./looks.ts";
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,7 +19,7 @@ export interface Rule { id: string; severity: "error" | "warn"; kind: string; ti
 export interface Component {
   name: string; file: string; summary: string; keywords: string[]; props: string; do: string[]; dont: string[]; code: string;
   replaces?: string[]; origin?: "playbook" | "repo" | "generated"; importPath?: string; exportName?: string; parts?: string[]; example?: string;
-  stories?: { name: string; example: string; image?: string }[];
+  stories?: { name: string; example: string; image?: string; looks?: Look[] }[];
 }
 export interface Pattern { name: string; keywords: string[]; summary: string; components: string[]; skeleton: string; rhythm: string; exemplar: string | null }
 

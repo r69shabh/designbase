@@ -4,7 +4,7 @@
 import { existsSync, statSync } from "node:fs";
 import type { Job, Store } from "../store/db.ts";
 import { closeBrowser } from "../visual.ts";
-import { deltaE2000 } from "./color.ts";
+import { deltaE2000 } from "../color.ts";
 import { cssColorHex, type UrlMeasurement } from "./measure.ts";
 import { exampleFor, scanRepo, type RepoComponent } from "./repo.ts";
 import { tokensFromCode } from "./repo-tokens.ts";
@@ -80,6 +80,7 @@ export async function runScan(store: Store, job: Job): Promise<ScanResult> {
   // 2. Storybook: render the approved states.
   const renders: StoryRender[] = [];
   const imageOf = new Map<string, string>(); // story id → asset hash
+  const looksOf = new Map<string, StoryRender["looks"]>();
   const entryFor = (file: string | undefined, exportName: string, index: IndexEntry[]) =>
     index.find((e) => file && e.importPath.replace(/^\.\//, "") === file && e.id.endsWith(`--${storySlug(exportName)}`));
   try {
@@ -104,11 +105,15 @@ export async function runScan(store: Store, job: Job): Promise<ScanResult> {
             continue;
           }
           imageOf.set(r.entry.id, store.putAsset(r.png, "image/png", `${r.entry.id}.png`).hash);
+          looksOf.set(r.entry.id, r.looks);
           renders.push(r);
         }
         for (const s of scanned.flatMap((c) => c.stories)) {
           const e = entryFor(s.file, s.exportName, index);
-          if (e && imageOf.has(e.id)) s.image = imageOf.get(e.id);
+          if (e && imageOf.has(e.id)) {
+            s.image = imageOf.get(e.id);
+            s.looks = looksOf.get(e.id);
+          }
         }
       } finally {
         await sb.close();
@@ -200,6 +205,20 @@ export async function runScan(store: Store, job: Job): Promise<ScanResult> {
       store.addProposal({ playbookId, jobId: job.id, kind: "rule", key: r.id, data: r, confidence: 0.8, evidence: [{ source: "code", detail: "derived from declared tokens" }] });
     }
   }
+  // Controls rendered in stories become the reference for every control on a page.
+  const lookCount = scanned.reduce((n, c) => n + c.stories.reduce((m, s) => m + (s.looks?.length ?? 0), 0), 0);
+  if (lookCount) {
+    store.addProposal({
+      playbookId,
+      jobId: job.id,
+      kind: "rule",
+      key: "approved-looks",
+      data: { id: "approved-looks", severity: "warn", kind: "visual", title: "Controls look like an approved Storybook state", why: "Your Storybook shows how each control is meant to look; one that matches none of its states has been restyled or hand-rolled.", fix: "Use the component with one of its approved variants instead of restyling it.", enabled: true, params: {} },
+      confidence: 0.85,
+      evidence: [{ source: "storybook", detail: `${lookCount} control look(s) measured in rendered stories` }],
+    });
+    log(`Recorded ${lookCount} approved control look(s) from stories`);
+  }
 
   for (const c of scanned) {
     const words = [c.name, ...(c.storyTitle?.split("/") ?? [])].flatMap((w) => w.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase().split(/\s+/)).filter(Boolean);
@@ -224,7 +243,7 @@ export async function runScan(store: Store, job: Job): Promise<ScanResult> {
         importPath: c.importPath,
         exportName: c.exportName,
         parts: c.parts,
-        stories: c.stories.map(({ name, example, image }) => ({ name, example, ...(image ? { image } : {}) })),
+        stories: c.stories.map(({ name, example, image, looks }) => ({ name, example, ...(image ? { image } : {}), ...(looks?.length ? { looks } : {}) })),
         file: c.file,
         usedBy: c.usedBy,
       },

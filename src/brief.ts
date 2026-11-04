@@ -1,3 +1,4 @@
+import { describeLook } from "./looks.ts";
 import type { Component, Pattern, Playbook } from "./playbook.ts";
 
 // Phase 0 retrieval is keyword overlap with a small synonym map. Embeddings come later,
@@ -115,7 +116,11 @@ export function buildBrief(pb: Playbook, task: string, opts: BriefOptions = {}):
     if (c.stories?.length) {
       const names = c.stories.map((s) => s.name);
       out.push(`Approved states (Storybook): ${names.slice(0, 10).join(", ")}${names.length > 10 ? `, +${names.length - 10} more` : ""}`);
-      for (const s of c.stories.slice(1, 4)) out.push(`- ${s.name}: \`${s.example}\``);
+      // Measured looks tell the agent what "right" renders as; the visual check holds controls to them.
+      for (const s of c.stories.slice(0, 4)) {
+        const look = s.looks?.find((l) => c.replaces?.some((r) => l.kind === r || l.kind.startsWith(`${r}:`))) ?? s.looks?.[0];
+        if (s !== c.stories[0] || look) out.push(`- ${s.name}: \`${s.example}\`${look ? ` renders as ${describeLook(look)}` : ""}`);
+      }
     }
     if (c.do.length) out.push(`Do: ${c.do.join("; ")}`);
     if (c.dont.length) out.push(`Don't: ${c.dont.join("; ")}`);

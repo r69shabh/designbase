@@ -1,7 +1,7 @@
 // ExtractBench scoring: compare what the designer agent extracted with the known truth.
 import type { Candidate } from "../../src/designer/discover.ts";
 import type { TokenProposal } from "../../src/designer/synthesize.ts";
-import { deltaE2000 } from "../../src/designer/color.ts";
+import { deltaE2000 } from "../../src/color.ts";
 
 export { deltaE2000 };
 

@@ -10,6 +10,19 @@ export const PropSpec = z.object({
   default: z.string().optional(),
 });
 
+/** A control's computed look in a rendered story (see src/looks.ts). */
+export const Look = z.object({
+  kind: z.string(),
+  bg: z.string().nullable(),
+  color: z.string(),
+  border: z.string().nullable(),
+  radius: z.number(),
+  padding: z.array(z.number()),
+  fontSize: z.number(),
+  fontWeight: z.number(),
+  height: z.number(),
+});
+
 export const Component = z.object({
   name: z.string().regex(/^[A-Z][A-Za-z0-9]*$/, "PascalCase"),
   summary: z.string(),
@@ -32,7 +45,7 @@ export const Component = z.object({
   /** Sub-components that compose with it (CardHeader, CardTitle…). */
   parts: z.array(z.string()).default([]),
   /** Approved states from the team's Storybook: story name and its JSX. */
-  stories: z.array(z.object({ name: z.string(), example: z.string(), image: z.string().optional().describe("asset hash of the rendered story") })).default([]),
+  stories: z.array(z.object({ name: z.string(), example: z.string(), image: z.string().optional().describe("asset hash of the rendered story"), looks: z.array(Look).default([]) })).default([]),
 });
 
 export const Pattern = z.object({

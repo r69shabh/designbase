@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<!-- A page built with repo-v3's components: some controls as the Storybook shows them, some restyled. -->
+<style>
+  body { margin: 0; padding: 16px; font-family: Inter, system-ui, sans-serif; color: #020817; background: #FFFFFF; }
+  .btn { display: inline-flex; border-radius: 6px; padding: 8px 16px; font-size: 14px; line-height: 20px; border: 1px solid transparent; }
+  .btn-primary { background: #0F172A; color: #F8FAFC; }
+  .btn-secondary { background: #FFFFFF; color: #020817; border-color: #E2E8F0; }
+  .btn-pill { background: #0F172A; color: #F8FAFC; border-radius: 9999px; padding: 4px 16px; }
+  .field { display: block; font-size: 14px; }
+  .field input { display: block; width: 280px; margin-top: 4px; border: 1px solid #E2E8F0; border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+  .field input.square { border-radius: 0; }
+  form > * + * { margin-top: 16px; }
+</style>
+</head>
+<body>
+<form>
+  <label class="field"><span>Email</span><input placeholder="you@example.com"></label>
+  <label class="field"><span>Name</span><input class="square" placeholder="Ada Lovelace"></label>
+  <button class="btn btn-primary">Save changes</button>
+  <button class="btn btn-secondary">Cancel</button>
+  <button class="btn btn-pill">Upgrade</button>
+</form>
+</body>
+</html>

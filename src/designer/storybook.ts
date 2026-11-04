@@ -8,6 +8,7 @@ import { extname, join, normalize, resolve, sep } from "node:path";
 import type { AddressInfo } from "node:net";
 import type { Page } from "playwright";
 import { getBrowser } from "../visual.ts";
+import { measureControls, sameLook, toLook, type Look } from "../looks.ts";
 import { collect, type ElementSample } from "./measure.ts";
 
 export interface IndexEntry { id: string; title: string; name: string; importPath: string }
@@ -17,6 +18,8 @@ export interface StoryRender {
   png: Buffer | null;
   box: { x: number; y: number; w: number; h: number } | null;
   elements: ElementSample[];
+  /** Computed look of every control the story shows. */
+  looks: Look[];
   error: string | null;
 }
 
@@ -85,7 +88,7 @@ export async function renderStories(
         const i = next++;
         out[i] = await renderOn(page, base, entries[i], loaded).catch(async (e) => {
           loaded = false;
-          return { entry: entries[i], url: storyUrl(base, entries[i]), png: null, box: null, elements: [], error: (e as Error).message.split("\n")[0].slice(0, 200) };
+          return { entry: entries[i], url: storyUrl(base, entries[i]), png: null, box: null, elements: [], looks: [], error: (e as Error).message.split("\n")[0].slice(0, 200) };
         });
         loaded = out[i].error === null || loaded;
         opts.onRendered?.(out[i], ++done);
@@ -102,7 +105,7 @@ const storyUrl = (base: string, e: IndexEntry) => `${base}/iframe.html?id=${enco
 
 async function renderOn(page: Page, base: string, entry: IndexEntry, loaded: boolean): Promise<StoryRender> {
   const url = storyUrl(base, entry);
-  const out: StoryRender = { entry, url, png: null, box: null, elements: [], error: null };
+  const out: StoryRender = { entry, url, png: null, box: null, elements: [], looks: [], error: null };
   const switched = loaded && (await page.evaluate((id) => new Promise<string>((resolve) => {
     const ch = (window as unknown as { __STORYBOOK_ADDONS_CHANNEL__?: { on: (e: string, f: () => void) => void; off: (e: string, f: () => void) => void; emit: (e: string, d: unknown) => void } }).__STORYBOOK_ADDONS_CHANNEL__;
     if (!ch) return resolve("none");
@@ -162,6 +165,7 @@ async function renderOn(page: Page, base: string, entry: IndexEntry, loaded: boo
   out.box = { x, y, w: Math.max(1, Math.min(docW - x, Math.ceil(box.w + 2 * pad))), h: Math.min(4000, Math.ceil(box.h + 2 * pad)) };
   out.png = await page.screenshot({ clip: { x: out.box.x, y: out.box.y, width: out.box.w, height: out.box.h }, fullPage: true });
   out.elements = await page.evaluate(collect);
+  for (const l of (await page.evaluate(measureControls, "#storybook-root, #root")).map(toLook)) if (!out.looks.some((x) => sameLook(x, l))) out.looks.push(l);
   return out;
 }
 

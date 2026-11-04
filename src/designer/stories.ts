@@ -3,6 +3,7 @@
 // statically like the rest of the repo; nothing is executed.
 import { parse } from "@babel/parser";
 import { readFileSync } from "node:fs";
+import type { Look } from "../looks.ts";
 
 type N = { type: string; [k: string]: any };
 
@@ -13,6 +14,7 @@ export interface Story {
   /** Repo-relative story file (set by the repo scan) and the rendered screenshot's asset hash. */
   file?: string;
   image?: string;
+  looks?: Look[];
 }
 export interface StoryFile {
   file: string;

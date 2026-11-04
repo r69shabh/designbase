@@ -1,5 +1,5 @@
 // Perceptual colour distance (CIEDE2000), used to match measured colours to declared tokens.
-import { hexRgb } from "./measure.ts";
+const hexRgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 
 function toLab(hex: string): [number, number, number] {
   const [r, g, b] = hexRgb(hex).map((v) => {

@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 import type { Playbook } from "./playbook.ts";
 import { rule } from "./playbook.ts";
 import type { Violation } from "./lint.ts";
+import { describeLook, lookDiff, measureControls, toLook, type Look, type RawControl } from "./looks.ts";
 
 export const VIEWPORTS = [
   { name: "mobile", width: 375, height: 812 },
@@ -183,6 +184,28 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
   return col.list();
 }
 
+/** Every control must match some approved look of its kind from the team's rendered stories. */
+export function evaluateLooks(pb: Playbook, controls: RawControl[]): Violation[] {
+  if (!pb.rules.some((r) => r.id === "approved-looks")) return [];
+  const approved: { component: string; story: string; look: Look }[] = pb.components.flatMap((c) =>
+    (c.stories ?? []).flatMap((s) => (s.looks ?? []).map((look) => ({ component: c.name, story: s.name, look }))));
+  if (!approved.length) return [];
+  const col = new Collector(pb);
+  for (const raw of controls) {
+    const look = toLook(raw);
+    const same = approved.filter((a) => a.look.kind === look.kind);
+    // No story shows this kind of control: nothing to compare against.
+    if (!same.length) continue;
+    const ranked = same.map((a) => ({ ...a, diff: lookDiff(look, a.look) })).sort((a, b) => a.diff.length - b.diff.length);
+    if (!ranked[0].diff.length) continue;
+    const near = ranked[0];
+    const what = `${look.kind === "button" ? "Button" : look.kind}${raw.label ? ` "${raw.label}"` : ""}`;
+    col.add("approved-looks", `${look.kind}|${near.component}|${near.story}|${near.diff.join(";")}`,
+      `${what} matches no approved ${look.kind} look; nearest is ${near.component} / ${near.story} (${near.diff.join(", ")}). Approved: ${describeLook(near.look)}`, raw.sel);
+  }
+  return col.list();
+}
+
 let browser: Browser | null = null;
 export async function getBrowser() {
   browser ??= await chromium.launch();
@@ -221,7 +244,7 @@ export async function visualCheck(pb: Playbook, target: string, outDir = ".desig
       if (vp.name === "desktop") {
         const elements = await page.evaluate(measurePage);
         elementsMeasured = elements.length;
-        violations = [...violations, ...evaluate(pb, elements)];
+        violations = [...violations, ...evaluate(pb, elements), ...evaluateLooks(pb, await page.evaluate(measureControls, null))];
       }
     } finally {
       await page.close();

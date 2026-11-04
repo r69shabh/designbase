@@ -163,7 +163,9 @@ function analyseFile(file: string, root: string, toImport: (f: string) => string
       for (const s of stmt.specifiers ?? []) exported.set(s.local.name, s.exported.name);
       continue;
     } else if (stmt.type === "ExportDefaultDeclaration") {
-      const d = stmt.declaration;
+      // export default Button as ButtonComponent / satisfies …
+      let d = stmt.declaration;
+      while (/^TS(AsExpression|SatisfiesExpression|NonNullExpression)$|^ParenthesizedExpression$/.test(d.type)) d = d.expression;
       if (d.type === "Identifier") exported.set(d.name, "default");
       else if (d.id?.name) {
         exported.set(d.id.name, "default");

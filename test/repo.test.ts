@@ -86,7 +86,7 @@ test("Storybook: stories attach to their components as approved states", () => {
   const { components, storyFiles } = scanRepo(REPO_V3);
   assert.equal(storyFiles, 2);
   const by = Object.fromEntries(components.map((c) => [c.name, c]));
-  assert.deepEqual(Object.keys(by).sort(), ["Button", "Chip", "Tabs", "TextField"]);
+  assert.deepEqual(Object.keys(by).sort(), ["Avatar", "Button", "Chip", "Tabs", "TextField"], "incl. export default X as T");
   assert.equal(by.Tabs.renders, "TabsPrimitive.Root", "re-exported primitive leads its parts");
   assert.deepEqual(by.Tabs.parts, ["TabsList", "TabsTrigger"]);
   const b = by.Button;
@@ -233,6 +233,33 @@ test("scan with Storybook: story screenshots on components, declared colours con
   assert.equal(shots.length, 5);
   const img = await app.request(`/v1/assets/${shots[0].image}`);
   assert.equal(img.headers.get("content-type"), "image/png");
+});
+
+test("approved looks: story controls become the reference the visual check holds pages to", { timeout: 120_000 }, async () => {
+  const pb = (await call("GET", "/v1/playbooks")).body.playbooks.find((p: { name: string }) => p.name === "Rendered");
+  const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
+  const button = open.find((p: { key: string }) => p.key === "Button").data;
+  const primary = button.stories.find((s: { name: string }) => s.name === "Primary").looks[0];
+  assert.deepEqual(
+    { kind: primary.kind, bg: primary.bg, color: primary.color, border: primary.border, radius: primary.radius, padding: primary.padding, fontSize: primary.fontSize },
+    { kind: "button", bg: "#0F172A", color: "#F8FAFC", border: null, radius: 6, padding: [8, 16, 8, 16], fontSize: 14 },
+  );
+  assert.ok(open.some((p: { key: string }) => p.key === "approved-looks"), "rule proposed");
+
+  await call("POST", `/v1/playbooks/${pb.id}/proposals/accept`, { minConfidence: 0.8 });
+  for (const p of open.filter((p: { kind: string }) => p.kind === "component")) await call("POST", `/v1/proposals/${p.id}/review`, { decision: "accept" });
+  assert.equal((await call("POST", `/v1/playbooks/${pb.id}/apply`, { message: "From repo + Storybook" })).status, 201);
+
+  const brief = (await call("POST", `/v1/playbooks/${pb.id}/brief`, { task: "form with a save button" })).body;
+  assert.match(brief, /- Primary: `<Button intent="primary">Save changes<\/Button>` renders as background #0F172A, text #F8FAFC, 14px\/400, radius 6, padding 8×16, \d+px tall/);
+
+  const r = (await call("POST", `/v1/playbooks/${pb.id}/check`, { url: resolve("test/fixtures/looks/page.html") })).body;
+  const looks = r.violations.filter((v: { rule: string }) => v.rule === "approved-looks");
+  const msgs = looks.map((v: { message: string }) => v.message).join("\n");
+  assert.equal(looks.length, 2, msgs);
+  assert.match(msgs, /Button "Upgrade" matches no approved button look; nearest is Button \/ (Primary|Loading) \(radius 9999 vs 6, padding 4×16 vs 8×16, height \d+ vs \d+\)/);
+  assert.match(msgs, /input:text .*nearest is \w+ \/ [\w ]+ \(radius 0 vs 6\)/);
+  assert.doesNotMatch(msgs, /Save changes|Cancel/, "controls drawn as in Storybook pass");
 });
 
 test("Storybook alone (no repo): tokens are measured from the rendered stories", { timeout: 120_000 }, async () => {
