@@ -6,7 +6,14 @@ import { readFileSync } from "node:fs";
 
 type N = { type: string; [k: string]: any };
 
-export interface Story { name: string; example: string }
+export interface Story {
+  name: string;
+  example: string;
+  exportName: string;
+  /** Repo-relative story file (set by the repo scan) and the rendered screenshot's asset hash. */
+  file?: string;
+  image?: string;
+}
 export interface StoryFile {
   file: string;
   title: string | null;
@@ -149,7 +156,7 @@ export function readStoryFile(file: string): StoryFile | null {
         .replace(/ +>/g, ">");
       if (src.length <= 400) example = src;
     }
-    stories.push({ name: storyName, example });
+    stories.push({ name: storyName, example, exportName: exp });
   }
 
   return {

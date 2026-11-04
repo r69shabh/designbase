@@ -131,7 +131,12 @@ export function createApp(store: Store, opts: { auth?: "local" | "keys" } = {}) 
       }
       return c.json({ sources: added }, 201);
     }
-    const body = await parse(c, z.union([z.object({ url: z.string().min(1) }), z.object({ repo: z.string().min(1) })]));
+    const body = await parse(c, z.union([z.object({ url: z.string().min(1) }), z.object({ repo: z.string().min(1) }), z.object({ storybook: z.string().min(1) })]));
+    if ("storybook" in body) {
+      // A running/deployed Storybook URL, or (local mode) a static build folder.
+      if (!/^https?:\/\//.test(body.storybook) && auth !== "local") throw new HTTPException(400, { message: "Storybook must be an http(s) URL; build folders are only accepted in local mode" });
+      return c.json(store.addSource(pb.id, "storybook", { uri: body.storybook }), 201);
+    }
     if ("repo" in body) {
       // Local paths only in local mode; hosted mode gets repos through the GitHub connector.
       if (auth !== "local") throw new HTTPException(400, { message: "Repo paths are only accepted in local mode" });

@@ -39,7 +39,7 @@ export interface UrlMeasurement {
   viewportShot: Buffer;
 }
 
-function collect(): ElementSample[] {
+export function collect(): ElementSample[] {
   const px = (v: string) => parseFloat(v) || 0;
   const transparent = (c: string) => c === "transparent" || /rgba\([^)]*,\s*0\)$/.test(c);
   const out: ElementSample[] = [];
@@ -103,7 +103,7 @@ function collect(): ElementSample[] {
   return out;
 }
 
-async function withPage<T>(width: number, height: number, fn: (page: Page) => Promise<T>): Promise<T> {
+export async function withPage<T>(width: number, height: number, fn: (page: Page) => Promise<T>): Promise<T> {
   const browser = await getBrowser();
   const page = await browser.newPage({ viewport: { width, height } });
   await page.addInitScript("window.__name = (f) => f");

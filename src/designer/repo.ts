@@ -356,7 +356,7 @@ export function scanRepo(root: string): RepoScan {
       components.find((c) => target && join(root, c.file).replace(/\.(tsx|jsx)$/, "").replace(/\/index$/, "") === target && (c.exportName === exportName || c.name === exportName || c.parts.includes(exportName))) ??
       components.find((c) => c.name === (exportName === "default" ? s.component!.local : exportName));
     if (!c) continue;
-    c.stories.push(...s.stories);
+    c.stories.push(...s.stories.map((x) => ({ ...x, file: relative(root, sf) })));
     c.storyTitle ??= s.title;
     if (!c.summary && s.description) c.summary = s.description;
     for (const [k, t] of Object.entries(s.argTypes)) {

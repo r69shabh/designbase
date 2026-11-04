@@ -156,7 +156,7 @@ export class Store {
 
   // --- sources ---
 
-  addSource(playbookId: string, kind: "screenshot" | "url" | "code" | "repo", init: { uri?: string; asset?: string; meta?: unknown }) {
+  addSource(playbookId: string, kind: "screenshot" | "url" | "code" | "repo" | "storybook", init: { uri?: string; asset?: string; meta?: unknown }) {
     const id = randomUUID();
     this.db.prepare("INSERT INTO sources VALUES (?, ?, ?, ?, ?, ?, ?)").run(id, playbookId, kind, init.uri ?? null, init.asset ?? null, JSON.stringify(init.meta ?? {}), now());
     return { id, kind, ...init };
@@ -165,7 +165,7 @@ export class Store {
     return this.db
       .prepare("SELECT * FROM sources WHERE playbook_id = ? ORDER BY created_at")
       .all(playbookId)
-      .map((r) => ({ id: String(r.id), kind: String(r.kind) as "screenshot" | "url" | "code" | "repo", uri: r.uri as string | null, asset: r.asset as string | null, meta: json<Record<string, unknown>>(r.meta) }));
+      .map((r) => ({ id: String(r.id), kind: String(r.kind) as "screenshot" | "url" | "code" | "repo" | "storybook", uri: r.uri as string | null, asset: r.asset as string | null, meta: json<Record<string, unknown>>(r.meta) }));
   }
 
   // --- jobs ---

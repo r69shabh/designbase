@@ -32,7 +32,7 @@ export const Component = z.object({
   /** Sub-components that compose with it (CardHeader, CardTitle…). */
   parts: z.array(z.string()).default([]),
   /** Approved states from the team's Storybook: story name and its JSX. */
-  stories: z.array(z.object({ name: z.string(), example: z.string() })).default([]),
+  stories: z.array(z.object({ name: z.string(), example: z.string(), image: z.string().optional().describe("asset hash of the rendered story") })).default([]),
 });
 
 export const Pattern = z.object({

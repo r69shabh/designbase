@@ -8,11 +8,13 @@ import { startWorker } from "../src/api/worker.ts";
 import { runDiscovery } from "../src/designer/discover-job.ts";
 import { scanRepo } from "../src/designer/repo.ts";
 import { parseCssColor, tokensFromCode } from "../src/designer/repo-tokens.ts";
+import { loadIndex, openStorybook, renderStory } from "../src/designer/storybook.ts";
 import { Store } from "../src/store/db.ts";
 import { closeBrowser } from "../src/visual.ts";
 
 const REPO = resolve("test/fixtures/repo");
 const REPO_V3 = resolve("test/fixtures/repo-v3");
+const STORYBOOK = resolve("test/fixtures/storybook-static");
 after(closeBrowser);
 
 test("finds the team's components with props, variants and what they stand in for", () => {
@@ -186,6 +188,65 @@ test("v3 repo end to end: briefs show Storybook states and the no-shadows rule i
   assert.match(brief, /Approved states \(Storybook\): Primary, Secondary, Danger, Loading, In A Form/);
   assert.match(brief, /- Danger: `<Button intent="danger">Delete project<\/Button>`/);
   assert.match(brief, /import \{ Button \} from "~\/components\/Button"/);
+});
+
+test("renders a Storybook build: stories only, cropped to what the story drew, errors caught", { timeout: 60_000 }, async () => {
+  const sb = await openStorybook(STORYBOOK);
+  try {
+    const index = await loadIndex(sb.base);
+    assert.equal(index.length, 8, "docs pages are skipped");
+    const primary = await renderStory(sb.base, index.find((e) => e.id === "forms-actions-button--primary")!);
+    assert.equal(primary.error, null);
+    assert.ok(primary.png && primary.png.length > 500);
+    assert.ok(primary.box!.w < 200 && primary.box!.h < 60, `cropped to the button, got ${JSON.stringify(primary.box)}`);
+    const btn = primary.elements.find((e) => e.tag === "button")!;
+    assert.equal(btn.bg, "rgb(15, 23, 42)", "computed styles of the real render");
+    const broken = await renderStory(sb.base, index.find((e) => e.id === "legacy-banner--broken")!);
+    assert.match(broken.error!, /Banner is not defined/);
+    assert.equal(broken.png, null);
+  } finally {
+    await sb.close();
+  }
+});
+
+test("scan with Storybook: story screenshots on components, declared colours confirmed, off-theme colours flagged", { timeout: 120_000 }, async () => {
+  const pb = (await call("POST", "/v1/playbooks", { name: "Rendered" })).body;
+  await call("POST", `/v1/playbooks/${pb.id}/sources`, { repo: REPO_V3 });
+  assert.equal((await call("POST", `/v1/playbooks/${pb.id}/sources`, { storybook: STORYBOOK })).status, 201);
+  const done = await waitFor((await call("POST", `/v1/playbooks/${pb.id}/scan`)).body.id);
+  assert.equal(done.status, "done", done.error);
+  const sb = done.result.storybook;
+  assert.equal(sb.indexed, 8);
+  assert.equal(sb.matched, 6, "4 Button + 2 TextField stories matched to code (4 per component)");
+  assert.equal(sb.rendered, 7);
+  assert.deepEqual(sb.failed.map((f: { id: string }) => f.id), ["legacy-banner--broken"]);
+  const slate = sb.drift.find((d: { hex: string }) => d.hex === "#64748B");
+  assert.ok(slate, `spinner colour isn't in the theme: ${JSON.stringify(sb.drift)}`);
+  assert.deepEqual(slate.stories, ["forms-actions-button--loading"]);
+  assert.ok(!sb.drift.some((d: { hex: string }) => ["#0F172A", "#DC2626", "#E2E8F0"].includes(d.hex)), "declared colours aren't drift");
+
+  const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
+  const primary = open.find((p: { key: string }) => p.key === "color.primary");
+  assert.ok(primary.evidence.some((e: { source: string }) => e.source === "storybook"), "confirmed by renders");
+  const button = open.find((p: { key: string }) => p.key === "Button").data;
+  const shots = button.stories.filter((s: { image?: string }) => s.image);
+  assert.equal(shots.length, 5);
+  const img = await app.request(`/v1/assets/${shots[0].image}`);
+  assert.equal(img.headers.get("content-type"), "image/png");
+});
+
+test("Storybook alone (no repo): tokens are measured from the rendered stories", { timeout: 120_000 }, async () => {
+  const pb = (await call("POST", "/v1/playbooks", { name: "Storybook only" })).body;
+  await call("POST", `/v1/playbooks/${pb.id}/sources`, { storybook: STORYBOOK });
+  const done = await waitFor((await call("POST", `/v1/playbooks/${pb.id}/scan`)).body.id);
+  assert.equal(done.status, "done", done.error);
+  assert.ok(done.result.storybook.measuredTokens > 5);
+  const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
+  const colors = open.filter((p: { kind: string; data: { category: string } }) => p.kind === "token" && p.data.category === "color").map((p: { data: { value: string } }) => p.data.value);
+  for (const hex of ["#0F172A", "#DC2626", "#E2E8F0"]) assert.ok(colors.includes(hex), `${hex} measured from renders: ${colors}`);
+  const radius = open.find((p: { key: string; data: { value: number } }) => p.key.startsWith("radius.") && p.data.value === 6);
+  assert.ok(radius, "6px corners measured");
+  assert.ok(open.every((p: { kind: string; evidence: { source: string }[] }) => p.kind !== "token" || p.evidence[0].source === "storybook"));
 });
 
 test("tsconfig comments are stripped without breaking strings", async () => {
