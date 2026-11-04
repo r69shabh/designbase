@@ -10,6 +10,8 @@ export interface Violation {
   excerpt?: string;
   count?: number;
   examples?: string[];
+  /** The approved story a visual violation was compared against (approved-looks). */
+  ref?: { component: string; story: string; image?: string };
 }
 
 const TW_PALETTE = /^(slate|gray|grey|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)(-\d{2,3})?$/;

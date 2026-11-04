@@ -68,7 +68,7 @@ export function createApp(store: Store, opts: { auth?: "local" | "keys" } = {}) 
     const v = store.version(playbookId, versionId);
     if (!v) throw new HTTPException(409, { message: "Playbook has no version yet. Extract and apply proposals, or import content." });
     const dir = join(store.dir, "materialized", playbookId, v.id);
-    return existsSync(join(dir, "tokens.json")) ? loadPlaybook(dir) : materialize(v.content, dir);
+    return existsSync(join(dir, "tokens.json")) ? loadPlaybook(dir) : materialize(v.content, dir, { asset: (h) => store.asset(h)?.read() });
   };
 
   // --- workspaces & keys ---

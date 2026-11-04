@@ -27,6 +27,16 @@ export interface StoryFile {
 }
 
 const strip = (n: N): N => (/^TS(AsExpression|SatisfiesExpression|NonNullExpression|TypeAssertion)$|^ParenthesizedExpression$/.test(n?.type) ? strip(n.expression) : n);
+function each(node: N | N[] | null | undefined, fn: (n: N) => void) {
+  if (!node) return;
+  if (Array.isArray(node)) return node.forEach((x) => each(x, fn));
+  if (typeof node.type !== "string") return;
+  fn(node);
+  for (const [k, v] of Object.entries(node)) {
+    if (k === "loc" || k.endsWith("Comments") || k === "extra") continue;
+    if (Array.isArray(v) || (v && typeof v === "object" && typeof (v as N).type === "string")) each(v as N | N[], fn);
+  }
+}
 const keyOf = (p: N) => p.key?.name ?? (p.key?.value !== undefined ? String(p.key.value) : undefined);
 const prop = (obj: N | null | undefined, key: string): N | undefined => (obj?.type === "ObjectExpression" ? obj.properties.find((p: N) => p.type === "ObjectProperty" && keyOf(p) === key)?.value : undefined);
 
@@ -104,7 +114,9 @@ export function readStoryFile(file: string): StoryFile | null {
       if (p.type === "SpreadElement") {
         // ...Primary.args
         const src = text(p.argument).replace(/\.args$/, "");
-        for (const [k, v] of seen.get(src) ?? []) out.set(k, v);
+        const local = p.argument.type === "Identifier" ? consts.get(p.argument.name) : undefined;
+        // ...Primary.args, or ...defaultArgs (a module-level object)
+        for (const [k, v] of seen.get(src) ?? (local && strip(local).type === "ObjectExpression" ? argsOf(strip(local), seen) : [])) out.set(k, v);
       } else if (p.type === "ObjectProperty" && keyOf(p)) out.set(keyOf(p)!, strip(p.value));
     }
     return out;
@@ -121,7 +133,8 @@ export function readStoryFile(file: string): StoryFile | null {
         continue;
       }
       if (v.type === "StringLiteral") a += v.value.includes('"') ? ` ${k}={${JSON.stringify(v.value)}}` : ` ${k}="${v.value}"`;
-      else if (v.type === "BooleanLiteral") a += v.value ? ` ${k}` : ` ${k}={false}`;
+      // false is almost always the default (invalid={false}); it only adds noise.
+      else if (v.type === "BooleanLiteral") a += v.value ? ` ${k}` : "";
       else if (v.type === "NumericLiteral") a += ` ${k}={${v.value}}`;
       // Handlers (fn(), action("…"), arrows) are test plumbing, not part of the design.
       else if (/Function|CallExpression/.test(v.type)) continue;
@@ -148,14 +161,45 @@ export function readStoryFile(file: string): StoryFile | null {
     const { attrs: a, children } = attrs(args);
 
     let example = children ? `<${name}${a}>${children}</${name}>` : `<${name}${a} />`;
-    // A custom render with real composition is better evidence than rebuilt args, if it's short.
+    // A custom render with real composition is better evidence than rebuilt args, if it's short,
+    // once Storybook plumbing is taken out: arg spreads become the args, handlers and inline styles go,
+    // and attributes computed from the render's own variables (controls) are dropped.
     const body = render && strip(render.body?.type === "BlockStatement" ? render.body.body.find((s: N) => s.type === "ReturnStatement")?.argument ?? render.body : render.body ?? render);
     if (body && (body.type === "JSXElement" || body.type === "JSXFragment")) {
-      const src = text(body)
-        .replace(new RegExp(`<${name}([^>]*?)\\{\\s*\\.\\.\\.args\\s*\\}([^>]*?)/>`, "g"), (_, pre, post) => (children ? `<${name}${pre}${a}${post}>${children}</${name}>` : `<${name}${pre}${a}${post}/>`))
-        .replace(/\{\s*\.\.\.args\s*\}/g, a.trim())
+      const fnNode = render as N;
+      const plumbing = new Set<string>();
+      const uses = (n: N) => { let hit = false; each(n, (x) => { if (x.type === "Identifier" && plumbing.has(x.name)) hit = true; }); return hit; };
+      each(fnNode.params ?? [], (x) => x.type === "Identifier" && plumbing.add(x.name));
+      // Anything derived from the args (const { a, ...rest } = args; const { x } = helper(args)) is args too.
+      if (fnNode.body?.type === "BlockStatement") {
+        for (const st of fnNode.body.body) {
+          for (const d of st.type === "VariableDeclaration" ? st.declarations : []) {
+            if (d.init && uses(d.init)) each(d.id, (x) => x.type === "Identifier" && plumbing.add(x.name));
+          }
+        }
+      }
+      const edits: [number, number, string][] = [];
+      each(body, (x) => {
+        if (x.type === "JSXSpreadAttribute") {
+          const arg = strip(x.argument);
+          const local = arg.type === "Identifier" && consts.get(arg.name);
+          if (uses(arg)) edits.push([x.start, x.end, "{...args}"]);
+          else if (local && strip(local).type === "ObjectExpression") edits.push([x.start, x.end, attrs(argsOf(strip(local), seen)).attrs.trim()]);
+          else edits.push([x.start, x.end, ""]);
+        } else if (x.type === "JSXAttribute") {
+          const attr = x.name.name ?? "";
+          const v = x.value?.type === "JSXExpressionContainer" ? x.value.expression : null;
+          if (attr === "style" || /^on[A-Z]/.test(attr) || (v && (uses(v) || /\b(action|fn)\(/.test(text(v))))) edits.push([x.start, x.end, ""]);
+        }
+      });
+      let src = text(body);
+      for (const [s0, e0, rep] of edits.sort((p, q) => q[0] - p[0])) src = src.slice(0, s0 - body.start) + rep + src.slice(e0 - body.start);
+      src = src
+        .replace(new RegExp(`<${name}([^>]*?)\\{\\.\\.\\.args\\}([^>]*?)/>`, "g"), (_, pre, post) => (children ? `<${name}${pre}${a}${post}>${children}</${name}>` : `<${name}${pre}${a}${post}/>`))
+        .replace(/\{\.\.\.args\}/g, a.trim())
         .replace(/\s+/g, " ")
-        .replace(/ +>/g, ">");
+        .replace(/ +(\/?>)/g, "$1")
+        .replace(/<(\w[\w.]*) +/g, "<$1 ");
       if (src.length <= 400) example = src;
     }
     stories.push({ name: storyName, example, exportName: exp });

@@ -95,15 +95,21 @@ To enforce the check automatically, add the PostToolUse hook from [`examples/cla
 
 Other MCP clients (Cursor, VS Code, Codex) take the same command: `npx tsx /path/to/designbase/src/server.ts`.
 
+To serve a playbook you built with the API (extraction, repo scan, Storybook) instead of a folder, name it; story images come along:
+
+```bash
+claude mcp add designbase -e DESIGNBASE_DATA=/path/to/designbase/.designbase/data -e DESIGNBASE_PLAYBOOK_ID=Acme -- npx --prefix "/path/to/designbase" tsx "/path/to/designbase/src/server.ts"
+```
+
 ### MCP tools
 
 | Tool | Use |
 |---|---|
-| `get_brief(task)` | Call first. Rules, tokens, matching pattern and components for one task. |
+| `get_brief(task)` | Call first. Rules, tokens, matching pattern and components for one task, plus up to 6 rendered Storybook states of those components as images (agents that can see get the approved look, not just a description). |
 | `find_component(query)` | "something to show a status" → `Badge`. |
-| `get_component(name)` | Full spec and source. |
+| `get_component(name, story?)` | Full spec, import line and source, and each approved state: its JSX, its measured look, and its rendered image. |
 | `get_tokens(format)` | `json`, `css`, `tailwind-v4` (an `@theme` that removes Tailwind's default palette so off-system classes don't compile), `tailwind-v3`. |
-| `check(path \| url \| code)` | Lint source, or render and measure a page. Returns PASS/FAIL, a score, fixes, and screenshots for rendered checks. |
+| `check(path \| url \| code)` | Lint source, or render and measure a page. Returns PASS/FAIL, a score, fixes, and screenshots for rendered checks; when a control drifts from its approved look, the image of the state it should match is attached. |
 | `list_rules()` | Every rule with why and how to fix it. |
 
 ### Use your own playbook
@@ -155,7 +161,7 @@ Results go to `bench/results/leaderboard.md` and `bench/results/uplift.md`.
 - The visual check measures the declared font family, not whether the webfont actually loaded.
 - The MCP `check` tool has no vision-model judge yet: the calling agent reviews its own screenshots against the voice. The benchmark harness does have an optional judge.
 - Component discovery needs live pages (URL sources). Screenshot-only sources give exact colours but no spacing, type scale or components yet. Page patterns (layouts) aren't extracted yet.
-- Repo scan reads CSS variables, `@theme` and Tailwind v3 configs, but values that need running code (Tailwind's own palette like `colors.slate`, `theme()` callbacks, plugins, `next/font/local`) are reported as unresolved, not guessed. MDX stories aren't read, and Vue/Svelte files aren't scanned. Story renders need a Storybook to look at: designbase doesn't build one (run `npx storybook build` or `storybook dev` yourself). Approved looks cover controls (buttons, inputs, selects, switches…), not layout components like cards; hover/focus/disabled states aren't compared yet, and story images themselves aren't shown to agents yet (only the measured look, in words). A Storybook without a repo gives measured tokens but no components, so no approved looks. Dark-theme colours are captured but stored aside until playbooks support modes. Repo components aren't rendered for visual checks, because that needs your app's own dependencies; check your running dev server by URL instead.
+- Repo scan reads CSS variables, `@theme` and Tailwind v3 configs, but values that need running code (Tailwind's own palette like `colors.slate`, `theme()` callbacks, plugins, `next/font/local`) are reported as unresolved, not guessed. MDX stories aren't read, and Vue/Svelte files aren't scanned. Story renders need a Storybook to look at: designbase doesn't build one (run `npx storybook build` or `storybook dev` yourself). Approved looks cover controls (buttons, inputs, selects, switches…), not layout components like cards; hover/focus/disabled states aren't compared yet, and story images reach agents over MCP only (the HTTP brief is text). A Storybook without a repo gives measured tokens but no components, so no approved looks. Dark-theme colours are captured but stored aside until playbooks support modes. Repo components aren't rendered for visual checks, because that needs your app's own dependencies; check your running dev server by URL instead.
 - The MCP server still reads a playbook directory. Moving it onto the API is a later phase.
 
 ## Running the API

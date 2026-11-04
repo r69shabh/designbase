@@ -117,7 +117,7 @@ function measurePage(): Measured[] {
 class Collector {
   private groups = new Map<string, Violation & { examples: string[] }>();
   constructor(private pb: Playbook) {}
-  add(id: string, key: string, message: string, sel: string) {
+  add(id: string, key: string, message: string, sel: string, ref?: Violation["ref"]) {
     const k = `${id}|${key}`;
     const existing = this.groups.get(k);
     if (existing) {
@@ -126,7 +126,7 @@ class Collector {
       return;
     }
     const r = rule(this.pb, id);
-    this.groups.set(k, { rule: id, severity: r.severity, message, fix: r.fix, count: 1, examples: [sel] });
+    this.groups.set(k, { rule: id, severity: r.severity, message, fix: r.fix, count: 1, examples: [sel], ...(ref ? { ref } : {}) });
   }
   list(): Violation[] {
     return [...this.groups.values()].sort((a, b) => (a.severity === b.severity ? b.count! - a.count! : a.severity === "error" ? -1 : 1));
@@ -187,8 +187,8 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
 /** Every control must match some approved look of its kind from the team's rendered stories. */
 export function evaluateLooks(pb: Playbook, controls: RawControl[]): Violation[] {
   if (!pb.rules.some((r) => r.id === "approved-looks")) return [];
-  const approved: { component: string; story: string; look: Look }[] = pb.components.flatMap((c) =>
-    (c.stories ?? []).flatMap((s) => (s.looks ?? []).map((look) => ({ component: c.name, story: s.name, look }))));
+  const approved: { component: string; story: string; image?: string; look: Look }[] = pb.components.flatMap((c) =>
+    (c.stories ?? []).flatMap((s) => (s.looks ?? []).map((look) => ({ component: c.name, story: s.name, image: s.image, look }))));
   if (!approved.length) return [];
   const col = new Collector(pb);
   for (const raw of controls) {
@@ -201,7 +201,8 @@ export function evaluateLooks(pb: Playbook, controls: RawControl[]): Violation[]
     const near = ranked[0];
     const what = `${look.kind === "button" ? "Button" : look.kind}${raw.label ? ` "${raw.label}"` : ""}`;
     col.add("approved-looks", `${look.kind}|${near.component}|${near.story}|${near.diff.join(";")}`,
-      `${what} matches no approved ${look.kind} look; nearest is ${near.component} / ${near.story} (${near.diff.join(", ")}). Approved: ${describeLook(near.look)}`, raw.sel);
+      `${what} matches no approved ${look.kind} look; nearest is ${near.component} / ${near.story} (${near.diff.join(", ")}). Approved: ${describeLook(near.look)}`, raw.sel,
+      { component: near.component, story: near.story, ...(near.image ? { image: near.image } : {}) });
   }
   return col.list();
 }

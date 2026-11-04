@@ -53,6 +53,13 @@ export function loadPlaybook(dir = process.env.DESIGNBASE_PLAYBOOK ?? DEFAULT_PL
   };
 }
 
+/** Path of a rendered story image (by asset hash) shipped with the playbook, if present. */
+export const storyImage = (pb: Playbook, hash: string | undefined): string | null => {
+  if (!hash || !/^[0-9a-f]{64}$/.test(hash)) return null;
+  const p = join(pb.root, "stories", `${hash}.png`);
+  return existsSync(p) ? p : null;
+};
+
 export const rule = (pb: Playbook, id: string): Rule => {
   const r = pb.rules.find((r) => r.id === id);
   if (!r) throw new Error(`Unknown rule ${id}`);

@@ -1,5 +1,5 @@
 import { describeLook } from "./looks.ts";
-import type { Component, Pattern, Playbook } from "./playbook.ts";
+import { storyImage, type Component, type Pattern, type Playbook } from "./playbook.ts";
 
 // Phase 0 retrieval is keyword overlap with a small synonym map. Embeddings come later,
 // once the benchmark shows that a focused brief beats a full dump at all.
@@ -132,6 +132,21 @@ export function buildBrief(pb: Playbook, task: string, opts: BriefOptions = {}):
 
   out.push("## Before you finish", "", "Run the `check` tool on every file you wrote and fix every error it reports. Repeat until it passes.");
   return out.join("\n");
+}
+
+/**
+ * Rendered story images for the components a brief selects: what "right" looks like, for agents
+ * that can see. A couple of states per component, most relevant components first.
+ */
+export function briefImages(pb: Playbook, task: string, max = 6, perComponent = 2): { label: string; path: string }[] {
+  const out: { label: string; path: string }[] = [];
+  for (const c of selectForTask(pb, task).components) {
+    for (const s of (c.stories ?? []).filter((s) => storyImage(pb, s.image)).slice(0, perComponent)) {
+      if (out.length >= max) return out;
+      out.push({ label: `${c.name} / ${s.name}: \`${s.example}\``, path: storyImage(pb, s.image)! });
+    }
+  }
+  return out;
 }
 
 /** Everything in the playbook as one document — the "full dump" baseline for the benchmark. */

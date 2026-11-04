@@ -10,6 +10,11 @@ import { scanRepo } from "../src/designer/repo.ts";
 import { parseCssColor, tokensFromCode } from "../src/designer/repo-tokens.ts";
 import { loadIndex, openStorybook, renderStory } from "../src/designer/storybook.ts";
 import { Store } from "../src/store/db.ts";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { materialize } from "../src/core/materialize.ts";
+import { createMcpServer } from "../src/mcp.ts";
+import { loadPlaybook } from "../src/playbook.ts";
 import { closeBrowser } from "../src/visual.ts";
 
 const REPO = resolve("test/fixtures/repo");
@@ -260,6 +265,44 @@ test("approved looks: story controls become the reference the visual check holds
   assert.match(msgs, /Button "Upgrade" matches no approved button look; nearest is Button \/ (Primary|Loading) \(radius 9999 vs 6, padding 4×16 vs 8×16, height \d+ vs \d+\)/);
   assert.match(msgs, /input:text .*nearest is \w+ \/ [\w ]+ \(radius 0 vs 6\)/);
   assert.doesNotMatch(msgs, /Save changes|Cancel/, "controls drawn as in Storybook pass");
+});
+
+test("MCP: agents get the rendered story images in briefs, components and failed checks", { timeout: 120_000 }, async () => {
+  const pbRow = (await call("GET", "/v1/playbooks")).body.playbooks.find((p: { name: string }) => p.name === "Rendered");
+  const v = store.version(pbRow.id)!;
+  const pb = materialize(v.content, join(mkdtempSync(join(tmpdir(), "designbase-mcp-")), "pb"), { asset: (h) => store.asset(h)?.read() });
+  const client = new Client({ name: "test", version: "0" });
+  const [a, b] = InMemoryTransport.createLinkedPair();
+  await Promise.all([createMcpServer(pb).connect(a), client.connect(b)]);
+  type C = { type: string; text?: string; data?: string; mimeType?: string };
+  const tool = async (name: string, args: Record<string, unknown>) => (await client.callTool({ name, arguments: args })).content as C[];
+  const texts = (c: C[]) => c.filter((x) => x.type === "text").map((x) => x.text).join("\n");
+
+  const brief = await tool("get_brief", { task: "form with a save button" });
+  const imgs = brief.filter((x) => x.type === "image");
+  assert.ok(imgs.length >= 2 && imgs.length <= 6, `${imgs.length} images`);
+  assert.equal(imgs[0].mimeType, "image/png");
+  assert.ok(Buffer.from(imgs[0].data!, "base64").subarray(1, 4).toString() === "PNG");
+  assert.match(texts(brief), /Button \/ Primary: `<Button intent="primary">Save changes<\/Button>`/);
+
+  const danger = await tool("get_component", { name: "Button", story: "Danger" });
+  assert.equal(danger.filter((x) => x.type === "image").length, 1);
+  assert.match(texts(danger), /Story "Danger": `<Button intent="danger">Delete project<\/Button>`\nRenders as background #DC2626/);
+  assert.match(texts(danger), /Import: `import \{ Button \} from "~\/components\/Button"`/);
+
+  const checked = await tool("check", { path: resolve("test/fixtures/looks/page.html"), screenshots: true });
+  assert.match(texts(checked), /Approved look to match: Button \/ (Primary|Loading)/);
+  assert.match(texts(checked), /Approved look to match: (TextField|Button) \/ /);
+  assert.ok(checked.filter((x) => x.type === "image").length >= 4, "2 page screenshots + approved looks");
+  await client.close();
+
+  // A playbook with no rendered stories still answers with text only.
+  const plain = new Client({ name: "test", version: "0" });
+  const [c, d] = InMemoryTransport.createLinkedPair();
+  await Promise.all([createMcpServer(loadPlaybook()).connect(c), plain.connect(d)]);
+  const r = (await plain.callTool({ name: "get_brief", arguments: { task: "dashboard" } })).content as C[];
+  assert.deepEqual(r.map((x) => x.type), ["text"]);
+  await plain.close();
 });
 
 test("Storybook alone (no repo): tokens are measured from the rendered stories", { timeout: 120_000 }, async () => {

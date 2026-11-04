@@ -36,8 +36,11 @@ export function fromDirectory(dir: string): PlaybookContent {
   });
 }
 
-/** Write content to a directory in the engine's layout and load it. The directory is replaced. */
-export function materialize(content: PlaybookContent, dir: string): Playbook {
+/**
+ * Write content to a directory in the engine's layout and load it. The directory is replaced.
+ * `asset` resolves stored assets (story images) so they ship with the playbook as stories/<hash>.png.
+ */
+export function materialize(content: PlaybookContent, dir: string, opts: { asset?: (hash: string) => Buffer | null | undefined } = {}): Playbook {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(join(dir, "components"), { recursive: true });
   mkdirSync(join(dir, "exemplars"), { recursive: true });
@@ -52,6 +55,14 @@ export function materialize(content: PlaybookContent, dir: string): Playbook {
     JSON.stringify(content.components.map(({ code, ...c }) => ({ ...c, file: `components/${c.name}.tsx` })), null, 2),
   );
   for (const c of content.components) write(`components/${c.name}.tsx`, c.code);
+  const images = [...new Set(content.components.flatMap((c) => c.stories.map((s) => s.image)).filter((h): h is string => !!h))];
+  if (images.length && opts.asset) {
+    mkdirSync(join(dir, "stories"), { recursive: true });
+    for (const h of images) {
+      const data = opts.asset(h);
+      if (data) write(`stories/${h}.png`, data);
+    }
+  }
   for (const e of content.exemplars) write(`exemplars/${e.file}`, e.encoding === "base64" ? Buffer.from(e.content, "base64") : e.content);
   return loadPlaybook(dir);
 }
