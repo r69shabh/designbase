@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 import type { Playbook } from "./playbook.ts";
 import { rule } from "./playbook.ts";
 import type { Violation } from "./lint.ts";
-import { describeLook, lookDiff, measureControls, toLook, type Look, type RawControl } from "./looks.ts";
+import { captureLooks, describeChange, describeLook, focusDiff, lookDiff, type Look, type RawControl } from "./looks.ts";
 
 export const VIEWPORTS = [
   { name: "mobile", width: 375, height: 812 },
@@ -184,25 +184,41 @@ export function evaluate(pb: Playbook, elements: Measured[]): Violation[] {
   return col.list();
 }
 
-/** Every control must match some approved look of its kind from the team's rendered stories. */
-export function evaluateLooks(pb: Playbook, controls: RawControl[]): Violation[] {
+/**
+ * Every control must match some approved look of its kind from the team's rendered stories, and then
+ * behave like it: the same hover change and a matching keyboard focus indicator.
+ */
+export function evaluateLooks(pb: Playbook, controls: { raw: RawControl; look: Look }[]): Violation[] {
   if (!pb.rules.some((r) => r.id === "approved-looks")) return [];
-  const approved: { component: string; story: string; image?: string; look: Look }[] = pb.components.flatMap((c) =>
+  type Approved = { component: string; story: string; image?: string; look: Look };
+  const approved: Approved[] = pb.components.flatMap((c) =>
     (c.stories ?? []).flatMap((s) => (s.looks ?? []).map((look) => ({ component: c.name, story: s.name, image: s.image, look }))));
   if (!approved.length) return [];
   const col = new Collector(pb);
-  for (const raw of controls) {
-    const look = toLook(raw);
-    const same = approved.filter((a) => a.look.kind === look.kind);
-    // No story shows this kind of control: nothing to compare against.
+  const ref = (a: Approved) => ({ component: a.component, story: a.story, ...(a.image ? { image: a.image } : {}) });
+  for (const { raw, look } of controls) {
+    const what = `${look.kind === "button" ? "Button" : look.kind}${raw.label ? ` "${raw.label}"` : ""}`;
+    const same = approved.filter((a) => a.look.kind === look.kind && !!a.look.disabled === !!look.disabled);
+    // No story shows this kind of control (in this state): nothing to compare against.
     if (!same.length) continue;
     const ranked = same.map((a) => ({ ...a, diff: lookDiff(look, a.look) })).sort((a, b) => a.diff.length - b.diff.length);
-    if (!ranked[0].diff.length) continue;
     const near = ranked[0];
-    const what = `${look.kind === "button" ? "Button" : look.kind}${raw.label ? ` "${raw.label}"` : ""}`;
-    col.add("approved-looks", `${look.kind}|${near.component}|${near.story}|${near.diff.join(";")}`,
-      `${what} matches no approved ${look.kind} look; nearest is ${near.component} / ${near.story} (${near.diff.join(", ")}). Approved: ${describeLook(near.look)}`, raw.sel,
-      { component: near.component, story: near.story, ...(near.image ? { image: near.image } : {}) });
+    if (near.diff.length) {
+      col.add("approved-looks", `${look.kind}|${look.disabled ? "disabled" : ""}|${near.component}|${near.story}|${near.diff.join(";")}`,
+        `${what}${look.disabled ? " (disabled)" : ""} matches no approved ${look.kind} look; nearest is ${near.component} / ${near.story} (${near.diff.join(", ")}). Approved: ${describeLook(near.look)}`, raw.sel, ref(near));
+      continue;
+    }
+    // Right at rest: now its states must match one of the states it matched.
+    const matches = ranked.filter((a) => !a.diff.length);
+    for (const [state, diffOf] of [["hover", lookDiff], ["focus", focusDiff]] as const) {
+      const mine = look[state];
+      const theirs = matches.filter((a) => a.look[state]);
+      if (!mine || !theirs.length) continue;
+      const best = theirs.map((a) => ({ ...a, d: diffOf(mine, a.look[state]!) })).sort((a, b) => a.d.length - b.d.length)[0];
+      if (!best.d.length) continue;
+      col.add("approved-looks", `${look.kind}|${state}|${best.component}|${best.story}|${best.d.join(";")}`,
+        `${what} looks right at rest but its ${state} state differs from ${best.component} / ${best.story}: ${best.d.join(", ")}. Approved ${state}: ${describeChange(best.look, best.look[state]!)}`, raw.sel, ref(best));
+    }
   }
   return col.list();
 }
@@ -245,7 +261,7 @@ export async function visualCheck(pb: Playbook, target: string, outDir = ".desig
       if (vp.name === "desktop") {
         const elements = await page.evaluate(measurePage);
         elementsMeasured = elements.length;
-        violations = [...violations, ...evaluate(pb, elements), ...evaluateLooks(pb, await page.evaluate(measureControls, null))];
+        violations = [...violations, ...evaluate(pb, elements), ...evaluateLooks(pb, pb.rules.some((r) => r.id === "approved-looks") ? await captureLooks(page, null, { max: 25 }) : [])];
       }
     } finally {
       await page.close();

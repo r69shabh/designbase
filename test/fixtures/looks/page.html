@@ -3,15 +3,22 @@
 <head>
 <meta charset="utf-8">
 <title>Settings</title>
-<!-- A page built with repo-v3's components: some controls as the Storybook shows them, some restyled. -->
+<!-- A page built with repo-v3's components: some controls as the Storybook shows them, some restyled
+     at rest (Upgrade, the square input), one with an off-brand hover (Cancel), one that removes its focus ring (Publish). -->
 <style>
   body { margin: 0; padding: 16px; font-family: Inter, system-ui, sans-serif; color: #020817; background: #FFFFFF; }
   .btn { display: inline-flex; border-radius: 6px; padding: 8px 16px; font-size: 14px; line-height: 20px; border: 1px solid transparent; }
+  .btn:focus-visible { outline: 2px solid #0F172A; outline-offset: 2px; }
+  .btn:disabled { background: #E2E8F0; color: #64748B; }
   .btn-primary { background: #0F172A; color: #F8FAFC; }
+  .btn-primary:hover:not(:disabled) { background: #1E293B; }
   .btn-secondary { background: #FFFFFF; color: #020817; border-color: #E2E8F0; }
+  .btn-secondary:hover { background: #DBEAFE; }
+  .btn-quiet-focus:focus-visible { outline: none; }
   .btn-pill { background: #0F172A; color: #F8FAFC; border-radius: 9999px; padding: 4px 16px; }
   .field { display: block; font-size: 14px; }
   .field input { display: block; width: 280px; margin-top: 4px; border: 1px solid #E2E8F0; border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+  .field input:focus-visible { outline: none; border-color: #0F172A; box-shadow: 0 0 0 2px #CBD5E1; }
   .field input.square { border-radius: 0; }
   form > * + * { margin-top: 16px; }
 </style>
@@ -23,6 +30,8 @@
   <button class="btn btn-primary">Save changes</button>
   <button class="btn btn-secondary">Cancel</button>
   <button class="btn btn-pill">Upgrade</button>
+  <button class="btn btn-primary btn-quiet-focus">Publish</button>
+  <button class="btn btn-primary" disabled>Archive</button>
 </form>
 </body>
 </html>

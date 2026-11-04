@@ -8,7 +8,7 @@ import { extname, join, normalize, resolve, sep } from "node:path";
 import type { AddressInfo } from "node:net";
 import type { Page } from "playwright";
 import { getBrowser } from "../visual.ts";
-import { measureControls, sameLook, toLook, type Look } from "../looks.ts";
+import { captureLooks, sameLook, type Look } from "../looks.ts";
 import { collect, type ElementSample } from "./measure.ts";
 
 export interface IndexEntry { id: string; title: string; name: string; importPath: string }
@@ -165,7 +165,8 @@ async function renderOn(page: Page, base: string, entry: IndexEntry, loaded: boo
   out.box = { x, y, w: Math.max(1, Math.min(docW - x, Math.ceil(box.w + 2 * pad))), h: Math.min(4000, Math.ceil(box.h + 2 * pad)) };
   out.png = await page.screenshot({ clip: { x: out.box.x, y: out.box.y, width: out.box.w, height: out.box.h }, fullPage: true });
   out.elements = await page.evaluate(collect);
-  for (const l of (await page.evaluate(measureControls, "#storybook-root, #root")).map(toLook)) if (!out.looks.some((x) => sameLook(x, l))) out.looks.push(l);
+  // At rest, on hover and with keyboard focus (after the screenshot, so the image shows the resting state).
+  for (const { look } of await captureLooks(page, "#storybook-root, #root", { max: 8 })) if (!out.looks.some((x) => sameLook(x, look))) out.looks.push(look);
   return out;
 }
 

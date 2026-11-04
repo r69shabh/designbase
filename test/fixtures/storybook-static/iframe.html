@@ -10,13 +10,18 @@
   body { margin: 0; padding: 16px; font-family: Inter, system-ui, sans-serif; color: #020817; background: #FFFFFF; }
   .sb-show-errordisplay #storybook-root { display: none; }
   #error-message { display: none; } .sb-show-errordisplay #error-message { display: block; }
-  .btn { display: inline-flex; border-radius: 6px; padding: 8px 16px; font-size: 14px; line-height: 20px; border: 1px solid transparent; }
+  .btn { display: inline-flex; border-radius: 6px; padding: 8px 16px; font-size: 14px; line-height: 20px; border: 1px solid transparent; transition: background-color 150ms; }
+  .btn:focus-visible { outline: 2px solid #0F172A; outline-offset: 2px; }
+  .btn:disabled { background: #E2E8F0; color: #64748B; }
   .btn-primary { background: #0F172A; color: #F8FAFC; }
+  .btn-primary:hover:not(:disabled) { background: #1E293B; }
   .btn-secondary { background: #FFFFFF; color: #020817; border-color: #E2E8F0; }
+  .btn-secondary:hover { background: #F1F5F9; }
   .btn-danger { background: #DC2626; color: #FFFFFF; }
   .spinner { color: #64748B; font-size: 12px; margin-left: 8px; }
   .field { display: block; font-size: 14px; }
   .field input { display: block; width: 280px; margin-top: 4px; border: 1px solid #E2E8F0; border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+  .field input:focus-visible { outline: none; border-color: #0F172A; box-shadow: 0 0 0 2px #CBD5E1; }
   .field .error { display: block; margin-top: 4px; color: #DC2626; }
   form > * + * { margin-top: 16px; }
 </style>
@@ -26,13 +31,14 @@
 <pre id="error-message"></pre>
 <script>
   const id = new URLSearchParams(location.search).get("id");
-  const button = (cls, label, extra = "") => `<button class="btn ${cls}">${label}${extra}</button>`;
+  const button = (cls, label, extra = "", attrs = "") => `<button class="btn ${cls}"${attrs}>${label}${extra}</button>`;
   const field = (err) => `<label class="field"><span>Email</span><input placeholder="you@example.com">${err ? `<span class="error">${err}</span>` : ""}</label>`;
   const stories = {
     "forms-actions-button--primary": () => button("btn-primary", "Save changes"),
     "forms-actions-button--secondary": () => button("btn-secondary", "Save changes"),
     "forms-actions-button--destructive": () => button("btn-danger", "Delete project"),
     "forms-actions-button--loading": () => button("btn-primary", "Save changes", `<span class="spinner">Saving…</span>`),
+    "forms-actions-button--disabled": () => button("btn-primary", "Save changes", "", " disabled"),
     "forms-actions-button--in-a-form": () => `<form>${field()}${button("btn-primary", "Save changes")}</form>`,
     "forms-textfield--default": () => field(),
     "forms-textfield--with-error": () => field("That email is already taken"),

@@ -20,6 +20,7 @@ export const Primary: Story = { args: { intent: "primary" } };
 export const Secondary: Story = { args: { ...Primary.args, intent: "secondary" } };
 export const Destructive: Story = { name: "Danger", args: { intent: "danger", children: "Delete project" } };
 export const Loading: Story = { args: { loading: true } };
+export const Disabled: Story = { args: { disabled: true } };
 export const InAForm: Story = {
   render: (args) => (
     <form className="space-y-4">

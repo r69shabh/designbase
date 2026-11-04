@@ -11,8 +11,7 @@ export const PropSpec = z.object({
 });
 
 /** A control's computed look in a rendered story (see src/looks.ts). */
-export const Look = z.object({
-  kind: z.string(),
+const StateLook = z.object({
   bg: z.string().nullable(),
   color: z.string(),
   border: z.string().nullable(),
@@ -21,6 +20,14 @@ export const Look = z.object({
   fontSize: z.number(),
   fontWeight: z.number(),
   height: z.number(),
+  /** Visible focus indicator: outline or box-shadow ring. */
+  ring: z.object({ style: z.enum(["outline", "shadow"]), width: z.number(), color: z.string() }).nullable().default(null),
+});
+export const Look = StateLook.extend({
+  kind: z.string(),
+  disabled: z.boolean().optional(),
+  hover: StateLook.optional(),
+  focus: StateLook.optional(),
 });
 
 export const Component = z.object({

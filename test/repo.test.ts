@@ -98,9 +98,9 @@ test("Storybook: stories attach to their components as approved states", () => {
   assert.equal(b.importPath, "~/components/Button", "jsconfig alias");
   assert.deepEqual(b.variants.intent, ["primary", "secondary", "danger"], "argTypes options fill variants the types don't spell out");
   assert.match(b.summary, /single main action/, "docs description");
-  assert.deepEqual(b.stories.map((s) => s.name), ["Primary", "Secondary", "Danger", "Loading", "In A Form"]);
+  assert.deepEqual(b.stories.map((s) => s.name), ["Primary", "Secondary", "Danger", "Loading", "Disabled", "In A Form"]);
   assert.equal(b.stories[1].example, `<Button intent="secondary">Save changes</Button>`, "meta args + spread of Primary.args; fn() handlers dropped");
-  assert.equal(b.stories[4].example, `<form className="space-y-4"> <Button>Save changes</Button> </form>`, "custom render keeps the composition");
+  assert.equal(b.stories[5].example, `<form className="space-y-4"> <Button>Save changes</Button> </form>`, "custom render keeps the composition");
   const t = by.TextField;
   assert.equal(t.exportName, "default");
   assert.deepEqual(t.stories.map((s) => s.name), ["Default", "With error"], "CSF2 Template.bind + storyName");
@@ -179,7 +179,7 @@ test("v3 repo end to end: briefs show Storybook states and the no-shadows rule i
   const done = await waitFor((await call("POST", `/v1/playbooks/${pb.id}/scan`)).body.id);
   assert.equal(done.status, "done", done.error);
   assert.deepEqual(done.result.tailwindConfigs, ["tailwind.config.js"]);
-  assert.equal(done.result.stories, 7);
+  assert.equal(done.result.stories, 8);
   const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
   assert.ok(!open.some((p: { key: string }) => p.key === "no-shadows"), "config declares shadows");
   await call("POST", `/v1/playbooks/${pb.id}/proposals/accept`, { minConfidence: 0.8 });
@@ -187,10 +187,10 @@ test("v3 repo end to end: briefs show Storybook states and the no-shadows rule i
   assert.equal((await call("POST", `/v1/playbooks/${pb.id}/apply`, { message: "From repo" })).status, 201);
   const head = (await call("GET", `/v1/playbooks/${pb.id}/versions/head`)).body.content;
   const button = head.components.find((c: { name: string }) => c.name === "Button");
-  assert.equal(button.stories.length, 5);
+  assert.equal(button.stories.length, 6);
   assert.equal(button.example, `<Button intent="primary">Save changes</Button>`);
   const brief = (await call("POST", `/v1/playbooks/${pb.id}/brief`, { task: "form with a save button" })).body;
-  assert.match(brief, /Approved states \(Storybook\): Primary, Secondary, Danger, Loading, In A Form/);
+  assert.match(brief, /Approved states \(Storybook\): Primary, Secondary, Danger, Loading, Disabled, In A Form/);
   assert.match(brief, /- Danger: `<Button intent="danger">Delete project<\/Button>`/);
   assert.match(brief, /import \{ Button \} from "~\/components\/Button"/);
 });
@@ -199,7 +199,7 @@ test("renders a Storybook build: stories only, cropped to what the story drew, e
   const sb = await openStorybook(STORYBOOK);
   try {
     const index = await loadIndex(sb.base);
-    assert.equal(index.length, 8, "docs pages are skipped");
+    assert.equal(index.length, 9, "docs pages are skipped");
     const primary = await renderStory(sb.base, index.find((e) => e.id === "forms-actions-button--primary")!);
     assert.equal(primary.error, null);
     assert.ok(primary.png && primary.png.length > 500);
@@ -221,13 +221,13 @@ test("scan with Storybook: story screenshots on components, declared colours con
   const done = await waitFor((await call("POST", `/v1/playbooks/${pb.id}/scan`)).body.id);
   assert.equal(done.status, "done", done.error);
   const sb = done.result.storybook;
-  assert.equal(sb.indexed, 8);
+  assert.equal(sb.indexed, 9);
   assert.equal(sb.matched, 6, "4 Button + 2 TextField stories matched to code (4 per component)");
-  assert.equal(sb.rendered, 7);
+  assert.equal(sb.rendered, 8);
   assert.deepEqual(sb.failed.map((f: { id: string }) => f.id), ["legacy-banner--broken"]);
   const slate = sb.drift.find((d: { hex: string }) => d.hex === "#64748B");
   assert.ok(slate, `spinner colour isn't in the theme: ${JSON.stringify(sb.drift)}`);
-  assert.deepEqual(slate.stories, ["forms-actions-button--loading"]);
+  assert.deepEqual(slate.stories, ["forms-actions-button--loading", "forms-actions-button--disabled"]);
   assert.ok(!sb.drift.some((d: { hex: string }) => ["#0F172A", "#DC2626", "#E2E8F0"].includes(d.hex)), "declared colours aren't drift");
 
   const open = (await call("GET", `/v1/playbooks/${pb.id}/proposals?status=open`)).body.proposals;
@@ -235,7 +235,7 @@ test("scan with Storybook: story screenshots on components, declared colours con
   assert.ok(primary.evidence.some((e: { source: string }) => e.source === "storybook"), "confirmed by renders");
   const button = open.find((p: { key: string }) => p.key === "Button").data;
   const shots = button.stories.filter((s: { image?: string }) => s.image);
-  assert.equal(shots.length, 5);
+  assert.equal(shots.length, 6);
   const img = await app.request(`/v1/assets/${shots[0].image}`);
   assert.equal(img.headers.get("content-type"), "image/png");
 });
@@ -250,21 +250,33 @@ test("approved looks: story controls become the reference the visual check holds
     { kind: "button", bg: "#0F172A", color: "#F8FAFC", border: null, radius: 6, padding: [8, 16, 8, 16], fontSize: 14 },
   );
   assert.ok(open.some((p: { key: string }) => p.key === "approved-looks"), "rule proposed");
+  const full = button.stories.find((s: { name: string }) => s.name === "Primary").looks[0];
+  assert.equal(full.hover.bg, "#1E293B", "hover measured after the 150ms transition");
+  assert.deepEqual(full.focus.ring, { style: "outline", width: 2, color: "#0F172A" }, ":focus-visible ring");
+  const disabled = button.stories.find((s: { name: string }) => s.name === "Disabled").looks[0];
+  assert.deepEqual([disabled.disabled, disabled.bg, disabled.color, disabled.hover], [true, "#E2E8F0", "#64748B", undefined]);
+  const field = open.find((p: { key: string }) => p.key === "TextField").data.stories[0].looks[0];
+  assert.deepEqual(field.focus.ring, { style: "shadow", width: 2, color: "#CBD5E1" }, "box-shadow ring");
+  assert.equal(field.focus.border, "#0F172A");
 
   await call("POST", `/v1/playbooks/${pb.id}/proposals/accept`, { minConfidence: 0.8 });
   for (const p of open.filter((p: { kind: string }) => p.kind === "component")) await call("POST", `/v1/proposals/${p.id}/review`, { decision: "accept" });
   assert.equal((await call("POST", `/v1/playbooks/${pb.id}/apply`, { message: "From repo + Storybook" })).status, 201);
 
   const brief = (await call("POST", `/v1/playbooks/${pb.id}/brief`, { task: "form with a save button" })).body;
-  assert.match(brief, /- Primary: `<Button intent="primary">Save changes<\/Button>` renders as background #0F172A, text #F8FAFC, 14px\/400, radius 6, padding 8×16, \d+px tall/);
+  assert.match(brief, /- Primary: `<Button intent="primary">Save changes<\/Button>` renders as background #0F172A, text #F8FAFC, 14px\/400, radius 6, padding 8×16, \d+px tall; hover: background #1E293B; focus: outline 2px #0F172A/);
 
   const r = (await call("POST", `/v1/playbooks/${pb.id}/check`, { url: resolve("test/fixtures/looks/page.html") })).body;
   const looks = r.violations.filter((v: { rule: string }) => v.rule === "approved-looks");
   const msgs = looks.map((v: { message: string }) => v.message).join("\n");
-  assert.equal(looks.length, 2, msgs);
+  assert.equal(looks.length, 4, msgs);
+  assert.match(msgs, /Button "Cancel" looks right at rest but its hover state differs from Button \/ Secondary: background #DBEAFE vs #F1F5F9\. Approved hover: background #F1F5F9/);
+  assert.match(msgs, /Button "Publish" looks right at rest but its focus state differs from Button \/ \w+: no visible focus indicator \(approved: outline 2px #0F172A\)/);
+  assert.doesNotMatch(msgs, /Archive/, "disabled button matches the approved Disabled story");
   assert.match(msgs, /Button "Upgrade" matches no approved button look; nearest is Button \/ (Primary|Loading) \(radius 9999 vs 6, padding 4×16 vs 8×16, height \d+ vs \d+\)/);
   assert.match(msgs, /input:text .*nearest is \w+ \/ [\w ]+ \(radius 0 vs 6\)/);
-  assert.doesNotMatch(msgs, /Save changes|Cancel/, "controls drawn as in Storybook pass");
+  assert.doesNotMatch(msgs, /Save changes/, "a control drawn as in Storybook, in every state, passes");
+  assert.doesNotMatch(msgs, /Cancel" matches no/, "Cancel is right at rest; only its hover is off");
 });
 
 test("MCP: agents get the rendered story images in briefs, components and failed checks", { timeout: 120_000 }, async () => {
